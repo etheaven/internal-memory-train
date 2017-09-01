@@ -1,0 +1,11 @@
+cmake_minimum_required(VERSION 3.9.0)
+
+project(slave)
+if (MSVC)
+add_compile_options(/W4)
+else()
+add_compile_options(-Wall -Wextra -Wpedantic -O3 -s -DNDEBUG -std=c++14 -m32)
+endif()
+set(CMAKE_RUNTIME_OUTPUT_DIRECTORY "bin/")
+file(GLOB_RECURSE SOURCE_FILES src/*.cpp)
+add_executable(slave ${SOURCE_FILES})
