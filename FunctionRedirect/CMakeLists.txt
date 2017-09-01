@@ -1,0 +1,18 @@
+cmake_minimum_required(VERSION 2.8.9)
+project (hello)
+if (MSVC)
+    add_compile_options(/W4)
+else()
+    add_compile_options(-Wall -Wextra -Wpedantic -std=c++14 -s)
+endif()
+# -g  -m32 -static-libstdc++
+set(CMAKE_ARCHIVE_OUTPUT_DIRECTORY "lib/")
+set(CMAKE_LIBRARY_OUTPUT_DIRECTORY "lib/")
+set(CMAKE_RUNTIME_OUTPUT_DIRECTORY "bin/")
+include_directories("include")
+#set(detours ${CMAKE_SOURCE_DIR}\\libs\\detours.lib)
+#saved for the love of god cuz windows
+link_directories("libs")
+file(GLOB_RECURSE SOURCE_FILES src/*.cpp include/*.cpp)
+add_library(hello SHARED ${SOURCE_FILES})
+target_link_libraries(hello)
