@@ -1,0 +1,10 @@
+byte: 5BE8F8 / premium :: > 1 == premium
+
+string: 00574B3C / http://www.gameranger.com/app_content/
+
+string: 0057563C / 
+
+
+patch 0x90(6b) forever premium: 0044FECC :: GameRanger.CPlugInBase::SetHostReady+66CC - 88 15 F8E85B00        - mov [GameRanger.CDialogEx::`vftable'+7B4FC],dl { [00000010] }
+
+string: 005755AC / *useragent* change to: 1769631565 == Mozilla/420 (Windows)
