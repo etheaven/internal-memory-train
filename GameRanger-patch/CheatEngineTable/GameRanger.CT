@@ -1,0 +1,223 @@
+<?xml version="1.0" encoding="utf-8"?>
+<CheatTable CheatEngineTableVersion="26">
+  <CheatEntries>
+    <CheatEntry>
+      <ID>0</ID>
+      <Description>"premium flag"</Description>
+      <LastState Value="16" RealAddress="005BE8F8"/>
+      <VariableType>Byte</VariableType>
+      <Address>5BE8F8</Address>
+    </CheatEntry>
+    <CheatEntry>
+      <ID>2</ID>
+      <Description>"address_1"</Description>
+      <LastState RealAddress="00574B3C"/>
+      <VariableType>String</VariableType>
+      <Length>50</Length>
+      <Unicode>0</Unicode>
+      <CodePage>0</CodePage>
+      <ZeroTerminate>1</ZeroTerminate>
+      <Address>00574B3C</Address>
+    </CheatEntry>
+    <CheatEntry>
+      <ID>3</ID>
+      <Description>"No description"</Description>
+      <LastState RealAddress="0057563C"/>
+      <VariableType>String</VariableType>
+      <Length>800</Length>
+      <Unicode>0</Unicode>
+      <CodePage>0</CodePage>
+      <ZeroTerminate>1</ZeroTerminate>
+      <Address>0057563C</Address>
+    </CheatEntry>
+    <CheatEntry>
+      <ID>4</ID>
+      <Description>"No description"</Description>
+      <LastState RealAddress="00575818"/>
+      <VariableType>String</VariableType>
+      <Length>1000</Length>
+      <Unicode>0</Unicode>
+      <CodePage>0</CodePage>
+      <ZeroTerminate>1</ZeroTerminate>
+      <Address>00575818</Address>
+    </CheatEntry>
+    <CheatEntry>
+      <ID>5</ID>
+      <Description>"No description"</Description>
+      <LastState RealAddress="00575970"/>
+      <VariableType>String</VariableType>
+      <Length>1000</Length>
+      <Unicode>0</Unicode>
+      <CodePage>0</CodePage>
+      <ZeroTerminate>1</ZeroTerminate>
+      <Address>00575970</Address>
+    </CheatEntry>
+    <CheatEntry>
+      <ID>6</ID>
+      <Description>"No description"</Description>
+      <LastState RealAddress="00576188"/>
+      <VariableType>String</VariableType>
+      <Length>1000</Length>
+      <Unicode>0</Unicode>
+      <CodePage>0</CodePage>
+      <ZeroTerminate>1</ZeroTerminate>
+      <Address>00576188</Address>
+    </CheatEntry>
+    <CheatEntry>
+      <ID>7</ID>
+      <Description>"useragent"</Description>
+      <LastState RealAddress="005755AC"/>
+      <VariableType>String</VariableType>
+      <Length>1000</Length>
+      <Unicode>0</Unicode>
+      <CodePage>0</CodePage>
+      <ZeroTerminate>1</ZeroTerminate>
+      <Address>005755AC</Address>
+    </CheatEntry>
+    <CheatEntry>
+      <ID>8</ID>
+      <Description>"uagent_value"</Description>
+      <LastState Value="1769631565" RealAddress="005755AC"/>
+      <VariableType>4 Bytes</VariableType>
+      <Address>005755AC</Address>
+    </CheatEntry>
+    <CheatEntry>
+      <ID>9</ID>
+      <Description>"height_fn"</Description>
+      <LastState RealAddress="0057563C"/>
+      <VariableType>String</VariableType>
+      <Length>1000</Length>
+      <Unicode>0</Unicode>
+      <CodePage>0</CodePage>
+      <ZeroTerminate>1</ZeroTerminate>
+      <Address>0057563C</Address>
+    </CheatEntry>
+    <CheatEntry>
+      <ID>10</ID>
+      <Description>"No description"</Description>
+      <LastState RealAddress="00576368"/>
+      <VariableType>String</VariableType>
+      <Length>100</Length>
+      <Unicode>0</Unicode>
+      <CodePage>0</CodePage>
+      <ZeroTerminate>1</ZeroTerminate>
+      <Address>00576368</Address>
+    </CheatEntry>
+    <CheatEntry>
+      <ID>11</ID>
+      <Description>"address_2"</Description>
+      <LastState RealAddress="00576388"/>
+      <VariableType>String</VariableType>
+      <Length>100</Length>
+      <Unicode>0</Unicode>
+      <CodePage>0</CodePage>
+      <ZeroTerminate>1</ZeroTerminate>
+      <Address>00576388</Address>
+    </CheatEntry>
+    <CheatEntry>
+      <ID>12</ID>
+      <Description>"server"</Description>
+      <LastState Value="26684" RealAddress="00575970"/>
+      <VariableType>2 Bytes</VariableType>
+      <Address>00575970</Address>
+    </CheatEntry>
+    <CheatEntry>
+      <ID>13</ID>
+      <Description>"turn perma premium on"</Description>
+      <LastState Activated="1"/>
+      <VariableType>Auto Assembler Script</VariableType>
+      <AssemblerScript>[ENABLE]
+//code from here to '[DISABLE]' will be used to enable the cheat
+alloc(newmem,2048)
+label(returnhere)
+label(originalcode)
+label(exit)
+
+newmem: //this is allocated memory, you have read,write,execute access
+//place your code here
+nop
+nop
+nop
+nop
+nop
+nop
+originalcode:
+//mov [GameRanger.CDialogEx::`vftable'+7B4FC],dl
+
+exit:
+jmp returnhere
+
+"GameRanger.exe"+4FECC:
+jmp newmem
+nop
+returnhere:
+
+
+ 
+ 
+[DISABLE]
+//code from here till the end of the code will be used to disable the cheat
+dealloc(newmem)
+"GameRanger.exe"+4FECC:
+mov [005BE8F8], dl
+//mov [GameRanger.CDialogEx::`vftable'+7B4FC],dl
+//Alt: db 88 15 F8 E8 5B 00
+</AssemblerScript>
+    </CheatEntry>
+  </CheatEntries>
+  <CheatCodes>
+    <CodeEntry>
+      <Description>Change of je GameRanger.CPlugInBase::SetHostReady+640F</Description>
+      <Address>0044FC07</Address>
+      <ModuleName>GameRanger.exe</ModuleName>
+      <ModuleNameOffset>4FC07</ModuleNameOffset>
+      <Before>
+        <Byte>E8</Byte>
+        <Byte>5B</Byte>
+        <Byte>00</Byte>
+        <Byte>84</Byte>
+        <Byte>C0</Byte>
+      </Before>
+      <Actual>
+        <Byte>74</Byte>
+        <Byte>06</Byte>
+      </Actual>
+      <After>
+        <Byte>B8</Byte>
+        <Byte>58</Byte>
+        <Byte>BE</Byte>
+        <Byte>56</Byte>
+        <Byte>00</Byte>
+      </After>
+    </CodeEntry>
+    <CodeEntry>
+      <Description>Change of mov [GameRanger.CDialogEx::`vftable'+7B4FC],dl</Description>
+      <Address>0044FECC</Address>
+      <ModuleName>GameRanger.exe</ModuleName>
+      <ModuleNameOffset>4FECC</ModuleNameOffset>
+      <Before>
+        <Byte>75</Byte>
+        <Byte>37</Byte>
+        <Byte>8A</Byte>
+        <Byte>50</Byte>
+        <Byte>0A</Byte>
+      </Before>
+      <Actual>
+        <Byte>88</Byte>
+        <Byte>15</Byte>
+        <Byte>F8</Byte>
+        <Byte>E8</Byte>
+        <Byte>5B</Byte>
+        <Byte>00</Byte>
+      </Actual>
+      <After>
+        <Byte>8A</Byte>
+        <Byte>48</Byte>
+        <Byte>0B</Byte>
+        <Byte>88</Byte>
+        <Byte>0D</Byte>
+      </After>
+    </CodeEntry>
+  </CheatCodes>
+  <UserdefinedSymbols/>
+</CheatTable>

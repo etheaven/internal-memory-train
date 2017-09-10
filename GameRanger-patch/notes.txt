@@ -8,3 +8,6 @@ string: 0057563C /
 patch 0x90(6b) forever premium: 0044FECC :: GameRanger.CPlugInBase::SetHostReady+66CC - 88 15 F8E85B00        - mov [GameRanger.CDialogEx::`vftable'+7B4FC],dl { [00000010] }
 
 string: 005755AC / *useragent* change to: 1769631565 == Mozilla/420 (Windows)
+
+asm jne: 004091B7 / change to jmp 004091D8
+         75 1F    /           EB 1F
