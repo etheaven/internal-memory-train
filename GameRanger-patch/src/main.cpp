@@ -2,14 +2,19 @@
 #include <Windows.h>
 using ulong = unsigned long;
 
-void redirect_jmp(ulong dst, const byte asm_byte)
+void redirect_jmp(ulong dst)
 {
-    *(byte *)dst = asm_byte;
+    ulong oldprot;
+    VirtualProtect((void *)dst, 2, PAGE_EXECUTE_READWRITE, &oldprot);
+    memset((void *)dst, 0x90, 2);
+    *(byte *)dst = 0xEB;
+    *(byte *)(dst + 1) = 0x1F;
+    VirtualProtect((void *)dst, 2, oldprot, NULL);
 }
 
 void patch_ads()
 {
-    redirect_jmp(0x004091B7, 0xEB);
+    redirect_jmp(0x004091B7);
 }
 
 void patch_premium_reset()
@@ -19,11 +24,13 @@ void patch_premium_reset()
     memset((void *)0x0044FECC, 0x90, 6);
     VirtualProtect((void *)0x0044FECC, 6, oldprot, NULL);
     // set premium flag
-    *(byte*)0x005BE8F8 = 1;
+    ulong premium_bool = 0x005BE8F8;
+    *(byte *)premium_bool = 1;
 }
 
 void setup()
 {
+    // TODO: anticheat? closes connection to gameranger after disabling ads is checked
     patch_ads();
     patch_premium_reset();
 }
@@ -36,8 +43,7 @@ extern "C" BOOL APIENTRY DllMain(
     switch (ul_reason_for_call)
     {
     case DLL_PROCESS_ATTACH:
-        ulong threadId = 0;
-        CreateThread(nullptr, NULL, (LPTHREAD_START_ROUTINE)setup, nullptr, NULL, &threadId);
+        setup();
         break;
     }
     return TRUE;
