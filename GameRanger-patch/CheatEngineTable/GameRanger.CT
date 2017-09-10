@@ -4,7 +4,7 @@
     <CheatEntry>
       <ID>0</ID>
       <Description>"premium flag"</Description>
-      <LastState Value="16" RealAddress="005BE8F8"/>
+      <LastState Value="0" RealAddress="005BE8F8"/>
       <VariableType>Byte</VariableType>
       <Address>5BE8F8</Address>
     </CheatEntry>
@@ -124,7 +124,7 @@
     <CheatEntry>
       <ID>13</ID>
       <Description>"turn perma premium on"</Description>
-      <LastState Activated="1"/>
+      <LastState/>
       <VariableType>Auto Assembler Script</VariableType>
       <AssemblerScript>[ENABLE]
 //code from here to '[DISABLE]' will be used to enable the cheat
@@ -163,6 +163,58 @@ mov [005BE8F8], dl
 //mov [GameRanger.CDialogEx::`vftable'+7B4FC],dl
 //Alt: db 88 15 F8 E8 5B 00
 </AssemblerScript>
+    </CheatEntry>
+    <CheatEntry>
+      <ID>14</ID>
+      <Description>"allow disable ads"</Description>
+      <LastState/>
+      <VariableType>Auto Assembler Script</VariableType>
+      <AssemblerScript>[ENABLE]
+//code from here to '[DISABLE]' will be used to enable the cheat
+alloc(newmem,2048)
+label(returnhere)
+label(originalcode)
+label(exit)
+
+newmem: //this is allocated memory, you have read,write,execute access
+//place your code here
+
+originalcode:
+jmp 004091D8
+//jne 004091D8
+//jne GameRanger.CFileIterator::IsFolder+4D68
+call 0044FBF0
+//call GameRanger.CPlugInBase::SetHostReady+63F0
+
+exit:
+jmp returnhere
+
+"GameRanger.exe"+91B7:
+jmp newmem
+nop
+nop
+returnhere:
+
+
+ 
+ 
+[DISABLE]
+//code from here till the end of the code will be used to disable the cheat
+dealloc(newmem)
+"GameRanger.exe"+91B7:
+db 75 1F E8 32 6A 04 00
+//jne GameRanger.CFileIterator::IsFolder+4D68
+//call GameRanger.CPlugInBase::SetHostReady+63F0
+//Alt: db 75 1F E8 32 6A 04 00
+</AssemblerScript>
+    </CheatEntry>
+    <CheatEntry>
+      <ID>15</ID>
+      <Description>"No description"</Description>
+      <LastState Value="88" RealAddress="0044FECC"/>
+      <ShowAsHex>1</ShowAsHex>
+      <VariableType>Byte</VariableType>
+      <Address>0044FECC</Address>
     </CheatEntry>
   </CheatEntries>
   <CheatCodes>
