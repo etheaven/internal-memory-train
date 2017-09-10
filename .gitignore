@@ -13,3 +13,7 @@ CTestTestfile.cmake
 Debug
 .vs
 ReadMe.txt
+
+#custom output
+lib
+bin
