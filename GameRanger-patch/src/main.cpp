@@ -17,8 +17,9 @@ void patch_premium_reset()
     ulong oldprot;
     VirtualProtect((void *)0x0044FECC, 6, PAGE_EXECUTE_READWRITE, &oldprot);
     memset((void *)0x0044FECC, 0x90, 6);
-    *(byte *)0x0044FECC = 1;
     VirtualProtect((void *)0x0044FECC, 6, oldprot, NULL);
+    // set premium flag
+    *(byte*)0x005BE8F8 = 1;
 }
 
 void setup()
