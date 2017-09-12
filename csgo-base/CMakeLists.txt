@@ -1,0 +1,16 @@
+cmake_minimum_required(VERSION 3.0)
+project(csgoBase)
+if (MSVC)
+    add_compile_options(/W4)
+else()
+    add_compile_options(-Wall -Wextra -Wpedantic -g -std=c++14 -m32 -static-libstdc++)
+endif()
+
+set(CMAKE_ARCHIVE_OUTPUT_DIRECTORY "lib/")
+set(CMAKE_LIBRARY_OUTPUT_DIRECTORY "lib/")
+set(CMAKE_RUNTIME_OUTPUT_DIRECTORY "bin/")
+include_directories("include")
+
+file(GLOB_RECURSE SOURCE_FILES src/*.cpp src/*.h include/*.cpp include/*.h)
+add_library(csgoBase SHARED ${SOURCE_FILES})
+target_link_libraries(csgoBase)
