@@ -2,19 +2,10 @@
 #include <Windows.h>
 using ulong = unsigned long;
 
-void redirect_jmp(ulong dst)
+void get_gold_flag()
 {
-    ulong oldprot;
-    VirtualProtect((void *)dst, 2, PAGE_EXECUTE_READWRITE, &oldprot);
-    memset((void *)dst, 0x90, 2);
-    *(byte *)dst = 0xEB;
-    *(byte *)(dst + 1) = 0x1F;
-    VirtualProtect((void *)dst, 2, oldprot, NULL);
-}
-
-void patch_ads()
-{
-    redirect_jmp(0x004091B7);
+    ulong gold_bool = 0x005BE8F9;
+    *(byte *)gold_bool = 1;
 }
 
 void patch_premium_reset()
@@ -31,7 +22,7 @@ void patch_premium_reset()
 void setup()
 {
     // TODO: anticheat? closes connection to gameranger after disabling ads is checked
-    patch_ads();
+    // get_gold_flag();
     patch_premium_reset();
 }
 
