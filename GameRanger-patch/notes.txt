@@ -1,4 +1,5 @@
 byte: 5BE8F8 / premium :: > 1 == premium
+byte: 5BE8F9 / gold :: > 1 == gold
 
 string: 00574B3C / http://www.gameranger.com/app_content/
 
