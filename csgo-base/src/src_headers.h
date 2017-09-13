@@ -6,3 +6,5 @@
 #include "vector.h"
 
 extern VMTManager VMTClientMode;
+
+extern bool running = true;

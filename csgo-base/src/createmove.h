@@ -13,9 +13,31 @@ bool __fastcall hkCreateMove(void *, void *, float, CUserCmd *cmd)
     if (!local)
         return 0;
     
-    if (cmd->buttons &IN_JUMP && (!(local->flags() &FL_ONGROUND)))
-    {
-        cmd->buttons &= ~IN_JUMP; 
-    }
+        static bool bLastJumped = false;
+		static bool bShouldFake = false;
+ 
+		if (!bLastJumped && bShouldFake)
+		{
+			bShouldFake = false;
+			cmd->buttons |= IN_JUMP;
+		}
+		else if (cmd->buttons & IN_JUMP)
+		{
+			if (local->flags() & FL_ONGROUND)
+			{
+				bLastJumped = true;
+				bShouldFake = true;
+			}
+			else
+			{
+				cmd->buttons &= ~IN_JUMP;
+				bLastJumped = false;
+			}
+		}
+		else
+		{
+			bLastJumped = false;
+			bShouldFake = false;
+		}
     return 0;
 }

@@ -27,9 +27,9 @@ void SetupConsole()
     freopen("CONIN$", "rb", stdin);
     SetConsoleTitle("Debug");
 }
-
-void init::setup()
+void init::setup(HMODULE boi)
 {
+    running = true;
     SetupConsole();
 //
 #ifndef __TOUCH_TIER_0__
@@ -54,9 +54,16 @@ void init::setup()
 
     VMTClientMode.Initialise((DWORD *)g_pClientMode);
     VMTClientMode.HookMethod((DWORD)hkCreateMove, 24);
+
+    while (running)
+    {
+        Sleep(10000);
+    }
+    FreeLibraryAndExitThread(boi, 0);
 }
 
 void init::detach()
 {
     VMTClientMode.RestoreOriginal();
+    running = false;
 }

@@ -1,6 +1,6 @@
 #pragma once
 #include "../sdk.h"
-using ulong = unsigned long;
+typedef unsigned long ulong;
 
 typedef float matrix3x4_t[3][4];
 
