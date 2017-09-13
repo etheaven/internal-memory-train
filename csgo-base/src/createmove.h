@@ -2,11 +2,13 @@
 #include "src_headers.h"
 #include <cstdio>
 
-void hkCreateMove(void *thisptr, void *s, float f, CUserCmd *cmd)
+bool __fastcall hkCreateMove(void *current_hook, void *s, float f, CUserCmd *cmd)
 {
-    static CreateMove_t oCreateMove = vmt_cmove->GetOriginalFunction<CreateMove_t>(24);
-    // Call original 'IBaseClientDLL::CreateMove'.
-    oCreateMove(thisptr, s, f, cmd);
+    if (cmd->command_number == 0) //if command_number is 0 then ExtraMouseSample is being called
+        return 0;
+
     static int x = 5;
     printf("ayy %d\n", x++);
+
+    return 0;
 }

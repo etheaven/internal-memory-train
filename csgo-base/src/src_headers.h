@@ -2,6 +2,7 @@
 #include "util/interface_utils.h"
 
 #include "constants/definitions.h"
-#include "vmthook.h"
+#include "vmt.h"
 
-extern VMTHook *vmt_cmove;
+
+extern VMTManager VMTClientMode;

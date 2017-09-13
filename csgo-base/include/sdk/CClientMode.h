@@ -1,6 +1,7 @@
 #pragma once
-class CClientMode
+class IClientModeShared
 {
+public:
 };
 
-extern CClientMode *g_pClientMode;
+extern IClientModeShared *g_pClientMode;
