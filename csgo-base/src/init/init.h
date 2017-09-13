@@ -3,4 +3,5 @@ namespace init
 {
 void setup();
 void grab_ptrs();
+void detach();
 }

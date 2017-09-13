@@ -55,7 +55,7 @@ class VMTManager
             return OriginalTable[Index];
         }
         else
-            return NULL;
+            return 0;
     }
     void UnhookMethod(int Index)
     {

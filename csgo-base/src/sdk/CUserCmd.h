@@ -1,6 +1,6 @@
 #pragma once
-#include "vector.h"
-#include "sdk.h"
+#include "../vector.h"
+#include "../sdk.h"
 
 class CUserCmd
 {

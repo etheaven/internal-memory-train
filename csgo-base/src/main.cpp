@@ -13,7 +13,7 @@ extern "C" BOOL APIENTRY DllMain(
         break;
     case DLL_PROCESS_DETACH:
         init::detach();
-        FreeLibraryAndExitThread(boi);
+        FreeLibraryAndExitThread(boi, 0);
         //DisableThreadLibraryCalls()
     }
     return TRUE;
