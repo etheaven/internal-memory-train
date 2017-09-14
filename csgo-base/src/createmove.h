@@ -2,17 +2,8 @@
 #include "src_headers.h"
 #include "constants/definitions.h"
 
-#include <cstdio>
-
-bool __fastcall hkCreateMove(void *, void *, float, CUserCmd *cmd)
+void bhop(CUserCmd *cmd, CEntity *local)
 {
-	if (cmd->command_number == 0) //if command_number is 0 then ExtraMouseSample is being called
-		return 0;
-
-	CEntity *local = g_pEntityList->getcliententity(g_pEngine->getlocalplayer());
-	if (!local)
-		return 0;
-
 	static bool bLastJumped = false;
 	static bool bShouldFake = false;
 
@@ -39,5 +30,16 @@ bool __fastcall hkCreateMove(void *, void *, float, CUserCmd *cmd)
 		bLastJumped = false;
 		bShouldFake = false;
 	}
+}
+
+bool __fastcall hkCreateMove(void *, void *, float, CUserCmd *cmd)
+{
+	if (cmd->command_number == 0) //if command_number is 0 then ExtraMouseSample is being called
+		return 0;
+
+	CEntity *local = g_pEntityList->getcliententity(g_pEngine->getlocalplayer());
+	if (!local)
+		return 0;
+	bhop(cmd, local);
 	return 0;
 }

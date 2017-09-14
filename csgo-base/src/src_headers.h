@@ -4,6 +4,7 @@
 #include "constants/definitions.h"
 #include "vmt.h"
 #include "vector.h"
+#include "cheats/CheatGlobals.h"
 
 extern VMTManager VMTClientMode;
 
