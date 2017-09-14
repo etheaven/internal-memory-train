@@ -67,7 +67,6 @@ class IVEngineClient
 	{
 		return util::getvfunc<int(__thiscall *)(void *)>(this, 12)(this);
 	}
-
 	void GetViewAngles(Vector &vAngles)
 	{
 		return util::getvfunc<void(__thiscall *)(void *, Vector &)>(this, 18)(this, vAngles);

@@ -15,19 +15,19 @@ class CEntity
     }
     inline Vector *getaimpunchangle()
     {
-        return util::makeptr<Vector>(this, 0x2FF8); //m_Local + m_aimPunchAngle
+        return util::makeptr<Vector>(this, (0x2FAC + 0x301C)); //m_Local + m_aimPunchAngle
     }
     inline Vector *getviewpunchangle()
     {
-        return util::makeptr<Vector>(this, 0x2FEC); //m_Local + m_viewPunchAngle
+        return util::makeptr<Vector>(this, (0x2FAC + 0x3010)); //m_Local + m_viewPunchAngle
     }
     inline int gettickbase()
     {
-        return util::readptr<int>(this, 0x33EC); //m_nTickBase
+        return util::readptr<int>(this, 0x3404); //m_nTickBase
     }
     inline DWORD getactiveweapon()
     {
-        return util::readptr<DWORD>(this, 0x2EC8); //m_hActiveWeapon
+        return util::readptr<DWORD>(this, 0x2EE8); //m_hActiveWeapon
     }
     inline bool isdormant()
     {

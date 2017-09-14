@@ -11,6 +11,7 @@ IClientModeShared *g_pClientMode = nullptr;
 CGlobalVars *g_pGlobals = nullptr;
 IVEngineClient *g_pEngine = nullptr;
 IClientEntityList *g_pEntityList = nullptr;
+CGameMovement *g_pGamemovement = nullptr;
 #ifndef __TOUCH_TIER_0__
 MsgFn g_Msg = nullptr;
 WarningFn g_Warning = nullptr;
@@ -49,9 +50,12 @@ void init::setup()
     g_pClientMode = **(IClientModeShared ***)((*(DWORD **)g_pClient)[10] + 0x5);
     printf("clientmode: 0x%p\n", (void *)g_pClientMode);
     g_pGlobals = **(CGlobalVars ***)((*(DWORD **)g_pClient)[0] + 0x1B);
+    g_pGamemovement = (CGameMovement *)util::EasyInterface("client.dll", "GameMovement00");
+    printf("gamemovement: 0x%p\n", (void *)g_pGamemovement);
     if (!g_pGlobals)
         g_pGlobals = **(CGlobalVars ***)(util::findpattern(clienttable[0], 0x100, "\xA3") + 0x01); //http://www.unknowncheats.me/forum/source-engine/160691-finding-globalvars-internally-without-having-have-any-kinda-reversing-knowledge.html
     printf("global: 0x%p\n", (void *)g_pGlobals);
+
     VMTClientMode.Initialise((DWORD *)g_pClientMode);
     VMTClientMode.HookMethod((DWORD)hkCreateMove, 24);
 }

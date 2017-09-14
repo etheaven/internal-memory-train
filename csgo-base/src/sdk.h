@@ -7,6 +7,7 @@
 #include "sdk/IVEngineClient.h"
 #include "sdk/CEntity.h"
 #include "sdk/IClientEntityList.h"
+#include "sdk/CGameMovement.h"
 
 #include "vector.h"
 
