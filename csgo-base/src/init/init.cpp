@@ -27,7 +27,7 @@ void SetupConsole()
     freopen("CONIN$", "rb", stdin);
     SetConsoleTitle("Debug");
 }
-void init::setup(HMODULE boi)
+void init::setup()
 {
     running = true;
     SetupConsole();
@@ -54,12 +54,6 @@ void init::setup(HMODULE boi)
 
     VMTClientMode.Initialise((DWORD *)g_pClientMode);
     VMTClientMode.HookMethod((DWORD)hkCreateMove, 24);
-
-    while (running)
-    {
-        Sleep(10000);
-    }
-    FreeLibraryAndExitThread(boi, 0);
 }
 
 void init::detach()

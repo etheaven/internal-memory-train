@@ -57,7 +57,7 @@ class VMTManager
         else
             return 0;
     }
-    
+
     void UnhookMethod(int Index)
     {
         if (initComplete)
