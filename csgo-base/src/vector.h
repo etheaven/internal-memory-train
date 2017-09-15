@@ -1,7 +1,7 @@
 #pragma once
 class vec3f
 {
-
+public:
     float x, y, z;
 
   public:
