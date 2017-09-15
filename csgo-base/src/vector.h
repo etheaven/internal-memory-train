@@ -1,71 +1,162 @@
 #pragma once
-class vec3f
+
+class Vector
 {
-public:
-    float x, y, z;
-
   public:
-    vec3f(float x = 0.0f, float y = 0.0f, float z = 0.0f)
-    {
-        this->x = x;
-        this->y = y;
-        this->z = z;
-    }
-    void clamp()
-    {
-        if (this->x > 89.0f && this->x <= 180.0f)
-            this->x = 88.0f;
+    Vector();
+    Vector(float, float, float);
 
-        if (this->x > 180.0f)
-            this->x = this->x - 360.0f;
+    float &operator[](int);
+    Vector &operator=(const Vector &);
 
-        if (this->x < -89.0f)
-            this->x = -88.0f;
+    Vector &operator+=(const Vector &);
+    Vector &operator-=(const Vector &);
+    Vector &operator*=(const Vector &);
+    Vector &operator*=(const float);
+    Vector &operator/=(const Vector &);
+    Vector &operator/=(const float);
 
-        if (this->y > 180.0f)
-            this->y = this->y - 360.0f;
+    Vector operator+(const Vector &) const;
+    Vector operator-(const Vector &) const;
 
-        if (this->y < -180.0f)
-            this->y = this->y + 360.0f;
-        //assert(!(this->z > 0));
-    }
-    vec3f &operator+=(vec3f a)
-    {
-        this->x += a.x;
-        this->y += a.y;
-        this->z += a.z;
-        return *this;
-    }
-    vec3f &operator-=(vec3f a)
-    {
-        this->x -= a.x;
-        this->y -= a.y;
-        this->z -= a.z;
-        return *this;
-    }
-    vec3f &operator+(vec3f const &b)
-    {
-        return *this += b;
-    }
-    vec3f &operator*(vec3f const &b)
-    {
-        this->x = this->x * b.x;
-        this->y = this->y * b.y;
-        this->z = this->z * b.z;
-        return *this;
-    }
-    vec3f &operator*(float &b)
-    {
-        vec3f tmp(this->x * b, this->y * b, this->z * b);
-        return tmp;
-    }
-    vec3f &operator*=(vec3f const &b)
-    {
-        /* this->x *= b.x;
-        this->y *= b.y;
-        this->z *= b.z; */
-        return (*this = *this * b);
-    }
+    Vector operator*(const Vector &)const;
+    Vector operator*(const float &)const;
+
+    Vector operator/(const Vector &) const;
+    Vector operator/(const float &) const;
+
+    void clamp();
+
+    float x, y, z;
 };
 
-using Vector = vec3f;
+Vector::Vector()
+{
+    x = y = z = 0.f;
+}
+
+Vector::Vector(float ix, float iy, float iz)
+{
+    x = ix;
+    y = iy;
+    z = iz;
+}
+
+Vector &Vector::operator=(const Vector &i)
+{
+    x = i.x;
+    y = i.y;
+    z = i.z;
+
+    return *this;
+}
+
+Vector &Vector::operator+=(const Vector &i)
+{
+    x += i.x;
+    y += i.y;
+    z += i.z;
+
+    return *this;
+}
+
+Vector &Vector::operator-=(const Vector &i)
+{
+    x -= i.x;
+    y -= i.y;
+    z -= i.z;
+
+    return *this;
+}
+
+Vector &Vector::operator*=(const Vector &i)
+{
+    x *= i.x;
+    y *= i.y;
+    z *= i.z;
+
+    return *this;
+}
+
+Vector &Vector::operator*=(const float i)
+{
+    x *= i;
+    y *= i;
+    z *= i;
+
+    return *this;
+}
+
+Vector &Vector::operator/=(const Vector &i)
+{
+    x /= i.x;
+    y /= i.y;
+    z /= i.z;
+
+    return *this;
+}
+
+Vector &Vector::operator/=(const float i)
+{
+    x /= i;
+    y /= i;
+    z /= i;
+
+    return *this;
+}
+
+Vector Vector::operator+(const Vector &i) const
+{
+    return Vector(x + i.x, y + i.y, z + i.z);
+}
+
+Vector Vector::operator-(const Vector &i) const
+{
+    return Vector(x - i.x, y - i.y, z - i.z);
+}
+
+Vector Vector::operator*(const Vector &i) const
+{
+    return Vector(x * i.x, y * i.y, z * i.z);
+}
+
+Vector Vector::operator*(const float &i) const
+{
+    return Vector(x * i, y * i, z * i);
+}
+
+Vector Vector::operator/(const Vector &i) const
+{
+    return Vector(x / i.x, y / i.y, z / i.z);
+}
+
+Vector Vector::operator/(const float &i) const
+{
+    return Vector(x / i, y / i, z / i);
+}
+
+void Vector::clamp()
+{
+    if (this->x > 89.0f && this->x <= 180.0f)
+    {
+        this->x = 89.0f;
+    }
+    while (this->x > 180.f)
+    {
+        this->x -= 360.f;
+    }
+    while (this->x < -89.0f)
+    {
+        this->x = -89.0f;
+    }
+    while (this->y > 180.f)
+    {
+        this->y -= 360.f;
+    }
+    while (this->y < -180.f)
+    {
+        this->y += 360.f;
+    }
+}
+
+using vec3f = Vector;

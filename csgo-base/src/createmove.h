@@ -6,10 +6,9 @@
 
 void rcs(CUserCmd *cmd, CEntity *local)
 {
-	if (local->getactiveweapon() != 0xFFFFFFFF) //do NOT read if the handle is invalid
-	{
-		auto punchAngles = *local->getaimpunchangle() * 2.0f;
-
+	if (local->getactiveweapon() != 0xFFFFFFFF)
+	// punchangles always 0
+		vec3f punchAngles = (*local->getaimpunchangle()) * 2.0f;
 		if (punchAngles.x != 0.0f || punchAngles.y != 0)
 		{
 			cmd->viewangles -= punchAngles;
@@ -57,6 +56,6 @@ bool __fastcall hkCreateMove(void *, void *, float, CUserCmd *cmd)
 		return 0;
 
 	bhop(cmd, local);
-	//rcs(cmd, local);
-	return 0;
+	rcs(cmd, local);
+	return 1;
 }
