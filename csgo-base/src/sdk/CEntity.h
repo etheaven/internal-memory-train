@@ -15,11 +15,11 @@ class CEntity
     }
     inline Vector *getaimpunchangle()
     {
-        return util::makeptr<Vector>(this, (0x2FAC + 0x301C)); //m_Local + m_aimPunchAngle
+        return util::makeptr<Vector>(this, 0x301C); //m_Local + m_aimPunchAngle
     }
     inline Vector *getviewpunchangle()
     {
-        return util::makeptr<Vector>(this, (0x2FAC + 0x3010)); //m_Local + m_viewPunchAngle
+        return util::makeptr<Vector>(this, 0x3010); //m_Local + m_viewPunchAngle
     }
     inline int gettickbase()
     {

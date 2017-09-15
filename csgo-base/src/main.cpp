@@ -10,11 +10,16 @@ extern "C" BOOL APIENTRY DllMain(
     {
     case DLL_PROCESS_ATTACH:
         DisableThreadLibraryCalls(boi);
-        CreateThread(0, 0, (LPTHREAD_START_ROUTINE)init::setup, 0, 0, 0);
+        if (!setup()){
+            return FALSE;
+        }
         break;
     case DLL_PROCESS_DETACH:
-        init::detach();
-        FreeLibraryAndExitThread(boi, 0);
+        if (!init::detach()){
+            // log xd
+            return FALSE;
+        }
+        break;
     }
     return TRUE;
 }

@@ -2,7 +2,6 @@
 #include <Windows.h>
 namespace init
 {
-void setup(); // boi
-void grab_ptrs();
-void detach();
+bool setup(); // boi
+bool detach();
 }

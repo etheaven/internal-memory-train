@@ -72,6 +72,7 @@ class VMTManager
         if (initComplete)
         {
             *Instance = (DWORD)OriginalTable;
+            initComplete = false;
         }
         return;
     }

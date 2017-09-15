@@ -29,9 +29,8 @@ void SetupConsole()
     SetConsoleTitle("Debug");
 }
 
-void init::setup()
+bool init::setup()
 {
-    running = true;
     SetupConsole();
 //
 #ifndef __TOUCH_TIER_0__
@@ -58,10 +57,15 @@ void init::setup()
 
     VMTClientMode.Initialise((DWORD *)g_pClientMode);
     VMTClientMode.HookMethod((DWORD)hkCreateMove, 24);
+    if (!VMTClientMode.initComplete)
+        return false;
+    return true;
 }
 
-void init::detach()
+bool init::detach()
 {
     VMTClientMode.RestoreOriginal();
-    running = false;
+    if (VMTClientMode.initComplete)
+        return false;
+    return true;
 }
