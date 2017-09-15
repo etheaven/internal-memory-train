@@ -7,7 +7,6 @@
 void rcs(CUserCmd *cmd, CEntity *local)
 {
 	if (local->getactiveweapon() != 0xFFFFFFFF)
-	// punchangles always 0
 		vec3f punchAngles = (*local->getaimpunchangle()) * 2.0f;
 		if (punchAngles.x != 0.0f || punchAngles.y != 0)
 		{
