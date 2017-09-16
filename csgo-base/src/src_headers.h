@@ -6,3 +6,4 @@
 #include "vector.h"
 
 extern VMTManager VMTClientMode;
+extern VMTManager VMTPaintTraverse;

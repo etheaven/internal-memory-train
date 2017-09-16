@@ -3,6 +3,7 @@
 #include "../src_headers.h"
 #include "../vmt.h"
 #include "../createmove.h"
+#include "../painttraverse.h"
 
 #include <cstdio>
 
@@ -12,12 +13,16 @@ CGlobalVars *g_pGlobals = nullptr;
 IVEngineClient *g_pEngine = nullptr;
 IClientEntityList *g_pEntityList = nullptr;
 CGameMovement *g_pGamemovement = nullptr;
+
+PaintTraverseFn oPaintTraverse = nullptr;
+IPanel *g_pPanel = nullptr;
+
 #ifndef __TOUCH_TIER_0__
 MsgFn g_Msg = nullptr;
 WarningFn g_Warning = nullptr;
 #endif
 
-VMTManager VMTClientMode;
+VMTManager VMTClientMode, VMTPaintTraverse;
 
 void SetupConsole()
 {
@@ -54,11 +59,16 @@ bool init::setup()
     if (!g_pGlobals)
         g_pGlobals = **(CGlobalVars ***)(util::findpattern(clienttable[0], 0x100, "\xA3") + 0x01); //http://www.unknowncheats.me/forum/source-engine/160691-finding-globalvars-internally-without-having-have-any-kinda-reversing-knowledge.html
     printf("global: 0x%p\n", (void *)g_pGlobals);
-    
+    g_pPanel = (IPanel *)util::EasyInterface("vgui2.dll", "VGUI_Panel0");
+    printf("panel: 0x%p\n", (void *)g_pPanel);
 
     VMTClientMode.Initialise((DWORD *)g_pClientMode);
     VMTClientMode.HookMethod((DWORD)hkCreateMove, 24);
     if (!VMTClientMode.getInit())
+        return false;
+    VMTPaintTraverse.Initialise((DWORD *)g_pPanel);
+    oPaintTraverse = (PaintTraverseFn)VMTPaintTraverse.HookMethod((DWORD)&hkPaintTraverse, 41);
+    if (!VMTPaintTraverse.getInit())
         return false;
     return true;
 }
@@ -67,6 +77,8 @@ bool init::detach()
 {
     VMTClientMode.RestoreOriginal();
     if (VMTClientMode.getInit())
+        return false;
+    if (VMTPaintTraverse.getInit())
         return false;
     return true;
 }

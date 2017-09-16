@@ -8,6 +8,7 @@
 #include "sdk/CEntity.h"
 #include "sdk/IClientEntityList.h"
 #include "sdk/CGameMovement.h"
+#include "sdk/IPanel.h"
 
 #include "vector.h"
 
@@ -15,7 +16,9 @@
 
 typedef void(__cdecl *MsgFn)(const char *, ...);
 typedef void(__cdecl *WarningFn)(const char *, ...);
+typedef void(__thiscall *PaintTraverseFn)(void*, unsigned int, bool, bool);
 
+extern PaintTraverseFn oPaintTraverse;
 #ifndef __TOUCH_TIER_0__
 extern MsgFn g_Msg;
 extern WarningFn g_Warning;
