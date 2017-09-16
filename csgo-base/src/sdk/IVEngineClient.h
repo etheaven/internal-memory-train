@@ -63,21 +63,96 @@ class INetChannelInfo
 class IVEngineClient
 {
   public:
-	int getlocalplayer()
+	int GetLocalBase()
 	{
 		return util::getvfunc<int(__thiscall *)(void *)>(this, 12)(this);
 	}
-	void GetViewAngles(Vector &vAngles)
-	{
-		return util::getvfunc<void(__thiscall *)(void *, Vector &)>(this, 18)(this, vAngles);
+	void GetViewAngles(Vector &v)
+	{ // get angle
+		return util::getvfunc<void(__thiscall *)(void *, Vector &)>(this, 18)(this, v);
 	}
-	void SetViewAngles(Vector &vAngles)
+	void SetViewAngles(Vector &v)
 	{
-		return util::getvfunc<void(__thiscall *)(void *, Vector &)>(this, 19)(this, vAngles);
+		return util::getvfunc<void(__thiscall *)(void *, Vector &)>(this, 19)(this, v);
 	}
 	int GetMaxClients()
 	{
 		return util::getvfunc<int(__thiscall *)(void *)>(this, 20)(this);
+	}
+	bool IsInGame()
+	{
+		return util::getvfunc<bool(__thiscall *)(void *)>(this, 26)(this);
+	}
+	bool IsConnected()
+	{
+		return util::getvfunc<bool(__thiscall *)(void *)>(this, 27)(this);
+	}
+
+	typedef struct player_info_s
+	{
+		unsigned long long unknown;
+		unsigned long long xuid;
+		char name[128];
+		int userID;
+		char guid[32 + 1];
+		unsigned int friendsID;
+		char friendsName[128];
+		bool fakeplayer;
+		bool ishltv;
+		unsigned long customFiles[4];
+		unsigned char filesDownloaded;
+	} player_info_t;
+
+	void GetScreenSize(int &width, int &height)
+	{
+		typedef void(__thiscall * OriginalFn)(void *, int &, int &);
+		return util::getvfunc<OriginalFn>(this, 5)(this, width, height);
+	}
+	void ClientCmd(const char *szCmdString)
+	{
+		typedef void(__thiscall * OriginalFn)(void *, const char *);
+		util::getvfunc<OriginalFn>(this, 7)(this, szCmdString);
+	}
+	bool isinGame(void)
+	{
+		typedef bool(__thiscall * OriginalFn)(void *);
+		return util::getvfunc<OriginalFn>(this, 26)(this);
+	}
+	bool GetPlayerInfo(int iIndex, player_info_t *pInfo)
+	{
+		typedef bool(__thiscall * OriginalFn)(void *, int, player_info_t *);
+		return util::getvfunc<OriginalFn>(this, 8)(this, iIndex, pInfo);
+	}
+	int GetLocalPlayer(VOID)
+	{
+		typedef int(__thiscall * OriginalFn)(void *);
+		return util::getvfunc<OriginalFn>(this, 12)(this);
+	}
+	float GetLastTimeStamp(VOID)
+	{
+		typedef float(__thiscall * OriginalFn)(void *);
+		return util::getvfunc<OriginalFn>(this, 14)(this);
+	}
+
+	const matrix3x4_t &WorldToScreenMatrixx(void)
+	{
+		typedef const matrix3x4_t &(__thiscall * OriginalFn)(void *);
+		return util::getvfunc<OriginalFn>(this, 37)(this);
+	}
+	const matrix3x4_t &WorldToScreenMatrix(void)
+	{
+		typedef const matrix3x4_t &(__thiscall * OriginalFn)(void *);
+		return util::getvfunc<OriginalFn>(this, 37)(this);
+	}
+	void ExecuteClientCmd(char const *szCommand)
+	{
+		typedef void(__thiscall * OriginalFn)(void *, char const *szCommand);
+		util::getvfunc<OriginalFn>(this, 108)(this, szCommand);
+	}
+	void GetServerTick(void)
+	{
+		typedef void(__thiscall * OriginalFn)(void *);
+		return util::getvfunc<OriginalFn>(this, 208)(this);
 	}
 };
 

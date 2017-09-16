@@ -4,7 +4,7 @@
 
 #include <cstdio>
 
-DrawManager *g_pDrawManager;
+DrawManager *g_g_pDrawManagerManager;
 void __fastcall hkPaintTraverse(void *pPanel, void *unk, unsigned int vguiPanel, bool forceRepaint, bool allowForce)
 {
     oPaintTraverse(pPanel, vguiPanel, forceRepaint, allowForce);
@@ -23,6 +23,10 @@ void __fastcall hkPaintTraverse(void *pPanel, void *unk, unsigned int vguiPanel,
     }
     else if (panelId == vguiPanel)
     {
-        g_pDrawManager->TextW(true, UI_Font, 100, 50, Color(255, 0, 0, 255), L"test abcaa1564891");
+        g_g_pDrawManagerManager->TextW(true, UI_Font, 100, 50, Color(255, 0, 0, 255), L"test abcaa1564891");
+        if (g_pEngine->IsConnected() && g_pEngine->IsInGame())
+        {
+            auto *pLocalPlayer = g_pEntityList->getcliententity(g_pEngine->GetLocalBase());
+        }
     }
 }

@@ -51,7 +51,7 @@ bool __fastcall hkCreateMove(void *, void *, float, CUserCmd *cmd)
 	if (cmd->command_number == 0) //if command_number is 0 then ExtraMouseSample is being called
 		return 0;
 
-	CEntity *local = g_pEntityList->getcliententity(g_pEngine->getlocalplayer());
+	CEntity *local = g_pEntityList->getcliententity(g_pEngine->GetLocalPlayer());
 	if (!local)
 		return 0;
 

@@ -48,6 +48,7 @@ bool init::setup()
     g_pClient = (CClientBase *)util::EasyInterface("client.dll", "VClient0");
     printf("client: 0x%p\n", (void *)g_pClient);
     g_pEngine = (IVEngineClient *)util::EasyInterface("engine.dll", "VEngineClient0");
+    
     printf("engine: 0x%p\n", (void *)g_pEngine);
     g_pEntityList = (IClientEntityList *)util::EasyInterface("client.dll", "VClientEntityList0");
     printf("entityList: 0x%p\n", (void *)g_pEntityList);

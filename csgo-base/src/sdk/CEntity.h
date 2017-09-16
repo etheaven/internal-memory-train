@@ -9,6 +9,14 @@ class CEntity
     {
         return util::readptr<int>(this, 0x25B); //m_lifeState
     }
+    inline int gethealth()
+    {
+        return util::readptr<int>(this, 0xFC); //m_iHealth
+    }
+    inline int getteam()
+    {
+        return util::readptr<int>(this, 0xF0); //m_iTeamNum
+    }
     inline int flags()
     {
         return util::readptr<int>(this, 0x100); //m_fFlags
@@ -52,6 +60,19 @@ class CEntity
     inline bool setupbones(matrix3x4_t *bonematrix, int maxbones, int mask, float curtime = 0)
     {
         void *renderable = reinterpret_cast<void *>(reinterpret_cast<DWORD>(this) + 0x4);
-        return util::getvfunc<bool(__thiscall *)(void *, matrix3x4_t *, int, int, float)>(renderable, 13)(renderable, bonematrix, maxbones, mask, curtime);
+        return util::getvfunc<bool(__thiscall *)(void *, matrix3x4_t *, int, int, float)>(renderable, 14)(renderable, bonematrix, maxbones, mask, curtime);
+    }
+    inline bool GetBonePosition(CBaseEntity *pPlayer, Vector &Hitbox, int Bone)
+    {
+        matrix3x4_t MatrixArray[128];
+
+        if (!pPlayer->setupbones(MatrixArray, 128, 0x00000100, g_pEngine->GetLastTimeStamp()))
+            return false;
+
+        auto &HitboxMatrix = MatrixArray[Bone];
+
+        Hitbox = Vector(HitboxMatrix[0][3], HitboxMatrix[1][3], HitboxMatrix[2][3]);
+
+        return true;
     }
 };
