@@ -10,7 +10,7 @@ extern "C" BOOL APIENTRY DllMain(
     {
     case DLL_PROCESS_ATTACH:
         DisableThreadLibraryCalls(boi);
-        if (!setup()){
+        if (!init::setup()){
             return FALSE;
         }
         break;

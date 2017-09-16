@@ -26,6 +26,10 @@ class VMTManager
     DWORD *Instance;
 
   public:
+    bool getInit()
+    {
+        return initComplete;
+    }
     bool Initialise(DWORD *InstancePointer)
     {
         // Store the instance pointers and such, and work out how big the table is

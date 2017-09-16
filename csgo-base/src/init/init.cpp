@@ -57,7 +57,7 @@ bool init::setup()
 
     VMTClientMode.Initialise((DWORD *)g_pClientMode);
     VMTClientMode.HookMethod((DWORD)hkCreateMove, 24);
-    if (!VMTClientMode.initComplete)
+    if (!VMTClientMode.getInit())
         return false;
     return true;
 }
@@ -65,7 +65,7 @@ bool init::setup()
 bool init::detach()
 {
     VMTClientMode.RestoreOriginal();
-    if (VMTClientMode.initComplete)
+    if (VMTClientMode.getInit())
         return false;
     return true;
 }

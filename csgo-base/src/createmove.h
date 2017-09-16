@@ -7,6 +7,7 @@
 void rcs(CUserCmd *cmd, CEntity *local)
 {
 	if (local->getactiveweapon() != 0xFFFFFFFF)
+	{
 		vec3f punchAngles = (*local->getaimpunchangle()) * 2.0f;
 		if (punchAngles.x != 0.0f || punchAngles.y != 0)
 		{
@@ -56,5 +57,5 @@ bool __fastcall hkCreateMove(void *, void *, float, CUserCmd *cmd)
 
 	bhop(cmd, local);
 	rcs(cmd, local);
-	return 1;
+	return 0;
 }
