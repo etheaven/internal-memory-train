@@ -24,6 +24,5 @@ void __fastcall hkPaintTraverse(void *pPanel, void *unk, unsigned int vguiPanel,
     else if (panelId == vguiPanel)
     {
         g_pDrawManager->TextW(true, UI_Font, 100, 50, Color(255, 0, 0, 255), L"test abcaa1564891");
-        g_pDrawManager->boxESP(200, 200, 20, 128, 128, 0);
     }
 }
