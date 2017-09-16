@@ -11,7 +11,7 @@
 
 #include "vector.h"
 
-//#define __TOUCH_TIER_0__ false
+#define __TOUCH_TIER_0__ false
 
 typedef void(__cdecl *MsgFn)(const char *, ...);
 typedef void(__cdecl *WarningFn)(const char *, ...);
