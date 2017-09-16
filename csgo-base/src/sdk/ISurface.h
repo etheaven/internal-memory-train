@@ -1,6 +1,8 @@
 #pragma once
 #include "../src_headers.h"
+#include "Additional/Color.h"
 using ulong = unsigned long;
+using uc = unsigned char;
 class ISurface
 {
   public:
@@ -8,6 +10,12 @@ class ISurface
     {
         typedef void(__thiscall * OrigFn)(void *, Color);
         util::getvfunc<OrigFn>(this, 14)(this, col);
+    }
+
+    void DrawSetColor(uc r, uc g, uc b, uc a = 0)
+    {
+        typedef void(__thiscall * OrigFn)(void *, uc, uc, uc, uc);
+        util::getvfunc<OrigFn>(this, 14)(this, r,g,b,a);
     }
 
     void DrawFilledRect(int x0, int y0, int x1, int y1)

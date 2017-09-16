@@ -157,3 +157,23 @@ enum ClientFrameStage_t
 #define FCVAR_SERVER_CAN_EXECUTE (1 << 28)
 #define FCVAR_SERVER_CANNOT_QUERY (1 << 29)
 #define FCVAR_CLIENTCMD_CAN_EXECUTE (1 << 30)
+
+enum FontDrawType_t
+{
+    FONTFLAG_NONE = 0,
+    FONT_DRAW_DEFAULT = 0,
+    FONTFLAG_ITALIC = 0x001,
+    FONTFLAG_UNDERLINE = 0x002,
+    FONTFLAG_STRIKEOUT = 0x004,
+    FONTFLAG_SYMBOL = 0x008,
+    FONTFLAG_ANTIALIAS = 0x010,
+    FONTFLAG_GAUSSIANBLUR = 0x020,
+    FONTFLAG_ROTARY = 0x040,
+    FONTFLAG_DROPSHADOW = 0x080,
+    FONTFLAG_ADDITIVE = 0x100,
+    FONTFLAG_OUTLINE = 0x200,
+    FONTFLAG_CUSTOM = 0x400, // custom generated font - never fall back to asian compatibility mode
+    FONTFLAG_BITMAP = 0x800, // compiled bitmap font - no fallbacks
+};
+
+using FontDrawType = FontDrawType_t;

@@ -1,5 +1,5 @@
 #pragma once
-#include "util/interface_utils.h"
+#include "../src_headers.h"
 
 class IPanel
 {
@@ -12,7 +12,7 @@ class IPanel
     const char *GetName(unsigned int vguiPanel)
     {
         typedef const char *(__thiscall * tGetName)(void *, unsigned int);
-        return util::getvfunc<tGetName>(this, 37)(this, vguiPanel);
+        return util::getvfunc<tGetName>(this, 36)(this, vguiPanel);
     }
 };
 

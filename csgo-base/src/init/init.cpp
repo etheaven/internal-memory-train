@@ -16,6 +16,7 @@ CGameMovement *g_pGamemovement = nullptr;
 
 PaintTraverseFn oPaintTraverse = nullptr;
 IPanel *g_pPanel = nullptr;
+ISurface *g_pSurface = nullptr;
 
 #ifndef __TOUCH_TIER_0__
 MsgFn g_Msg = nullptr;
@@ -61,11 +62,14 @@ bool init::setup()
     printf("global: 0x%p\n", (void *)g_pGlobals);
     g_pPanel = (IPanel *)util::EasyInterface("vgui2.dll", "VGUI_Panel0");
     printf("panel: 0x%p\n", (void *)g_pPanel);
+    g_pSurface = (ISurface *)util::EasyInterface("vguimatsurface.dll", "VGUI_Surface0");
+    printf("surface: 0x%p\n", (void *)g_pSurface);
 
     VMTClientMode.Initialise((DWORD *)g_pClientMode);
     VMTClientMode.HookMethod((DWORD)hkCreateMove, 24);
     if (!VMTClientMode.getInit())
         return false;
+    
     VMTPaintTraverse.Initialise((DWORD *)g_pPanel);
     oPaintTraverse = (PaintTraverseFn)VMTPaintTraverse.HookMethod((DWORD)&hkPaintTraverse, 41);
     if (!VMTPaintTraverse.getInit())
