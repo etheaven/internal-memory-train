@@ -62,7 +62,7 @@ class CEntity
         void *renderable = reinterpret_cast<void *>(reinterpret_cast<DWORD>(this) + 0x4);
         return util::getvfunc<bool(__thiscall *)(void *, matrix3x4_t *, int, int, float)>(renderable, 14)(renderable, bonematrix, maxbones, mask, curtime);
     }
-    inline bool GetBonePosition(CBaseEntity *pPlayer, Vector &Hitbox, int Bone)
+    inline bool GetBonePosition(CEntity *pPlayer, Vector &Hitbox, int Bone)
     {
         matrix3x4_t MatrixArray[128];
 
