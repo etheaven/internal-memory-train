@@ -45,9 +45,14 @@ class CEntity
     {
         return util::getvfunc<void *(__thiscall *)(void *)>((this + 0x4), 8)((this + 0x4));
     }
-    inline Vector &getabsorigin()
+    /*  inline Vector &getabsorigin()
     {
         return util::getvfunc<Vector &(__thiscall *)(void *)>(this, 10)(this);
+    } */
+    inline Vector getabsorigin()
+    {
+        typedef Vector(__thiscall * GetAbsOriginFn)(void *);
+        return util::getvfunc<GetAbsOriginFn>(this, 10)(this);
     }
     inline Vector getvecviewoffset()
     {

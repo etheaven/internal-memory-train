@@ -39,7 +39,6 @@ void SetupConsole()
 bool init::setup()
 {
     SetupConsole();
-//
 #ifndef __TOUCH_TIER_0__
     g_Msg = util::getexport<MsgFn>("tier0.dll", "Msg");
     g_Warning = util::getexport<WarningFn>("tier0.dll", "Warning");

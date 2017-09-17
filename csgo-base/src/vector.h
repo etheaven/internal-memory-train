@@ -1,5 +1,6 @@
 #pragma once
-
+#include <cmath>
+typedef float vec_t;
 class Vector
 {
   public:
@@ -27,9 +28,21 @@ class Vector
 
     bool operator!=(const float &);
     void clamp();
+    vec_t Length2D() const;
+    vec_t Length2DSqr() const;
 
     float x, y, z;
 };
+
+inline vec_t Vector::Length2D() const
+{
+    return (vec_t)::sqrtf(this->x * this->x + this->y * this->y);
+}
+
+inline vec_t Vector::Length2DSqr() const
+{
+    return (this->x * this->x + this->y * this->y);
+}
 
 Vector::Vector()
 {

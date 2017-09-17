@@ -1,6 +1,7 @@
 #pragma once
 #include "src_headers.h"
 #include "constants/definitions.h"
+#include "math.h"
 
 #include <cstdio>
 
@@ -13,6 +14,7 @@ void rcs(CUserCmd *cmd, CEntity *local)
 	vec3f punchAngles = (*local->getaimpunchangle()) * 2.0f;
 	if (punchAngles != 0.f)
 	{
+		cmd->viewangles.clamp();
 		cmd->viewangles -= punchAngles;
 		cmd->viewangles.clamp();
 	}
@@ -48,6 +50,24 @@ void bhop(CUserCmd *cmd, CEntity *local)
 		bShouldFake = false;
 	}
 }
+void aimbot(CUserCmd *cmd, CEntity *local)
+{
+	for (int i = 0; i < g_pEngine->GetMaxClients(); ++i)
+	{
+		CEntity *pEntity = g_pEntityList->getcliententity(i);
+		if (!pEntity || pEntity == local || pEntity->isdormant() || pEntity->gethealth() < 1)
+			continue;
+		if (pEntity->getteam() == local->getteam())
+			continue;
+
+		Vector vecEntityPos = pEntity->GetBonePosition(6);
+		Vector vecLocalPos = local->geteyepos();
+
+		Vector engineAngles;
+		g_pEngine->GetViewAngles(engineAngles);
+
+	}
+}
 
 bool __fastcall hkCreateMove(void *, void *, float, CUserCmd *cmd)
 {
@@ -60,5 +80,6 @@ bool __fastcall hkCreateMove(void *, void *, float, CUserCmd *cmd)
 
 	bhop(cmd, local);
 	rcs(cmd, local);
+	aimbot(cmd, local);
 	return 0;
 }

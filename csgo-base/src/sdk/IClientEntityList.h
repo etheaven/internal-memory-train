@@ -14,6 +14,10 @@ class IClientEntityList
     {
         return util::getvfunc<CEntity *(__thiscall *)(void *, int)>(this, 4)(this, i);
     }
+    inline int gethighestentityindex(void) // DWORD
+    {
+        return util::getvfunc<int(__thiscall *)(void *)>(this, 6)(this);
+    }
 };
 
 extern IClientEntityList *g_pEntityList;
