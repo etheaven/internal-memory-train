@@ -1,6 +1,11 @@
 #pragma once
 #include "vector.h"
 #include "sdk.h"
+bool W2S(const Vector &v3D, Vector &v2D)
+{
+    return (g_pDebugOverlay->ScreenPosition(v3D, v2D) != 1);
+}
+
 static bool screen_transform(const Vector &in, Vector &out)
 {
     static auto &w2sMatrix = g_pEngine->WorldToScreenMatrix();

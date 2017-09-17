@@ -37,14 +37,14 @@ void __fastcall hkPaintTraverse(void *pPanel, void *unk, unsigned int vguiPanel,
                     continue;
                 if (pEntity == pLocalPlayer)
                     continue;
-                
+
                 const Vector bottom = pEntity->getabsorigin();
                 const Vector top = pEntity->GetBonePosition(6);
                 Vector screenBot, screenTop;
-                if (g_pDebugOverlay->ScreenPosition(bottom, screenBot) && g_pDebugOverlay->ScreenPosition(top, screenTop))
+                if (W2S(bottom, screenBot) && W2S(top, screenTop))
                 {
                     printf("succes: %.2f %.2f\n", screenTop.x, screenTop.y);
-                    g_pDrawManager->boxESP(screenTop.x, screenTop.y, 20, 255, 0, 0);
+                    //g_pDrawManager->boxESP(screenTop.x, screenTop.y, 20, 255, 0, 0);
                 }
             }
         }
