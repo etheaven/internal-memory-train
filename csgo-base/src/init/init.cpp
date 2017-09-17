@@ -17,6 +17,7 @@ CGameMovement *g_pGamemovement = nullptr;
 PaintTraverseFn oPaintTraverse = nullptr;
 IPanel *g_pPanel = nullptr;
 ISurface *g_pSurface = nullptr;
+IVDebugOverlay *g_pDebugOverlay = nullptr;
 
 #ifndef __TOUCH_TIER_0__
 MsgFn g_Msg = nullptr;
@@ -48,7 +49,7 @@ bool init::setup()
     g_pClient = (CClientBase *)util::EasyInterface("client.dll", "VClient0");
     printf("client: 0x%p\n", (void *)g_pClient);
     g_pEngine = (IVEngineClient *)util::EasyInterface("engine.dll", "VEngineClient0");
-    
+
     printf("engine: 0x%p\n", (void *)g_pEngine);
     g_pEntityList = (IClientEntityList *)util::EasyInterface("client.dll", "VClientEntityList0");
     printf("entityList: 0x%p\n", (void *)g_pEntityList);
@@ -65,12 +66,15 @@ bool init::setup()
     printf("panel: 0x%p\n", (void *)g_pPanel);
     g_pSurface = (ISurface *)util::EasyInterface("vguimatsurface.dll", "VGUI_Surface0");
     printf("surface: 0x%p\n", (void *)g_pSurface);
+    
+    g_pDebugOverlay = (IVDebugOverlay *)util::EasyInterface("engine.dll", "VDebugOverlay00");
+    printf("debugOverlay: 0x%p\n", (void *)g_pDebugOverlay);
 
     VMTClientMode.Initialise((DWORD *)g_pClientMode);
     VMTClientMode.HookMethod((DWORD)hkCreateMove, 24);
     if (!VMTClientMode.getInit())
         return false;
-    
+
     VMTPaintTraverse.Initialise((DWORD *)g_pPanel);
     oPaintTraverse = (PaintTraverseFn)VMTPaintTraverse.HookMethod((DWORD)&hkPaintTraverse, 41);
     if (!VMTPaintTraverse.getInit())

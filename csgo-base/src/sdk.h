@@ -11,6 +11,7 @@
 #include "sdk/IPanel.h"
 #include "sdk/ISurface.h"
 #include "sdk/Additional/Color.h"
+#include "sdk/IVDebugOverlay.h"
 
 #include "vector.h"
 
