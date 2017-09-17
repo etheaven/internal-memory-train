@@ -25,6 +25,7 @@ class Vector
     Vector operator/(const Vector &) const;
     Vector operator/(const float &) const;
 
+    bool operator!=(const float &);
     void clamp();
 
     float x, y, z;
@@ -133,6 +134,11 @@ Vector Vector::operator/(const Vector &i) const
 Vector Vector::operator/(const float &i) const
 {
     return Vector(x / i, y / i, z / i);
+}
+
+bool Vector::operator!=(const float &x)
+{
+    return this->x != x || this->y != x;
 }
 
 void Vector::clamp()

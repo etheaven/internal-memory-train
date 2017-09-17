@@ -6,18 +6,21 @@
 
 void rcs(CUserCmd *cmd, CEntity *local)
 {
-	if (local->getactiveweapon() != 0xFFFFFFFF)
+	if (local->getshotsfired() <= 1)
+		return;
+	if (local->getactiveweapon() == 0xFFFFFFFF)
+		return;
+	vec3f punchAngles = (*local->getaimpunchangle()) * 2.0f;
+	if (punchAngles != 0.f)
 	{
-		vec3f punchAngles = (*local->getaimpunchangle()) * 2.0f;
-		if (punchAngles.x != 0.0f || punchAngles.y != 0)
-		{
-			cmd->viewangles -= punchAngles;
-			cmd->viewangles.clamp();
-		}
+		cmd->viewangles -= punchAngles;
+		cmd->viewangles.clamp();
 	}
 }
 void bhop(CUserCmd *cmd, CEntity *local)
 {
+	if (local->gethealth() < 1)
+		return;
 	static bool bLastJumped = false;
 	static bool bShouldFake = false;
 

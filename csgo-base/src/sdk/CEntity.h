@@ -84,4 +84,8 @@ class CEntity
 
         return true;
     }
+    inline int getshotsfired()
+    {
+        return util::readptr<int>(this, 0xA2A0);
+    }
 };
