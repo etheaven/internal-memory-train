@@ -43,8 +43,8 @@ void __fastcall hkPaintTraverse(void *pPanel, void *unk, unsigned int vguiPanel,
                 Vector screenBot, screenTop;
                 if (W2S(bottom, screenBot) && W2S(top, screenTop))
                 {
-                    printf("succes: %.2f %.2f\n", screenTop.x, screenTop.y);
-                    //g_pDrawManager->boxESP(screenTop.x, screenTop.y, 20, 255, 0, 0);
+                    
+                    g_pDrawManager->boxESP(screenTop.x, screenTop.y, 20, 255, 0, 0);
                 }
             }
         }
