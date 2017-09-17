@@ -57,16 +57,25 @@ class CEntity
     {
         return getabsorigin() + getvecviewoffset();
     }
+
     inline bool setupbones(matrix3x4_t *bonematrix, int maxbones, int mask, float curtime = 0)
     {
         void *renderable = reinterpret_cast<void *>(reinterpret_cast<DWORD>(this) + 0x4);
-        return util::getvfunc<bool(__thiscall *)(void *, matrix3x4_t *, int, int, float)>(renderable, 14)(renderable, bonematrix, maxbones, mask, curtime);
+        return util::getvfunc<bool(__thiscall *)(void *, matrix3x4_t *, int, int, float)>(renderable, 13)(renderable, bonematrix, maxbones, mask, curtime);
     }
-    inline bool GetBonePosition(CEntity *pPlayer, Vector &Hitbox, int Bone)
+    inline Vector GetBonePosition(int Bone)
+    {
+        matrix3x4_t MatrixArray[128];
+        if (!this->setupbones(MatrixArray, 128, 0x00000100, g_pEngine->GetLastTimeStamp()))
+            return Vector(0, 0, 0);
+        auto &HitboxMatrix = MatrixArray[Bone];
+        return Vector(HitboxMatrix[0][3], HitboxMatrix[1][3], HitboxMatrix[2][3]);
+    }
+    inline bool GetBonePosition(Vector &Hitbox, int Bone)
     {
         matrix3x4_t MatrixArray[128];
 
-        if (!pPlayer->setupbones(MatrixArray, 128, 0x00000100, g_pEngine->GetLastTimeStamp()))
+        if (!this->setupbones(MatrixArray, 128, 0x00000100, g_pEngine->GetLastTimeStamp()))
             return false;
 
         auto &HitboxMatrix = MatrixArray[Bone];

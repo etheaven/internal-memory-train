@@ -1,10 +1,11 @@
 #pragma once
 #include "src_headers.h"
 #include "constants/definitions.h"
+#include "math.h"
 
 #include <cstdio>
 
-DrawManager *g_g_pDrawManagerManager;
+DrawManager *g_pDrawManager;
 void __fastcall hkPaintTraverse(void *pPanel, void *unk, unsigned int vguiPanel, bool forceRepaint, bool allowForce)
 {
     oPaintTraverse(pPanel, vguiPanel, forceRepaint, allowForce);
@@ -23,13 +24,26 @@ void __fastcall hkPaintTraverse(void *pPanel, void *unk, unsigned int vguiPanel,
     }
     else if (panelId == vguiPanel)
     {
-        g_g_pDrawManagerManager->TextW(true, UI_Font, 100, 50, Color(255, 0, 0, 255), L"test abcaa1564891");
+        g_pDrawManager->TextW(true, UI_Font, 100, 50, Color(255, 0, 0, 255), L"test abcaa1564891");
         if (g_pEngine->IsConnected() && g_pEngine->IsInGame())
         {
+            int width, height;
+            g_pEngine->GetScreenSize(width, height);
             CEntity *pLocalPlayer = g_pEntityList->getcliententity(g_pEngine->GetLocalBase());
-            for (int i = 0; i < g_pEngine->GetHighestEntityIndex(); ++i)
+            for (int i = 0; i < g_pEngine->GetMaxClients(); ++i)
             {
-                CEntity *pEntity = (CEntity *)g_pEngine->getcliententity(i);
+                CEntity *pEntity = (CEntity *)g_pEntityList->getcliententity(i);
+                if (!pEntity)
+                    continue;
+                if (pEntity == pLocalPlayer)
+                    continue;
+                Vector bottom = pEntity->getabsorigin();
+                Vector top = pEntity->GetBonePosition(6);
+                Vector screenBot, screenTop;
+                if (WorldToScreen(bottom, screenBot) && WorldToScreen(top, screenTop))
+                {
+                    g_pDrawManager->boxESP(screenTop.x, screenTop.y, 20, 255, 0, 0);
+                }
             }
         }
     }

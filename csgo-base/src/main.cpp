@@ -17,6 +17,7 @@ extern "C" BOOL APIENTRY DllMain(
     case DLL_PROCESS_DETACH:
         if (!init::detach()){
             // log xd
+            
             return FALSE;
         }
         break;

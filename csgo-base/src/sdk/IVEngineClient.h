@@ -133,16 +133,11 @@ class IVEngineClient
 		typedef float(__thiscall * OriginalFn)(void *);
 		return util::getvfunc<OriginalFn>(this, 14)(this);
 	}
-
-	const matrix3x4_t &WorldToScreenMatrixx(void)
-	{
-		typedef const matrix3x4_t &(__thiscall * OriginalFn)(void *);
-		return util::getvfunc<OriginalFn>(this, 37)(this);
-	}
+	//virtual const VMatrix&        WorldToScreenMatrix() = 0;
 	const matrix3x4_t &WorldToScreenMatrix(void)
 	{
-		typedef const matrix3x4_t &(__thiscall * OriginalFn)(void *);
-		return util::getvfunc<OriginalFn>(this, 37)(this);
+		typedef const matrix3x4_t &(__thiscall * w2sFn)(void *);
+		return util::getvfunc<w2sFn>(this, 37)(this);
 	}
 	void ExecuteClientCmd(char const *szCommand)
 	{
