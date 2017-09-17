@@ -67,8 +67,8 @@ bool init::setup()
     g_pSurface = (ISurface *)util::EasyInterface("vguimatsurface.dll", "VGUI_Surface0");
     printf("surface: 0x%p\n", (void *)g_pSurface);
     
-    g_pDebugOverlay = (IVDebugOverlay *)util::EasyInterface("engine.dll", "VDebugOverlay00");
-    printf("debugOverlay: 0x%p\n", (void *)g_pDebugOverlay);
+    g_pDebugOverlay = (IVDebugOverlay *)util::EasyInterface("engine.dll", "VDebugOverlay004");
+    printf("debugoverlay: 0x%p\n", (void *)g_pDebugOverlay);
 
     VMTClientMode.Initialise((DWORD *)g_pClientMode);
     VMTClientMode.HookMethod((DWORD)hkCreateMove, 24);
