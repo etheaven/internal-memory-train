@@ -28,11 +28,38 @@ class Vector
 
     bool operator!=(const float &);
     void clamp();
+    inline float Length() const;
     vec_t Length2D() const;
     vec_t Length2DSqr() const;
+    vec_t DistTo(Vector &vOther) const;
+    void VectorSubtract(Vector a, Vector &b, Vector &c);
 
     float x, y, z;
 };
+
+inline void Vector::VectorSubtract(Vector a, Vector &b, Vector &c)
+{
+    c.x = a.x - b.x;
+    c.y = a.y - b.y;
+    c.z = a.z - b.z;
+}
+
+inline vec_t Vector::DistTo(Vector &vOther) const
+{
+    Vector delta;
+    VectorSubtract(*this, vOther, delta);
+    return delta.Length();
+}
+
+inline float VectorLength(const Vector &v)
+{
+    return (float)sqrt(v.x * v.x + v.y * v.y + v.z * v.z);
+}
+
+inline vec_t Vector::Length(void) const
+{
+	return VectorLength(*this);
+}
 
 inline vec_t Vector::Length2D() const
 {
