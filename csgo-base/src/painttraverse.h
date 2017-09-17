@@ -26,7 +26,11 @@ void __fastcall hkPaintTraverse(void *pPanel, void *unk, unsigned int vguiPanel,
         g_g_pDrawManagerManager->TextW(true, UI_Font, 100, 50, Color(255, 0, 0, 255), L"test abcaa1564891");
         if (g_pEngine->IsConnected() && g_pEngine->IsInGame())
         {
-            auto *pLocalPlayer = g_pEntityList->getcliententity(g_pEngine->GetLocalBase());
+            CEntity *pLocalPlayer = g_pEntityList->getcliententity(g_pEngine->GetLocalBase());
+            for (int i = 0; i < g_pEngine->GetHighestEntityIndex(); ++i)
+            {
+                CEntity *pEntity = (CEntity *)g_pEngine->getcliententity(i);
+            }
         }
     }
 }
