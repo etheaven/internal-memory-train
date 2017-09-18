@@ -78,6 +78,10 @@ bool IsBallisticWeapon(void *weapon)
 void aimbot(CUserCmd *cmd, CEntity *local)
 {
 	float bestFov = 4.f;
+	float minFov = bestFov;
+	int target = -1;
+	Vector vecLocalPos = local->geteyepos();
+	Vector vecEntityPos = local->GetBonePosition(6);
 	for (int i = 0; i < g_pEngine->GetMaxClients(); ++i)
 	{
 		CEntity *pEntity = g_pEntityList->getcliententity(i);
@@ -86,11 +90,11 @@ void aimbot(CUserCmd *cmd, CEntity *local)
 		if (pEntity->getteam() == local->getteam())
 			continue;
 
-		Vector vecEntityPos = pEntity->GetBonePosition(6);
-		Vector vecLocalPos = local->geteyepos();
+		vecEntityPos = pEntity->GetBonePosition(6);
+		vecLocalPos = local->geteyepos();
 
 		Vector engineAngles;
-		g_pEngine->GetViewAngles(engineAngles);
+		g_pEngine->GetViewAngles(engineAngles); //engineAngles += pLocal->localPlayerExclusive()->GetAimPunchAngle() * 2.f;
 		void *pWeapon = g_pEntityList->entfromhandle(local->getactiveweapon());
 		if (!pWeapon)
 			return;
@@ -98,8 +102,20 @@ void aimbot(CUserCmd *cmd, CEntity *local)
 			return;
 
 		float fov = FovToPlayer(vecLocalPos, engineAngles, pEntity, 6);
-		
+		if (fov < minFov)
+		{
+			minFov = fov;
+			target = i;
+		}
 	}
+	if (!target)
+		return;
+	CEntity *pTarget = g_pEntityList->getcliententity(target);
+	vecEntityPos = pTarget->GetBonePosition(6);
+	Vector result;
+	CalcAngle(vecLocalPos, vecEntityPos, result);
+	g_pEngine->SetViewAngles(result);
+	cmd->buttons |= IN_ATTACK;
 }
 
 bool __fastcall hkCreateMove(void *, void *, float, CUserCmd *cmd)
