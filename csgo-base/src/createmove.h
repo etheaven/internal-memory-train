@@ -50,6 +50,22 @@ void bhop(CUserCmd *cmd, CEntity *local)
 	}
 }
 
+float FovToPlayer(Vector ViewOffSet, Vector View, CEntity *pEntity, int bone)
+{
+	Vector out[9];
+	const float MaxDegrees = 180.0f;
+	Vector Angles = View;
+	Vector Origin = ViewOffSet;
+	Vector Delta(0, 0, 0);
+	Vector Forward(0, 0, 0);
+	AngleVectors(Angles, &Forward);
+	Vector AimPos = pEntity->GetBonePosition(bone);
+	Delta = AimPos - Origin;// VectorSubtract(AimPos, Origin, Delta);
+	Normalize(Delta, Delta);
+	float DotProduct = Forward.Dot(Delta);
+	return (acosf(DotProduct) * (MaxDegrees / PI));
+}
+
 bool IsBallisticWeapon(void *weapon)
 {
 	if (weapon == nullptr)
@@ -79,7 +95,6 @@ void aimbot(CUserCmd *cmd, CEntity *local)
 			return;
 		if (!IsBallisticWeapon(pWeapon))
 			return;
-		
 	}
 }
 
