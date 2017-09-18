@@ -267,7 +267,7 @@ void AngleVectors(const Vector &angles, Vector *forward)
     float sp, sy, cp, cy;
 
     sy = sin(DEG2RAD(angles.y));
-    cy = cos(DEG2RAD(angles[]));
+    cy = cos(DEG2RAD(angles.y));
 
     sp = sin(DEG2RAD(angles.x));
     cp = cos(DEG2RAD(angles.x));
