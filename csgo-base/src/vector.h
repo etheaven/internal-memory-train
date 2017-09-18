@@ -27,16 +27,20 @@ class Vector
     Vector operator/(const float &) const;
 
     bool operator!=(const float &);
-
     void clamp();
     inline float Length() const;
     vec_t Length2D() const;
     vec_t Length2DSqr() const;
     vec_t DistTo(Vector &vOther);
     void VectorSubtract(Vector const &a, Vector const &b, Vector &c);
-
+    float isqrt(float x);
     float x, y, z;
 };
+
+inline float isqrt(float x)
+{
+    return (sqrtf(x));
+}
 
 inline void Vector::VectorSubtract(Vector const &a, Vector const &b, Vector &c)
 {
@@ -54,7 +58,7 @@ inline vec_t Vector::DistTo(Vector &vOther)
 
 inline float VectorLength(const Vector &v)
 {
-    return (float)sqrt(v.x * v.x + v.y * v.y + v.z * v.z);
+    return (float)isqrt(v.x * v.x + v.y * v.y + v.z * v.z);
 }
 
 inline vec_t Vector::Length(void) const

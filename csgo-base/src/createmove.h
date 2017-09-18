@@ -52,6 +52,10 @@ void bhop(CUserCmd *cmd, CEntity *local)
 }
 void aimbot(CUserCmd *cmd, CEntity *local)
 {
+	float bestFov = 4.f;
+	float bestRealDistance = 4.f * 5.f;
+	float bestDistance = 999999999.0f;
+	int bestHp = 100;
 	for (int i = 0; i < g_pEngine->GetMaxClients(); ++i)
 	{
 		CEntity *pEntity = g_pEntityList->getcliententity(i);
@@ -65,7 +69,11 @@ void aimbot(CUserCmd *cmd, CEntity *local)
 
 		Vector engineAngles;
 		g_pEngine->GetViewAngles(engineAngles);
-
+		float distance = vecLocalPos.DistTo(vecEntityPos);
+		float fov = Math::GetFov(viewAngles, Math::CalcAngle(vecLocalPos, vecEntityPos));
+		float real_distance = GetRealDistanceFOV(distance, Math::CalcAngle(vecLocalPos, vecEntityPos), cmd);
+		int hp = pEntity->GetHealth();
+		
 	}
 }
 
