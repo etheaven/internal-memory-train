@@ -14,7 +14,6 @@ void __fastcall hkPaintTraverse(void *pPanel, void *unk, unsigned int vguiPanel,
     if (!panelId)
     {
         const auto panelName = g_pPanel->GetName(vguiPanel);
-        printf("panel: %s\n", panelName);
         if (!strcmp(panelName, "FocusOverlayPanel"))
         {
             panelId = vguiPanel;
@@ -49,7 +48,7 @@ void __fastcall hkPaintTraverse(void *pPanel, void *unk, unsigned int vguiPanel,
                 Vector screenBot, screenTop;
                 if (W2S(bottom, screenBot) && W2S(top, screenTop))
                 {
-                    g_pDrawManager->DrawRect(screenTop.x, screenTop.y, 8, 8, Color(0, 128, 128, 128));
+                    g_pDrawManager->DrawRect(screenTop.x, screenTop.y, 16, 16, Color(128, 128, 0, 128));
                 }
             }
         }
