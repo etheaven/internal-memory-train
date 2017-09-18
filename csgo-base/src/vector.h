@@ -42,17 +42,9 @@ inline float isqrt(float x)
     return (sqrtf(x));
 }
 
-inline void Vector::VectorSubtract(Vector const &a, Vector const &b, Vector &c)
-{
-    c.x = a.x - b.x;
-    c.y = a.y - b.y;
-    c.z = a.z - b.z;
-}
-
 inline vec_t Vector::DistTo(Vector &vOther)
 {
-    Vector delta;
-    VectorSubtract(*this, vOther, delta);
+    Vector delta = (*this - vOther); //VectorSubtract(*this, vOther, delta);
     return delta.Length();
 }
 
@@ -93,7 +85,6 @@ Vector &Vector::operator=(const Vector &i)
     x = i.x;
     y = i.y;
     z = i.z;
-
     return *this;
 }
 
@@ -102,7 +93,6 @@ Vector &Vector::operator+=(const Vector &i)
     x += i.x;
     y += i.y;
     z += i.z;
-
     return *this;
 }
 
@@ -111,7 +101,6 @@ Vector &Vector::operator-=(const Vector &i)
     x -= i.x;
     y -= i.y;
     z -= i.z;
-
     return *this;
 }
 
@@ -120,7 +109,6 @@ Vector &Vector::operator*=(const Vector &i)
     x *= i.x;
     y *= i.y;
     z *= i.z;
-
     return *this;
 }
 
@@ -129,7 +117,6 @@ Vector &Vector::operator*=(const float i)
     x *= i;
     y *= i;
     z *= i;
-
     return *this;
 }
 
@@ -138,7 +125,6 @@ Vector &Vector::operator/=(const Vector &i)
     x /= i.x;
     y /= i.y;
     z /= i.z;
-
     return *this;
 }
 
@@ -147,7 +133,6 @@ Vector &Vector::operator/=(const float i)
     x /= i;
     y /= i;
     z /= i;
-
     return *this;
 }
 

@@ -50,33 +50,6 @@ void bhop(CUserCmd *cmd, CEntity *local)
 		bShouldFake = false;
 	}
 }
-void aimbot(CUserCmd *cmd, CEntity *local)
-{
-	float bestFov = 4.f;
-	float bestRealDistance = 4.f * 5.f;
-	float bestDistance = 999999999.0f;
-	int bestHp = 100;
-	for (int i = 0; i < g_pEngine->GetMaxClients(); ++i)
-	{
-		CEntity *pEntity = g_pEntityList->getcliententity(i);
-		if (!pEntity || pEntity == local || pEntity->isdormant() || pEntity->gethealth() < 1)
-			continue;
-		if (pEntity->getteam() == local->getteam())
-			continue;
-
-		Vector vecEntityPos = pEntity->GetBonePosition(6);
-		Vector vecLocalPos = local->geteyepos();
-
-		Vector engineAngles;
-		g_pEngine->GetViewAngles(engineAngles);
-		float distance = vecLocalPos.DistTo(vecEntityPos);
-		float fov = Math::GetFov(viewAngles, Math::CalcAngle(vecLocalPos, vecEntityPos));
-		float real_distance = GetRealDistanceFOV(distance, Math::CalcAngle(vecLocalPos, vecEntityPos), cmd);
-		int hp = pEntity->GetHealth();
-		
-	}
-}
-
 bool __fastcall hkCreateMove(void *, void *, float, CUserCmd *cmd)
 {
 	if (cmd->command_number == 0) //if command_number is 0 then ExtraMouseSample is being called
@@ -85,9 +58,8 @@ bool __fastcall hkCreateMove(void *, void *, float, CUserCmd *cmd)
 	CEntity *local = g_pEntityList->getcliententity(g_pEngine->GetLocalPlayer());
 	if (!local)
 		return 0;
-
+		
 	bhop(cmd, local);
 	rcs(cmd, local);
-	aimbot(cmd, local);
 	return 0;
 }
