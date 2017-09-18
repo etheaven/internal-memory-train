@@ -60,7 +60,7 @@ float FovToPlayer(Vector ViewOffSet, Vector View, CEntity *pEntity, int bone)
 	Vector Forward(0, 0, 0);
 	AngleVectors(Angles, &Forward);
 	Vector AimPos = pEntity->GetBonePosition(bone);
-	Delta = AimPos - Origin;// VectorSubtract(AimPos, Origin, Delta);
+	Delta = AimPos - Origin; // VectorSubtract(AimPos, Origin, Delta);
 	Normalize(Delta, Delta);
 	float DotProduct = Forward.Dot(Delta);
 	return (acosf(DotProduct) * (MaxDegrees / PI));
@@ -74,6 +74,7 @@ bool IsBallisticWeapon(void *weapon)
 	int id = *(pWeapon + 0x2F88);
 	return !(id >= WEAPON_KNIFE_CT && id <= WEAPON_KNIFE_T || id == 0 || id >= WEAPON_KNIFE_BAYONET);
 }
+
 void aimbot(CUserCmd *cmd, CEntity *local)
 {
 	float bestFov = 4.f;
@@ -95,6 +96,9 @@ void aimbot(CUserCmd *cmd, CEntity *local)
 			return;
 		if (!IsBallisticWeapon(pWeapon))
 			return;
+
+		float fov = FovToPlayer(vecLocalPos, engineAngles, pEntity, 6);
+		
 	}
 }
 
