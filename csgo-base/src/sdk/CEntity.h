@@ -2,6 +2,151 @@
 #include <Windows.h>
 #include "../sdk.h"
 
+struct model_t;
+
+#define MAX_SHOOT_SOUNDS 16
+#define MAX_WEAPON_STRING 80
+#define MAX_WEAPON_PREFIX 16
+#define MAX_WEAPON_AMMO_NAME 32
+
+enum WeaponSound_t
+{
+    EMPTY,
+    SINGLE,
+    SINGLE_NPC,
+    WPN_DOUBLE, // Can't be "DOUBLE" because windows.h uses it.
+    DOUBLE_NPC,
+    BURST,
+    RELOAD,
+    RELOAD_NPC,
+    MELEE_MISS,
+    MELEE_HIT,
+    MELEE_HIT_WORLD,
+    SPECIAL1,
+    SPECIAL2,
+    SPECIAL3,
+    TAUNT,
+    FAST_RELOAD,
+
+    // Add new shoot sound types here
+    REVERSE_THE_NEW_SOUND,
+
+    NUM_SHOOT_SOUND_TYPES,
+};
+
+enum MoveType_t
+{
+    MOVETYPE_NONE = 0,
+    MOVETYPE_ISOMETRIC,
+    MOVETYPE_WALK,
+    MOVETYPE_STEP,
+    MOVETYPE_FLY,
+    MOVETYPE_FLYGRAVITY,
+    MOVETYPE_VPHYSICS,
+    MOVETYPE_PUSH,
+    MOVETYPE_NOCLIP,
+    MOVETYPE_LADDER,
+    MOVETYPE_OBSERVER,
+    MOVETYPE_CUSTOM,
+    MOVETYPE_LAST = MOVETYPE_CUSTOM,
+    MOVETYPE_MAX_BITS = 4
+};
+
+enum DataUpdateType_t
+{
+    DATA_UPDATE_CREATED = 0,
+    DATA_UPDATE_DATATABLE_CHANGED,
+};
+
+class ICollideable
+{
+  public:
+    virtual void pad0();
+    virtual const Vector &OBBMins() const;
+    virtual const Vector &OBBMaxs() const;
+};
+
+class IHandleEntity
+{
+  public:
+    virtual ~IHandleEntity(){};
+};
+
+class IClientUnknown : public IHandleEntity
+{
+};
+class IClientRenderable
+{
+  public:
+    virtual ~IClientRenderable(){};
+
+    model_t *GetModel()
+    {
+        typedef model_t *(*oGetModel)(void *);
+        return util::getvfunc<oGetModel>(this, 8)(this);
+    }
+
+    bool SetupBones(matrix3x4_t *pBoneMatrix, int nMaxBones, int nBoneMask, float flCurTime = 0)
+    {
+        typedef bool (*oSetupBones)(void *, matrix3x4_t *, int, int, float);
+        return util::getvfunc<oSetupBones>(this, 13)(this, pBoneMatrix, nMaxBones, nBoneMask, flCurTime);
+    }
+};
+
+class IClientNetworkable
+{
+  public:
+    virtual ~IClientNetworkable(){};
+
+    void Release()
+    {
+        typedef void (*oRelease)(void *);
+        return util::getvfunc<oRelease>(this, 1)(this);
+    }
+
+    /* 	ClientClass* GetClientClass()
+	{
+		typedef ClientClass* (* oGetClientClass)(void*);
+		return util::getvfunc<oGetClientClass>(this, 2)(this);
+	} */
+
+    void PreDataUpdate(DataUpdateType_t updateType)
+    {
+        typedef void (*oPreDataUpdate)(void *, DataUpdateType_t);
+        return util::getvfunc<oPreDataUpdate>(this, 6)(this, updateType);
+    }
+
+    bool GetDormant()
+    {
+        typedef bool (*oGetDormant)(void *);
+        return util::getvfunc<oGetDormant>(this, 9)(this);
+    }
+
+    int GetIndex()
+    {
+        typedef int (*oGetIndex)(void *);
+        return util::getvfunc<oGetIndex>(this, 10)(this);
+    }
+
+    void SetDestroyedOnRecreateEntities()
+    {
+        typedef void (*oSetDestroyedOnRecreateEntities)(void *);
+        return util::getvfunc<oSetDestroyedOnRecreateEntities>(this, 13)(this);
+    }
+};
+
+class IClientThinkable
+{
+  public:
+    virtual ~IClientThinkable(){};
+};
+
+class IClientEntity : public IClientUnknown, public IClientRenderable, public IClientNetworkable, public IClientThinkable
+{
+  public:
+    virtual ~IClientEntity(){};
+};
+
 class CEntity
 {
   public:
