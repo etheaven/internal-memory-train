@@ -7,15 +7,8 @@ class Vector
     Vector();
     Vector(float, float, float);
 
-    inline float& operator[]( int i )
-	{
-		return ( ( float* )this )[ i ];
-	}
-
-	inline float operator[]( int i ) const
-	{
-		return ( ( float* )this )[ i ];
-	}
+    float& operator[]( int i );
+	float operator[]( int i ) const;
 
     Vector &operator=(const Vector &);
 
@@ -37,18 +30,29 @@ class Vector
 
     bool operator!=(const float &);
     void clamp();
-    inline float Length() const;
+    inline float Length();
     vec_t Length2D() const;
     vec_t Length2DSqr() const;
     vec_t DistTo(Vector &vOther);
     vec_t DotProduct(const Vector &a, const Vector &b);
     vec_t Dot(const Vector &vOther);
+    float VectorLength(const Vector &v);
     //void VectorSubtract(Vector const &a, Vector const &b, Vector &c);
     float isqrt(float x);
     float x, y, z;
 };
 
-inline float isqrt(float x)
+float &Vector::operator[]( int i )
+{
+    return ( ( float* )this )[ i ];
+}
+
+float Vector::operator[]( int i ) const
+{
+    return ( ( float* )this )[ i ];
+}
+
+inline float Vector::isqrt(float x)
 {
     return (sqrtf(x));
 }
@@ -59,12 +63,12 @@ inline vec_t Vector::DistTo(Vector &vOther)
     return delta.Length();
 }
 
-inline float VectorLength(const Vector &v)
+inline float Vector::VectorLength(const Vector &v)
 {
     return (float)isqrt(v.x * v.x + v.y * v.y + v.z * v.z);
 }
 
-inline vec_t Vector::Length(void) const
+inline vec_t Vector::Length(void)
 {
     return VectorLength(*this);
 }
