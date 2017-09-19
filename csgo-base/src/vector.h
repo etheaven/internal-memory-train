@@ -1,5 +1,6 @@
 #pragma once
 #include <cmath>
+#include <algorithm>
 typedef float vec_t;
 class Vector
 {
@@ -7,8 +8,8 @@ class Vector
     Vector();
     Vector(float, float, float);
 
-    float& operator[]( int i );
-	float operator[]( int i ) const;
+    float &operator[](int i);
+    float operator[](int i) const;
 
     Vector &operator=(const Vector &);
 
@@ -30,6 +31,8 @@ class Vector
 
     bool operator!=(const float &);
     void clamp();
+    float NormalizeAngle(float flAng);
+    void ClampViewAngles();
     inline float Length();
     vec_t Length2D() const;
     vec_t Length2DSqr() const;
@@ -42,14 +45,34 @@ class Vector
     float x, y, z;
 };
 
-float &Vector::operator[]( int i )
+void Vector::clamp()
 {
-    return ( ( float* )this )[ i ];
+    ClampViewAngles();
 }
 
-float Vector::operator[]( int i ) const
+inline float Vector::NormalizeAngle(float flAng)
 {
-    return ( ( float* )this )[ i ];
+    if (!std::isfinite(flAng))
+    {
+        return 0.0f;
+    }
+    return std::remainder(flAng, 360.0f);
+}
+inline void Vector::ClampViewAngles()
+{
+    this->x = std::max(-89.0f, std::min(89.0f, NormalizeAngle(this->x)));
+    this->y = NormalizeAngle(this->y);
+    this->z = 0.0f;
+}
+
+float &Vector::operator[](int i)
+{
+    return ((float *)this)[i];
+}
+
+float Vector::operator[](int i) const
+{
+    return ((float *)this)[i];
 }
 
 inline float Vector::isqrt(float x)
@@ -185,7 +208,7 @@ bool Vector::operator!=(const float &x)
 {
     return this->x != x || this->y != x;
 }
-
+/* 
 void Vector::clamp()
 {
     if (this->x > 89.0f && this->x <= 180.0f)
@@ -208,7 +231,7 @@ void Vector::clamp()
     {
         this->y += 360.f;
     }
-}
+} */
 
 inline vec_t Vector::DotProduct(const Vector &a, const Vector &b)
 {

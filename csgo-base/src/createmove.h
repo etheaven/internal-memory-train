@@ -91,7 +91,6 @@ void aimbot(CUserCmd *cmd, CEntity *local)
 			target = i;
 		}
 	}
-	printf("target: %d\n", target);
 	if (target < 0)
 		return;
 	CEntity *pTarget = g_pEntityList->getcliententity(target);
