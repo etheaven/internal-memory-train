@@ -85,7 +85,9 @@ void aimbot(CUserCmd *cmd, CEntity *local)
 	for (int i = 0; i < g_pEngine->GetMaxClients(); ++i)
 	{
 		CEntity *pEntity = g_pEntityList->getcliententity(i);
-		if (!pEntity || pEntity == local || pEntity->isdormant() || pEntity->gethealth() < 1)
+		if (!pEntity)
+			continue;
+		if (pEntity == local || pEntity->isdormant() || pEntity->gethealth() < 1)
 			continue;
 		if (pEntity->getteam() == local->getteam())
 			continue;
@@ -100,7 +102,6 @@ void aimbot(CUserCmd *cmd, CEntity *local)
 			return;
 		if (!IsBallisticWeapon(pWeapon))
 			return;
-
 		float fov = FovToPlayer(vecLocalPos, engineAngles, pEntity, 6);
 		if (fov < minFov)
 		{
@@ -108,12 +109,13 @@ void aimbot(CUserCmd *cmd, CEntity *local)
 			target = i;
 		}
 	}
-	if (!target)
+	if (target <= 0)
 		return;
 	CEntity *pTarget = g_pEntityList->getcliententity(target);
 	vecEntityPos = pTarget->GetBonePosition(6);
 	Vector result;
 	CalcAngle(vecLocalPos, vecEntityPos, result);
+	result.clamp();
 	g_pEngine->SetViewAngles(result);
 	cmd->buttons |= IN_ATTACK;
 }

@@ -176,17 +176,18 @@ class C_BaseEntity : public IClientEntity
         return *(float *)((uintptr_t)this + offsets.DT_BaseEntity.m_flSimulationTime);
     } */
 
-    TeamID GetTeam()
+    int GetTeam()
     {
-        return *(TeamID *)((uintptr_t)this + offsets.DT_BaseEntity.m_iTeamNum);
+        return util::readptr<int>(this, 0xF0); //m_iTeamNum
     }
 
+/* 
     Vector GetVecOrigin()
     {
         return *(Vector *)((uintptr_t)this + offsets.DT_BaseEntity.m_vecOrigin);
     }
 
-/*     MoveType_t GetMoveType()
+    MoveType_t GetMoveType()
     {
         return *(MoveType_t *)((uintptr_t)this + offsets.DT_BaseEntity.m_MoveType);
     }
