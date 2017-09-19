@@ -7,7 +7,16 @@ class Vector
     Vector();
     Vector(float, float, float);
 
-    float &operator[](int);
+    inline float& operator[]( int i )
+	{
+		return ( ( float* )this )[ i ];
+	}
+
+	inline float operator[]( int i ) const
+	{
+		return ( ( float* )this )[ i ];
+	}
+
     Vector &operator=(const Vector &);
 
     Vector &operator+=(const Vector &);
