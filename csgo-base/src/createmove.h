@@ -3,11 +3,6 @@
 #include "constants/definitions.h"
 #include "math.h"
 
-#include <iostream>
-#include <fstream>
-
-static std::ofstream fout("dexdata.txt");
-
 void rcs(CUserCmd *cmd, CEntity *local)
 {
 	if (local->getshotsfired() <= 1)
