@@ -147,6 +147,62 @@ class IClientEntity : public IClientUnknown, public IClientRenderable, public IC
     virtual ~IClientEntity(){};
 };
 
+class C_BaseEntity : public IClientEntity
+{
+  public:
+/*     IClientNetworkable *GetNetworkable()
+    {
+        return (IClientNetworkable *)((uintptr_t)this + 0x10);
+    }
+
+    void SetModelIndex(int index)
+    {
+        typedef void (*oSetModelIndex)(void *, int);
+        return getvfunc<oSetModelIndex>(this, 111)(this, index);
+    }
+
+    int *GetModelIndex()
+    {
+        return (int *)((uintptr_t)this + offsets.DT_BaseViewModel.m_nModelIndex);
+    }
+
+    float GetAnimTime()
+    {
+        return *(float *)((uintptr_t)this + offsets.DT_BaseEntity.m_flAnimTime);
+    }
+
+    float GetSimulationTime()
+    {
+        return *(float *)((uintptr_t)this + offsets.DT_BaseEntity.m_flSimulationTime);
+    } */
+
+    TeamID GetTeam()
+    {
+        return *(TeamID *)((uintptr_t)this + offsets.DT_BaseEntity.m_iTeamNum);
+    }
+
+    Vector GetVecOrigin()
+    {
+        return *(Vector *)((uintptr_t)this + offsets.DT_BaseEntity.m_vecOrigin);
+    }
+
+/*     MoveType_t GetMoveType()
+    {
+        return *(MoveType_t *)((uintptr_t)this + offsets.DT_BaseEntity.m_MoveType);
+    }
+
+    ICollideable *GetCollideable()
+    {
+        return (ICollideable *)((uintptr_t)this + offsets.DT_BaseEntity.m_Collision);
+    }
+
+    bool *GetSpotted()
+    {
+        return (bool *)((uintptr_t)this + offsets.DT_BaseEntity.m_bSpotted);
+    } */
+};
+
+
 class CEntity
 {
   public:
