@@ -3,8 +3,6 @@
 #include "constants/definitions.h"
 #include "math.h"
 
-
-#include <Windows.h>
 #include <cstdio>
 
 void rcs(CUserCmd *cmd, CEntity *local)
@@ -17,7 +15,7 @@ void rcs(CUserCmd *cmd, CEntity *local)
 	if (punchAngles != 0.f)
 	{
 		cmd->viewangles -= punchAngles;
-		cmd->viewangles.clamp();	
+		cmd->viewangles.clamp();
 	}
 }
 void bhop(CUserCmd *cmd, CEntity *local)
@@ -189,15 +187,18 @@ int HpGetPlayer(CUserCmd *cmd, CEntity *local)
 
 void aimbot(CUserCmd *cmd, CEntity *local)
 {
-	int target = HpGetPlayer(cmd, local);
+	int target = FovGetPlayer(cmd, local);
 	if (target <= 0)
 		return;
 	CEntity *pTarget = g_pEntityList->getcliententity(target);
-	Vector vecLocalPos = local->geteyepos();
-	Vector vecEntityPos = pTarget->GetBonePosition(6);
-	Vector result = CalcAngle(vecLocalPos, vecEntityPos);
+	if (!pTarget)
+		return;
+	Vector vecEntityPos = local->geteyepos();
+	Vector vecLocalPos = pTarget->GetBonePosition(6);
+	Vector result = aCalcAngle(vecLocalPos, vecEntityPos);
 	result.clamp();
-	g_pEngine->SetViewAngles(result);
+	if (result != 0)
+		g_pEngine->SetViewAngles(result);
 }
 
 bool __fastcall hkCreateMove(void *, void *, float, CUserCmd *cmd)
