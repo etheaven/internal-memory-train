@@ -3,6 +3,8 @@
 #include "constants/definitions.h"
 #include "math.h"
 
+
+#include <Windows.h>
 #include <cstdio>
 
 void rcs(CUserCmd *cmd, CEntity *local)
@@ -15,7 +17,7 @@ void rcs(CUserCmd *cmd, CEntity *local)
 	if (punchAngles != 0.f)
 	{
 		cmd->viewangles -= punchAngles;
-		cmd->viewangles.clamp();
+		cmd->viewangles.clamp();	
 	}
 }
 void bhop(CUserCmd *cmd, CEntity *local)
@@ -128,8 +130,7 @@ float aGetFov(const Vector& viewAngle, const Vector& aimAngle)
 	return sqrtf(powf(delta.x, 2.0f) + powf(delta.y, 2.0f));
 }
 
-void aimbot(CUserCmd *cmd, CEntity *local)
-{
+int FovGetPlayer(CUserCmd *cmd, CEntity *local){
 	float bestFov = 30.f;
 	float minFov = bestFov;
 	int target = -1;
@@ -152,9 +153,9 @@ void aimbot(CUserCmd *cmd, CEntity *local)
 		g_pEngine->GetViewAngles(engineAngles); //engineAngles += pLocal->localPlayerExclusive()->GetAimPunchAngle() * 2.f;
 		void *pWeapon = g_pEntityList->entfromhandle(local->getactiveweapon());
 		if (!pWeapon)
-			return;
+			return target;
 		if (!IsBallisticWeapon(pWeapon))
-			return;
+			return target;
 		
 		float fov = aGetFov(engineAngles, aCalcAngle(vecLocalPos, vecEntityPos));//GetFov(engineAngles, vecLocalPos, vecEntityPos);
 		if (fov < minFov)
@@ -163,10 +164,37 @@ void aimbot(CUserCmd *cmd, CEntity *local)
 			target = i;
 		}
 	}
+	return target;
+}
+
+int HpGetPlayer(CUserCmd *cmd, CEntity *local)
+{
+	int target = -1;
+	int bestHp = 100;
+	for(int i = 0; i < g_pEngine->GetMaxClients(); ++i){
+		CEntity *pEntity = g_pEntityList->getcliententity(i);
+		if (!pEntity)
+			continue;
+		if (pEntity == local || pEntity->isdormant() || pEntity->gethealth() < 1)
+			continue;
+		if (pEntity->getteam() == local->getteam())
+			continue;
+		if (pEntity->gethealth() < bestHp){
+			bestHp = pEntity->gethealth();
+			target = i;
+		}
+	}
+	return target;
+}
+
+void aimbot(CUserCmd *cmd, CEntity *local)
+{
+	int target = HpGetPlayer(cmd, local);
 	if (target <= 0)
 		return;
 	CEntity *pTarget = g_pEntityList->getcliententity(target);
-	vecEntityPos = pTarget->GetBonePosition(6);
+	Vector vecLocalPos = local->geteyepos();
+	Vector vecEntityPos = pTarget->GetBonePosition(6);
 	Vector result = CalcAngle(vecLocalPos, vecEntityPos);
 	result.clamp();
 	g_pEngine->SetViewAngles(result);
