@@ -3,6 +3,8 @@
 #include "constants/definitions.h"
 #include "math.h"
 
+#include <cstdio>
+
 void rcs(CUserCmd *cmd, CEntity *local)
 {
 	if (local->getshotsfired() <= 1)
@@ -57,9 +59,78 @@ bool IsBallisticWeapon(void *weapon)
 	return !(id >= WEAPON_KNIFE_CT && id <= WEAPON_KNIFE_T || id == 0 || id >= WEAPON_KNIFE_BAYONET);
 }
 
+
+void VectorAngles(Vector forward, Vector &angles)
+{
+	float tmp, yaw, pitch;
+
+	if (forward[2] == 0 && forward[0] == 0)
+	{
+		yaw = 0;
+
+		if (forward[2] > 0)
+			pitch = 90;
+		else
+			pitch = 270;
+	}
+	else
+	{
+		yaw = (atan2(forward[1], forward[0]) * 180 / PI);
+
+		if (yaw < 0)
+			yaw += 360;
+
+		tmp = sqrt(forward[0] * forward[0] + forward[1] * forward[1]);
+		pitch = (atan2(-forward[2], tmp) * 180 / PI);
+
+		if (pitch < 0)
+			pitch += 360;
+	}
+
+	if (pitch > 180)
+		pitch -= 360;
+	else if (pitch < -180)
+		pitch += 360;
+
+	if (yaw > 180)
+		yaw -= 360;
+	else if (yaw < -180)
+		yaw += 360;
+
+	if (pitch > 89)
+		pitch = 89;
+	else if (pitch < -89)
+		pitch = -89;
+
+	if (yaw > 180)
+		yaw = 180;
+	else if (yaw < -180)
+		yaw = -180;
+
+	angles[0] = pitch;
+	angles[1] = yaw;
+	angles[2] = 0;
+}
+
+Vector aCalcAngle(Vector src, Vector dst)
+{
+	Vector angles;
+	auto delta = src - dst;
+	VectorAngles(delta, angles);
+	delta.clamp();
+	return angles;
+}
+
+float aGetFov(const Vector& viewAngle, const Vector& aimAngle)
+{
+	auto delta = aimAngle - viewAngle;
+	delta.clamp();
+	return sqrtf(powf(delta.x, 2.0f) + powf(delta.y, 2.0f));
+}
+
 void aimbot(CUserCmd *cmd, CEntity *local)
 {
-	float bestFov = 12.f;
+	float bestFov = 30.f;
 	float minFov = bestFov;
 	int target = -1;
 	Vector vecLocalPos = local->geteyepos();
@@ -84,21 +155,21 @@ void aimbot(CUserCmd *cmd, CEntity *local)
 			return;
 		if (!IsBallisticWeapon(pWeapon))
 			return;
-		float fov = GetFov(engineAngles, vecLocalPos, vecEntityPos);
+		
+		float fov = aGetFov(engineAngles, aCalcAngle(vecLocalPos, vecEntityPos));//GetFov(engineAngles, vecLocalPos, vecEntityPos);
 		if (fov < minFov)
 		{
 			minFov = fov;
 			target = i;
 		}
 	}
-	if (target < 0)
+	if (target <= 0)
 		return;
 	CEntity *pTarget = g_pEntityList->getcliententity(target);
 	vecEntityPos = pTarget->GetBonePosition(6);
 	Vector result = CalcAngle(vecLocalPos, vecEntityPos);
 	result.clamp();
 	g_pEngine->SetViewAngles(result);
-	cmd->buttons |= IN_ATTACK;
 }
 
 bool __fastcall hkCreateMove(void *, void *, float, CUserCmd *cmd)
@@ -111,7 +182,7 @@ bool __fastcall hkCreateMove(void *, void *, float, CUserCmd *cmd)
 		return 0;
 
 	bhop(cmd, local);
-	rcs(cmd, local);
-	//aimbot(cmd, local);
+	//rcs(cmd, local);
+	aimbot(cmd, local);
 	return 0;
 }

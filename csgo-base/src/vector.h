@@ -32,6 +32,7 @@ class Vector
     bool operator!=(const float &);
     void clamp();
     float NormalizeAngle(float flAng);
+    float NormalizeAngles();
     void ClampViewAngles();
     inline float Length();
     vec_t Length2D() const;
@@ -48,6 +49,13 @@ class Vector
 void Vector::clamp()
 {
     ClampViewAngles();
+}
+
+float Vector::NormalizeAngles()
+{
+    NormalizeAngle(this->x);
+    NormalizeAngle(this->y);
+    NormalizeAngle(this->z);
 }
 
 inline float Vector::NormalizeAngle(float flAng)

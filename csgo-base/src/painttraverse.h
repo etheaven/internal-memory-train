@@ -9,6 +9,7 @@ DrawManager *g_pDrawManager;
 void __fastcall hkPaintTraverse(void *pPanel, void *unk, unsigned int vguiPanel, bool forceRepaint, bool allowForce)
 {
     oPaintTraverse(pPanel, vguiPanel, forceRepaint, allowForce);
+    
     static auto panelId = 0;
     static DWORD UI_Font;
     if (!panelId)
@@ -23,11 +24,11 @@ void __fastcall hkPaintTraverse(void *pPanel, void *unk, unsigned int vguiPanel,
     }
     else if (panelId == vguiPanel)
     {
-        g_pDrawManager->TextW(true, UI_Font, 100, 50, Color(255, 0, 0, 255), L"test abcaa1564891");
+        //g_pDrawManager->TextW(true, UI_Font, 100, 50, Color(255, 0, 0, 255), L"test abcaa1564891");
+        int width, height;
+        g_pEngine->GetScreenSize(width, height);
         if (g_pEngine->IsConnected() && g_pEngine->IsInGame())
         {
-            int width, height;
-            g_pEngine->GetScreenSize(width, height);
             CEntity *pLocalPlayer = g_pEntityList->getcliententity(g_pEngine->GetLocalBase());
             for (int i = 0; i < g_pEngine->GetMaxClients(); ++i)
             {
@@ -48,7 +49,7 @@ void __fastcall hkPaintTraverse(void *pPanel, void *unk, unsigned int vguiPanel,
                 Vector screenBot, screenTop;
                 if (W2S(bottom, screenBot) && W2S(top, screenTop))
                 {
-                    g_pDrawManager->DrawRect(screenTop.x, screenTop.y, 16, 16, Color(128, 128, 0, 128));
+                    g_pDrawManager->DrawRect(screenTop.x, screenTop.y, 16, 16, Color(255, 0, 0, 200));
                 }
             }
         }
