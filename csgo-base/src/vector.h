@@ -41,6 +41,15 @@ class Vector
     float VectorLength(const Vector &v); */
     //void VectorSubtract(Vector const &a, Vector const &b, Vector &c);
     float isqrt(float x);
+    vec_t DotProduct(const Vector& a, const Vector& b)
+    {
+        return (a.x * b.x + a.y * b.y + a.z * b.z);
+    }
+    
+    inline vec_t Dot(const Vector& vOther)
+    {
+        return DotProduct(*this, vOther);
+    }
     float x, y, z;
 };
 

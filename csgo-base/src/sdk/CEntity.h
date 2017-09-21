@@ -227,6 +227,9 @@ class CEntity
     {
         return util::makeptr<Vector>(this, 0x301C); //m_Local + m_aimPunchAngle
     }
+    inline Vector getviewoffset(){
+        return util::readptr<Vector>(this, 0x104); // m_vecViewOffset 
+    }
     inline Vector *getviewpunchangle()
     {
         return util::makeptr<Vector>(this, 0x3010); //m_Local + m_viewPunchAngle

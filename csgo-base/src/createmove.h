@@ -67,6 +67,8 @@ void aimbot(CUserCmd *cmd, CEntity *local)
 	int target = -1;
 	Vector vecLocalPos = local->geteyepos();
 	Vector vecEntityPos = local->GetBonePosition(6);
+	Vector ViewOffset = local->getabsorigin() + local->getviewoffset();
+	Vector View; g_pEngine->GetViewAngles(View);
 	for (int i = 0; i < g_pEngine->GetMaxClients(); ++i)
 	{
 		CEntity *pEntity = g_pEntityList->getcliententity(i);
@@ -89,6 +91,7 @@ void aimbot(CUserCmd *cmd, CEntity *local)
 			return;
 
 		//float fov = GetFov(vecLocalPos, CalcAngle(vecLocalPos, vecEntityPos));//GetFov(engineAngles, vecLocalPos, vecEntityPos);
+		float fov = FovToPlayer(ViewOffset, View, pEntity);//FovToPlayer(ViewOffset, View, pEntity);
 		if (fov < minFov)
 		{
 			minFov = fov;

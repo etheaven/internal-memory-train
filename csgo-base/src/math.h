@@ -59,3 +59,54 @@ Vector CalcAngle( Vector const &Source, Vector const &Destination )
 	if (delta.x >= 0.0) { angles.y += 180.0f; }
 	return angles;
 }
+
+void AngleVectors(const Vector &angles, Vector *forward)
+{
+	float	sp, sy, cp, cy;
+
+	sy = sin(DEG2RAD(angles[1]));
+	cy = cos(DEG2RAD(angles[1]));
+
+	sp = sin(DEG2RAD(angles[0]));
+	cp = cos(DEG2RAD(angles[0]));
+
+	forward->x = cp*cy;
+	forward->y = cp*sy;
+	forward->z = -sp;
+}
+
+void VectorSubtract(const Vector& a, const Vector& b, Vector& c)
+{
+	c.x = a.x - b.x;
+	c.y = a.y - b.y;
+	c.z = a.z - b.z;
+}
+
+void ClampAngles(Vector &angles)
+{
+	if (angles.x > 89.f)
+		angles.x -= 360.f;
+	else if (angles.x < -89.f)
+		angles.x += 360.f;
+	if (angles.y > 180.f)
+		angles.y -= 360.f;
+	else if (angles.y < -180.f)
+		angles.y += 360.f;
+ 
+	angles.z = 0;
+}
+
+float FovToPlayer(Vector ViewOffSet, Vector View, CEntity* pEntity)
+{
+	const float MaxDegrees = 180.0f;
+	Vector Angles = View;
+	Vector Origin = ViewOffSet;
+	Vector Delta(0, 0, 0);
+	Vector Forward(0, 0, 0);
+	AngleVectors(Angles, &Forward);
+	Vector AimPos = pEntity->GetBonePosition(6);
+	VectorSubtract(AimPos, Origin, Delta);
+	Delta.clamp();
+	float DotProduct = Forward.Dot(Delta);
+	return (acos(DotProduct) * (MaxDegrees / PI));
+}
