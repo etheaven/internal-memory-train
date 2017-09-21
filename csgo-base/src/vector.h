@@ -32,13 +32,13 @@ class Vector
     bool operator!=(const float &);
     void clamp();
     void NormalizeAngles();
-    inline float Length();
+    /* inline float Length();
     vec_t Length2D() const;
     vec_t Length2DSqr() const;
     vec_t DistTo(Vector &vOther);
     vec_t DotProduct(const Vector &a, const Vector &b);
     vec_t Dot(const Vector &vOther);
-    float VectorLength(const Vector &v);
+    float VectorLength(const Vector &v); */
     //void VectorSubtract(Vector const &a, Vector const &b, Vector &c);
     float isqrt(float x);
     float x, y, z;
@@ -46,7 +46,27 @@ class Vector
 
 void Vector::clamp()
 {
-    NormalizeAngles();
+    if (this->x > 89.0f && this->x <= 180.0f)
+    {
+        this->x = 89.0f;
+    }
+    while (this->x > 180.f)
+    {
+        this->x -= 360.f;
+    }
+    while (this->x < -89.0f)
+    {
+        this->x = -89.0f;
+    }
+    while (this->y > 180.f)
+    {
+        this->y -= 360.f;
+    }
+    while (this->y < -180.f)
+    {
+        this->y += 360.f;
+    }
+    this->z = 0.0f;
 }
 
 void Vector::NormalizeAngles()
@@ -75,7 +95,7 @@ float Vector::operator[](int i) const
 {
     return ((float *)this)[i];
 }
-
+/* 
 inline float Vector::isqrt(float x)
 {
     return (sqrtf(x));
@@ -105,7 +125,7 @@ inline vec_t Vector::Length2D() const
 inline vec_t Vector::Length2DSqr() const
 {
     return (this->x * this->x + this->y * this->y);
-}
+} */
 
 Vector::Vector()
 {
@@ -209,31 +229,13 @@ bool Vector::operator!=(const float &x)
 {
     return this->x != x || this->y != x;
 }
-/* 
-void Vector::clamp()
-{
-    if (this->x > 89.0f && this->x <= 180.0f)
-    {
-        this->x = 89.0f;
-    }
-    while (this->x > 180.f)
-    {
-        this->x -= 360.f;
-    }
-    while (this->x < -89.0f)
-    {
-        this->x = -89.0f;
-    }
-    while (this->y > 180.f)
-    {
-        this->y -= 360.f;
-    }
-    while (this->y < -180.f)
-    {
-        this->y += 360.f;
-    }
-} */
 
+#define PI 3.14159265358979323846f
+#define DEG2RAD(x) ((float)(x) * (float)((float)(PI) / 180.0f))
+#define RAD2DEG(x) ((float)(x) * (float)(180.0f / (float)(PI)))
+#define RADPI 57.295779513082f
+#define rad(a) a * 0.01745329251
+/* 
 inline vec_t Vector::DotProduct(const Vector &a, const Vector &b)
 {
     return (a.x * b.x + a.y * b.y + a.z * b.z);
@@ -244,11 +246,6 @@ inline vec_t Vector::Dot(const Vector &vOther)
     return DotProduct(*this, vOther);
 }
 
-#define PI 3.14159265358979323846f
-#define DEG2RAD(x) ((float)(x) * (float)((float)(PI) / 180.0f))
-#define RAD2DEG(x) ((float)(x) * (float)(180.0f / (float)(PI)))
-#define RADPI 57.295779513082f
-#define rad(a) a * 0.01745329251
 
 void SinCos(float a, float *s, float *c)
 {
@@ -312,6 +309,6 @@ void AngleVectors(const Vector &angles, Vector *forward)
     forward->x = cp * cy;
     forward->y = cp * sy;
     forward->z = -sp;
-}
+} */
 
 using vec3f = Vector;

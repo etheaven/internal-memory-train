@@ -80,15 +80,15 @@ void aimbot(CUserCmd *cmd, CEntity *local)
 		vecEntityPos = pEntity->GetBonePosition(6);
 		vecLocalPos = local->geteyepos();
 
-		Vector engineAngles;
-		g_pEngine->GetViewAngles(engineAngles); //engineAngles += pLocal->localPlayerExclusive()->GetAimPunchAngle() * 2.f;
+		//Vector engineAngles;
+		//g_pEngine->GetViewAngles(engineAngles); //engineAngles += pLocal->localPlayerExclusive()->GetAimPunchAngle() * 2.f;
 		void *pWeapon = g_pEntityList->entfromhandle(local->getactiveweapon());
 		if (!pWeapon)
 			return;
 		if (!IsBallisticWeapon(pWeapon))
 			return;
 
-		float fov = GetFov(engineAngles, CalcAngle(vecLocalPos, vecEntityPos));//GetFov(engineAngles, vecLocalPos, vecEntityPos);
+		//float fov = GetFov(vecLocalPos, CalcAngle(vecLocalPos, vecEntityPos));//GetFov(engineAngles, vecLocalPos, vecEntityPos);
 		if (fov < minFov)
 		{
 			minFov = fov;

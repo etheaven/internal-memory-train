@@ -45,7 +45,6 @@ float GetFov(const Vector &viewAngle, const Vector &aimAngle)
 
 Vector CalcAngle( Vector const &Source, Vector const &Destination )
 {
-	//#pragma warning(disable : 4244)
 	Vector angles;
 	Vector delta;
 	delta.x = (Source.x - Destination.x);
