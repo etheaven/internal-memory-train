@@ -35,6 +35,14 @@ float Dot( const Vector &v1, Vector &v2 )
 	return v1[ 0 ] * v2[ 0 ] + v1[ 1 ] * v2[ 1 ] + v1[ 2 ] * v2[ 2 ];
 }
 
+
+float GetFov(const Vector &viewAngle, const Vector &aimAngle)
+{
+	auto delta = viewAngle - aimAngle;
+	delta.clamp();
+	return sqrtf(powf(delta.x, 2.0f) + powf(delta.y, 2.0f));
+}
+
 Vector CalcAngle( Vector const &Source, Vector const &Destination )
 {
 	//#pragma warning(disable : 4244)

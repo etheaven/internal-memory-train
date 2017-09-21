@@ -59,35 +59,6 @@ bool IsBallisticWeapon(void *weapon)
 	return !(id >= WEAPON_KNIFE_CT && id <= WEAPON_KNIFE_T || id == 0 || id >= WEAPON_KNIFE_BAYONET);
 }
 
-void cCalcAngle(const Vector &src, const Vector &dst, Vector &angles)
-{
-	double delta[3] = { (src[0] - dst[0]), (src[1] - dst[1]), (src[2] - dst[2]) };
-	double hyp = sqrt(delta[0] * delta[0] + delta[1] * delta[1]);
-	angles[0] = atan(delta[2] / hyp) * 180.0 / M_PI;
-	angles[1] = (float)(atanf(delta[1] / delta[0]) * 57.295779513082f);
-	angles[2] = 0.0f;
- 
-	if (delta[0] >= 0.0)
-	{
-		angles[1] += 180.0f;
-	}
-}
-
-Vector aCalcAngle(Vector src, Vector dst)
-{
-	Vector angles;
-	auto delta = src - dst;
-	VectorAngles(delta, angles);
-	delta.clamp();
-	return angles;
-}
-
-float aGetFov(const Vector &viewAngle, const Vector &aimAngle)
-{
-	auto delta = viewAngle - aimAngle;
-	delta.clamp();
-	return sqrtf(powf(delta.x, 2.0f) + powf(delta.y, 2.0f));
-}
 
 void aimbot(CUserCmd *cmd, CEntity *local)
 {
@@ -117,7 +88,7 @@ void aimbot(CUserCmd *cmd, CEntity *local)
 		if (!IsBallisticWeapon(pWeapon))
 			return;
 
-		float fov = aGetFov(engineAngles, CalcAngle(vecLocalPos, vecEntityPos));//GetFov(engineAngles, vecLocalPos, vecEntityPos);
+		float fov = GetFov(engineAngles, CalcAngle(vecLocalPos, vecEntityPos));//GetFov(engineAngles, vecLocalPos, vecEntityPos);
 		if (fov < minFov)
 		{
 			minFov = fov;
