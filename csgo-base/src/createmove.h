@@ -59,58 +59,6 @@ bool IsBallisticWeapon(void *weapon)
 	return !(id >= WEAPON_KNIFE_CT && id <= WEAPON_KNIFE_T || id == 0 || id >= WEAPON_KNIFE_BAYONET);
 }
 
-void VectorAngles(Vector forward, Vector &angles)
-{
-	float tmp, yaw, pitch;
-
-	if (forward[2] == 0 && forward[0] == 0)
-	{
-		yaw = 0;
-
-		if (forward[2] > 0)
-			pitch = 90;
-		else
-			pitch = 270;
-	}
-	else
-	{
-		yaw = (atan2(forward[1], forward[0]) * 180 / PI);
-
-		if (yaw < 0)
-			yaw += 360;
-
-		tmp = sqrt(forward[0] * forward[0] + forward[1] * forward[1]);
-		pitch = (atan2(-forward[2], tmp) * 180 / PI);
-
-		if (pitch < 0)
-			pitch += 360;
-	}
-
-	if (pitch > 180)
-		pitch -= 360;
-	else if (pitch < -180)
-		pitch += 360;
-
-	if (yaw > 180)
-		yaw -= 360;
-	else if (yaw < -180)
-		yaw += 360;
-
-	if (pitch > 89)
-		pitch = 89;
-	else if (pitch < -89)
-		pitch = -89;
-
-	if (yaw > 180)
-		yaw = 180;
-	else if (yaw < -180)
-		yaw = -180;
-
-	angles[0] = pitch;
-	angles[1] = yaw;
-	angles[2] = 0;
-}
-
 void cCalcAngle(const Vector &src, const Vector &dst, Vector &angles)
 {
 	double delta[3] = { (src[0] - dst[0]), (src[1] - dst[1]), (src[2] - dst[2]) };
@@ -136,7 +84,7 @@ Vector aCalcAngle(Vector src, Vector dst)
 
 float aGetFov(const Vector &viewAngle, const Vector &aimAngle)
 {
-	auto delta = aimAngle - viewAngle;
+	auto delta = viewAngle - aimAngle;
 	delta.clamp();
 	return sqrtf(powf(delta.x, 2.0f) + powf(delta.y, 2.0f));
 }

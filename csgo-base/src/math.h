@@ -35,24 +35,7 @@ float Dot( const Vector &v1, Vector &v2 )
 	return v1[ 0 ] * v2[ 0 ] + v1[ 1 ] * v2[ 1 ] + v1[ 2 ] * v2[ 2 ];
 }
 
-
-float FovToPlayer(Vector ViewOffSet, Vector View, CEntity *pEntity, int bone)
-{
-	Vector out[9];
-	const float MaxDegrees = 180.0f;
-	Vector Angles = View;
-	Vector Origin = ViewOffSet;
-	Vector Delta(0, 0, 0);
-	Vector Forward(0, 0, 0);
-	AngleVectors(Angles, &Forward);
-	Vector AimPos = pEntity->GetBonePosition(bone);
-	Delta = AimPos - Origin; // VectorSubtract(AimPos, Origin, Delta);
-	Normalize(Delta, Delta);
-	//float DotProduct = Forward.Dot(Delta);
-	return sqrt(Delta.x*Delta.x + Delta.y*Delta.y + Delta.z*Delta.z);/* (acosf(DotProduct) * (MaxDegrees / PI)); */
-}
-
-Vector CalcAngle( Vector Source, Vector Destination )
+Vector CalcAngle( Vector const &Source, Vector const &Destination )
 {
 	//#pragma warning(disable : 4244)
 	Vector angles;
