@@ -5,7 +5,7 @@ bool W2S(const Vector &v3D, Vector &v2D)
 {
     return (g_pDebugOverlay->ScreenPosition(v3D, v2D) != 1);
 }
-
+/* 
 void CalcAngle(Vector src, Vector dst, Vector &angles)
 {
 	Vector delta = src - dst;
@@ -16,7 +16,7 @@ void CalcAngle(Vector src, Vector dst, Vector &angles)
 
 	if (delta.x >= 0.0)
 		angles.y += 180.0f;
-}
+} */
 
 #define M_RADPI 57.295779513082f
 #define M_PI 3.14159265358979323846
@@ -51,17 +51,4 @@ Vector CalcAngle( Vector const &Source, Vector const &Destination )
 	angles.z = 0.0f;
 	if (delta.x >= 0.0) { angles.y += 180.0f; }
 	return angles;
-}
-
-float GetFov( Vector angle, Vector src, Vector dst )
-{
-	Vector ang, aim;
-	ang = CalcAngle( src, dst);
-	MakeVector( angle, aim);
-	MakeVector( ang, ang);
-
-	float mag = sqrt( pow( aim.x, 2 ) + pow( aim.y, 2 ) + pow( aim.z, 2 ) );
-	float u_dot_v = Dot( aim, ang );
-
-	return RAD2DEG( acos( u_dot_v / ( pow( mag, 2 ) ) ) );
 }
