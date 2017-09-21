@@ -31,9 +31,7 @@ class Vector
 
     bool operator!=(const float &);
     void clamp();
-    float NormalizeAngle(float flAng);
-    float NormalizeAngles();
-    void ClampViewAngles();
+    void NormalizeAngles();
     inline float Length();
     vec_t Length2D() const;
     vec_t Length2DSqr() const;
@@ -48,28 +46,23 @@ class Vector
 
 void Vector::clamp()
 {
-    ClampViewAngles();
+    NormalizeAngles();
 }
 
-float Vector::NormalizeAngles()
+void Vector::NormalizeAngles()
 {
-    NormalizeAngle(this->x);
-    NormalizeAngle(this->y);
-    NormalizeAngle(this->z);
-}
+    if (this->x < -89.0f)
+        this->x = -89.0f;
 
-inline float Vector::NormalizeAngle(float flAng)
-{
-    if (!std::isfinite(flAng))
-    {
-        return 0.0f;
-    }
-    return std::remainder(flAng, 360.0f);
-}
-inline void Vector::ClampViewAngles()
-{
-    this->x = std::max(-89.0f, std::min(89.0f, NormalizeAngle(this->x)));
-    this->y = NormalizeAngle(this->y);
+    if (this->x > 89.0f)
+        this->x = 89.0f;
+
+    while (this->y < -180.0f)
+        this->y += 360.0f;
+
+    while (this->y > 180.0f)
+        this->y -= 360.0f;
+
     this->z = 0.0f;
 }
 

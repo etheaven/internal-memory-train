@@ -59,7 +59,6 @@ bool IsBallisticWeapon(void *weapon)
 	return !(id >= WEAPON_KNIFE_CT && id <= WEAPON_KNIFE_T || id == 0 || id >= WEAPON_KNIFE_BAYONET);
 }
 
-
 void VectorAngles(Vector forward, Vector &angles)
 {
 	float tmp, yaw, pitch;
@@ -112,6 +111,20 @@ void VectorAngles(Vector forward, Vector &angles)
 	angles[2] = 0;
 }
 
+void cCalcAngle(const Vector &src, const Vector &dst, Vector &angles)
+{
+	double delta[3] = { (src[0] - dst[0]), (src[1] - dst[1]), (src[2] - dst[2]) };
+	double hyp = sqrt(delta[0] * delta[0] + delta[1] * delta[1]);
+	angles[0] = atan(delta[2] / hyp) * 180.0 / M_PI;
+	angles[1] = (float)(atanf(delta[1] / delta[0]) * 57.295779513082f);
+	angles[2] = 0.0f;
+ 
+	if (delta[0] >= 0.0)
+	{
+		angles[1] += 180.0f;
+	}
+}
+
 Vector aCalcAngle(Vector src, Vector dst)
 {
 	Vector angles;
@@ -121,14 +134,15 @@ Vector aCalcAngle(Vector src, Vector dst)
 	return angles;
 }
 
-float aGetFov(const Vector& viewAngle, const Vector& aimAngle)
+float aGetFov(const Vector &viewAngle, const Vector &aimAngle)
 {
 	auto delta = aimAngle - viewAngle;
 	delta.clamp();
 	return sqrtf(powf(delta.x, 2.0f) + powf(delta.y, 2.0f));
 }
 
-int FovGetPlayer(CUserCmd *cmd, CEntity *local){
+void aimbot(CUserCmd *cmd, CEntity *local)
+{
 	float bestFov = 30.f;
 	float minFov = bestFov;
 	int target = -1;
@@ -151,54 +165,29 @@ int FovGetPlayer(CUserCmd *cmd, CEntity *local){
 		g_pEngine->GetViewAngles(engineAngles); //engineAngles += pLocal->localPlayerExclusive()->GetAimPunchAngle() * 2.f;
 		void *pWeapon = g_pEntityList->entfromhandle(local->getactiveweapon());
 		if (!pWeapon)
-			return target;
+			return;
 		if (!IsBallisticWeapon(pWeapon))
-			return target;
-		
-		float fov = aGetFov(engineAngles, aCalcAngle(vecLocalPos, vecEntityPos));//GetFov(engineAngles, vecLocalPos, vecEntityPos);
+			return;
+
+		float fov = aGetFov(engineAngles, CalcAngle(vecLocalPos, vecEntityPos));//GetFov(engineAngles, vecLocalPos, vecEntityPos);
 		if (fov < minFov)
 		{
 			minFov = fov;
 			target = i;
 		}
 	}
-	return target;
-}
-
-int HpGetPlayer(CUserCmd *cmd, CEntity *local)
-{
-	int target = -1;
-	int bestHp = 100;
-	for(int i = 0; i < g_pEngine->GetMaxClients(); ++i){
-		CEntity *pEntity = g_pEntityList->getcliententity(i);
-		if (!pEntity)
-			continue;
-		if (pEntity == local || pEntity->isdormant() || pEntity->gethealth() < 1)
-			continue;
-		if (pEntity->getteam() == local->getteam())
-			continue;
-		if (pEntity->gethealth() < bestHp){
-			bestHp = pEntity->gethealth();
-			target = i;
-		}
-	}
-	return target;
-}
-
-void aimbot(CUserCmd *cmd, CEntity *local)
-{
-	int target = FovGetPlayer(cmd, local);
 	if (target <= 0)
 		return;
 	CEntity *pTarget = g_pEntityList->getcliententity(target);
 	if (!pTarget)
 		return;
-	Vector vecEntityPos = local->geteyepos();
-	Vector vecLocalPos = pTarget->GetBonePosition(6);
-	Vector result = aCalcAngle(vecLocalPos, vecEntityPos);
-	result.clamp();
+	printf("Current fov: %.2f\n", minFov);
+	/* Vector vecEntityPos = local->geteyepos();
+	Vector vecLocalPos = pTarget->GetBonePosition(6); */
+	Vector result;
+/* 	cCalcAngle(vecLocalPos, vecEntityPos, result);
 	if (result != 0)
-		g_pEngine->SetViewAngles(result);
+		g_pEngine->SetViewAngles(result); */
 }
 
 bool __fastcall hkCreateMove(void *, void *, float, CUserCmd *cmd)
