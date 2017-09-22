@@ -103,10 +103,10 @@ void aimbot(CUserCmd *cmd, CEntity *local)
 	CEntity *pTarget = g_pEntityList->getcliententity(target);
 	if (!pTarget)
 		return;
-	printf("Current fov: %.2f\n", minFov);
+	//printf("Current fov: %.2f\n", minFov);
 	/* Vector vecEntityPos = local->geteyepos();
 	Vector vecLocalPos = pTarget->GetBonePosition(6); */
-	Vector result;
+	//Vector result;
 /* 	cCalcAngle(vecLocalPos, vecEntityPos, result);
 	if (result != 0)
 		g_pEngine->SetViewAngles(result); */
@@ -122,7 +122,7 @@ bool __fastcall hkCreateMove(void *, void *, float, CUserCmd *cmd)
 		return 0;
 
 	bhop(cmd, local);
-	//rcs(cmd, local);
-	aimbot(cmd, local);
+	rcs(cmd, local);
+	//aimbot(cmd, local);
 	return 0;
 }
