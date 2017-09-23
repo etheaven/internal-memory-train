@@ -106,9 +106,8 @@ bool TargetMeetsRequirements(CEntity *p, int bone = 8, bool vischeck = false)
 	if (p == local)
 		return !ok;
 	if (vischeck)
-	{
-		IsVisible(p, local, bone);
-	}
+		if (!IsVisible(p, local, bone))
+			return !ok;
 	return ok;
 }
 
@@ -124,7 +123,7 @@ int GetTargetCrosshair(CEntity *pLocal)
 	for (int i = 0; i < g_pEngine->GetMaxClients(); i++)
 	{
 		CEntity *pEntity = g_pEntityList->getcliententity(i);
-		if (TargetMeetsRequirements(pEntity))
+		if (TargetMeetsRequirements(pEntity, 8, true))
 		{
 			float fov = FovToPlayer(ViewOffset, View, pEntity);
 			if (fov < minFoV)
@@ -207,7 +206,7 @@ void aimbot(CUserCmd *cmd, CEntity *local)
 	if (TargetID >= 0)
 	{
 		pTarget = g_pEntityList->getcliententity(TargetID);
-		if (TargetMeetsRequirements(pTarget))
+		if (TargetMeetsRequirements(pTarget, 8, true))
 		{
 			Vector ViewOffset = pLocal->getorigin() + pLocal->getviewoffset();
 			Vector View;
@@ -239,7 +238,7 @@ void aimbot(CUserCmd *cmd, CEntity *local)
 			pTarget = nullptr;
 			return;
 		}
-		Vector AimPoint = pTarget->GetBonePosition(6);
+		Vector AimPoint = pTarget->GetBonePosition(8);
 		bool bSendPacket = false;
 		if (AimAtPoint(pLocal, AimPoint, cmd, bSendPacket))
 		{
