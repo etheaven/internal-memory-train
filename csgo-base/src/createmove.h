@@ -64,12 +64,38 @@ bool IsBallisticWeapon(void *weapon)
 	return !(id >= WEAPON_KNIFE_CT && id <= WEAPON_KNIFE_T || id == 0 || id >= WEAPON_KNIFE_BAYONET);
 }
 
-bool TargetMeetsRequirements(CEntity *p)
+void UTIL_TraceLine(const Vector& vecAbsStart, const Vector& vecAbsEnd, unsigned int mask, const CEntity *ignore, int collisionGroup, trace_t *ptr)
+{
+	typedef int(__fastcall* UTIL_TraceLine_t)(const Vector&, const Vector&, unsigned int, const CEntity*, int, trace_t*);
+	static UTIL_TraceLine_t TraceLine = (UTIL_TraceLine_t)Utilities::Memory::FindPattern("client.dll", (PBYTE)"\x55\x8B\xEC\x83\xE4\xF0\x83\xEC\x7C\x56\x52", "xxxxxxxxxxx");
+	TraceLine(vecAbsStart, vecAbsEnd, mask, ignore, collisionGroup, ptr);
+}
+
+
+bool IsVisible(CEntity *pLocal, CEntity *pEntity, int BoneID)
+{
+	if (BoneID < 0) return false;
+	static trace_t Trace;
+	auto entCopy = pEntity;
+	Vector start = pLocal->getorigin() + pLocal->getviewoffset();
+	Vector end = pEntity->GetBonePosition(BoneID);
+	UTIL_TraceLine(start, end, MASK_SOLID, pLocal, 0, &Trace);
+
+	if (Trace.m_pEnt == entCopy)
+		return true;
+	if (Trace.fraction == 1.0f)
+		return true;
+	return false;
+}
+
+bool TargetMeetsRequirements(CEntity *p, int bone = 8, bool vischeck = false)
 {
 	bool ok = true;
 	if (!p)
 		return !ok;
 	if (p->isdormant())
+		return !ok;
+	if (p->HasGunGameImmunity())
 		return !ok;
 	if (p->gethealth() < 1)
 		return !ok;
@@ -78,6 +104,10 @@ bool TargetMeetsRequirements(CEntity *p)
 		return !ok;
 	if (p == local)
 		return !ok;
+	if (vischeck)
+	{
+		IsVisible(p, local, bone);
+	}
 	return ok;
 }
 
@@ -96,7 +126,6 @@ int GetTargetCrosshair(CEntity *pLocal)
 		if (TargetMeetsRequirements(pEntity))
 		{
 			float fov = FovToPlayer(ViewOffset, View, pEntity);
-			// printf("gtc fov: %.2f\n", fov);
 			if (fov < minFoV)
 			{
 				minFoV = fov;
@@ -108,25 +137,16 @@ int GetTargetCrosshair(CEntity *pLocal)
 	return target;
 }
 
-void ayyCalcAngle(Vector src, Vector dst, Vector &angles)
-{
-	Vector delta = src - dst;
-	double hyp = delta.Length2D(); //delta.Length
-	angles.y = (atan(delta.y / delta.x) * 57.295779513082f);
-	angles.x = (atan(delta.z / hyp) * 57.295779513082f);
-	angles[2] = 0.00;
-
-	if (delta.x >= 0.0)
-		angles.y += 180.0f;
-}
-
 bool AimAtPoint(CEntity *pLocal, Vector point, CUserCmd *pCmd, bool &bSendPacket)
 {
+
+	// Get the full angles
 	if (point.Length() == 0)
 		return false;
 	static clock_t start_t = clock();
 	double timeSoFar = (double)(clock() - start_t) / CLOCKS_PER_SEC;
 	static Vector Inaccuracy;
+
 	if (timeSoFar > 0.2)
 	{
 		Inaccuracy.Init(-50 + rand() % 100, -50 + rand() % 100, -50 + rand() % 100);
@@ -192,9 +212,7 @@ void aimbot(CUserCmd *cmd, CEntity *local)
 			Vector View;
 			g_pEngine->GetViewAngles(View);
 			View += *local->getaimpunchangle() * 2.f;
-			// if somthing fails by calculations, its this
 			float nFoV = FovToPlayer(ViewOffset, View, pTarget);
-			// printf("ab fov: %.2f\n", nFoV);
 			if (nFoV < FoV)
 				FindNewTarget = false;
 		}
@@ -205,7 +223,6 @@ void aimbot(CUserCmd *cmd, CEntity *local)
 		TargetID = 0;
 		pTarget = nullptr;
 		TargetID = GetTargetCrosshair(local);
-		// printf("target=%d\n", TargetID);
 		if (TargetID >= 0)
 			pTarget = g_pEntityList->getcliententity(TargetID);
 		else
@@ -223,10 +240,8 @@ void aimbot(CUserCmd *cmd, CEntity *local)
 		}
 		Vector AimPoint = pTarget->GetBonePosition(6);
 		bool bSendPacket = false;
-		// printf("- we before aimatpoint:");
 		if (AimAtPoint(pLocal, AimPoint, cmd, bSendPacket))
 		{
-			// printf("aim at point success\n");
 			//IsLocked = true;
 			if (/* Menu::Window.LegitBotTab.AimbotAutoFire.GetState()  */ false && !(cmd->buttons & IN_ATTACK))
 			{

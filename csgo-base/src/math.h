@@ -51,19 +51,6 @@ void ayyCalcAngle(Vector src, Vector dst, Vector &angles)
 		angles.y += 180.0f;
 }
 
-
-void ayyCalcAngle(Vector src, Vector dst, Vector &angles)
-{
-	Vector delta = src - dst;
-	double hyp = delta.Length2D(); //delta.Length
-	angles.y = (atan(delta.y / delta.x) * 57.295779513082f);
-	angles.x = (atan(delta.z / hyp) * 57.295779513082f);
-	angles[2] = 0.00;
-
-	if (delta.x >= 0.0)
-		angles.y += 180.0f;
-}
-
 Vector CalcAngle( Vector const &Source, Vector const &Destination )
 {
 	Vector angles;

@@ -254,6 +254,10 @@ class CEntity
     {
         return util::getvfunc<Vector &(__thiscall *)(void *)>(this, 10)(this);
     } */
+    inline bool HasGunGameImmunity()
+    {
+        return util::readptr<bool>(this, 0x3890);
+    }
     inline Vector getorigin()
     { // feet origin
         return util::readptr<Vector>(this, 0x134);
