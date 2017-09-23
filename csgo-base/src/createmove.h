@@ -64,7 +64,7 @@ bool IsBallisticWeapon(void *weapon)
 	return !(id >= WEAPON_KNIFE_CT && id <= WEAPON_KNIFE_T || id == 0 || id >= WEAPON_KNIFE_BAYONET);
 }
 
-inline bool IsVisibleBone(CEntity *player,int bone)
+inline bool IsVisibleBone(CEntity *player, int bone)
 {
 	Ray_t ray;
 	trace_t tr;
@@ -72,23 +72,25 @@ inline bool IsVisibleBone(CEntity *player,int bone)
 	Vector eyes = local->geteyepos();
 	auto bonepos = player->GetBonePosition(bone);
 	ray.Init(eyes, bonepos);
- 
+
 	CTraceFilter filter;
-	filter.pSkip = (void*)local;
- 
+	filter.pSkip = (void *)local;
+
 	g_pEngineTrace->TraceRay(ray, MASK_SHOT, &filter, &tr);
- 
+
 	printf("tr.fraction %.2f\n", tr.fraction);
-	if(tr.m_pEnt == player)
+	if (tr.m_pEnt == player)
 		return true;
 	if (tr.allsolid || tr.startsolid)
 		return false;
-		//trace.hitgroup > 0
+	//trace.hitgroup > 0
 	return tr.fraction > 0.97f;
 }
-inline bool IsVisible(CEntity *player, int bone = 8){
-	for(int i = 0; i < 8; i+=2){
-		if(IsVisibleBone(player, i))
+inline bool IsVisible(CEntity *player, int bone = 8)
+{
+	for (int i = 0; i < 8; i += 2)
+	{
+		if (IsVisibleBone(player, i))
 			return true;
 	}
 	return false;
@@ -110,9 +112,9 @@ bool TargetMeetsRequirements(CEntity *p, int bone = 8, bool vischeck = false)
 		return !ok;
 	if (p == local)
 		return !ok;
-	if (vischeck)
-		if (!IsVisible(p))// if (!IsVisible(p,bone))/* 		if (!IsVisible(p, local, bone)) */
-			return !ok;
+	/* 	if (vischeck)
+		if (!IsVisible(p))
+			return !ok; */
 	return ok;
 }
 
@@ -167,7 +169,7 @@ bool AimAtPoint(CEntity *pLocal, Vector point, CUserCmd *pCmd, bool &bSendPacket
 	angles.NormalizeAngles();
 	if (angles[0] != angles[0] || angles[1] != angles[1])
 		return false;
-	
+
 	bool brcs = true;
 	if (brcs)
 	{
