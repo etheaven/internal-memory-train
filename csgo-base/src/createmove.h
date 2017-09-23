@@ -64,7 +64,7 @@ bool TargetMeetsRequirements(CEntity *p){
 	if (!p) return !ok;
 	if (p->isdormant()) return !ok;
 	if (p->gethealth() < 1) return !ok;
-	CEntity *local = g_pEntityList->getcliententity(g_pEngine->GetLocalPlayer())
+	CEntity *local = g_pEntityList->getcliententity(g_pEngine->GetLocalPlayer());
 	if (p->getteam() == local->getteam()) return !ok;
 	if (p == local) return !ok;
 	return ok;
@@ -80,7 +80,7 @@ int GetTargetCrosshair(CEntity *pLocal)
 	Vector View; Interfaces::Engine->GetViewAngles(View);
 	View += pLocal->localPlayerExclusive()->GetAimPunchAngle() * 2.f;
 
-	for (int i = 0; i < Interfaces::EntList->GetHighestEntityIndex(); i++)
+	for (int i = 0; i < g_pEngine->GetMaxClients(); i++)
 	{
 		CEntity *pEntity = g_pEntityList->getcliententity(i);
 		if (TargetMeetsRequirements(pEntity))

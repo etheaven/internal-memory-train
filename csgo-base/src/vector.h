@@ -59,7 +59,7 @@ class Vector
         return (vec_t)sqrt(v.x * v.x + v.y * v.y + v.z * v.z);
     }
     
-    inline vec_t Vector::Length(void)
+    inline vec_t Length(void)
     {
         return VectorLength(*this);
     }   
