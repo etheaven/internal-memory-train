@@ -77,6 +77,7 @@ inline bool IsVisibleBone(CEntity *player, int bone)
 
 	g_pEngineTrace->TraceRay(ray, MASK_SHOT, &filter, &tr);
 
+	//TODO: finish
 	printf("tr.fraction %.2f\n", tr.fraction);
 	if (tr.m_pEnt == player)
 		return true;
