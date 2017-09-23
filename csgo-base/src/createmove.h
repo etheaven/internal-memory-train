@@ -51,9 +51,9 @@ void bhop(CUserCmd *cmd, CEntity *local)
 	}
 }
 
-const float FoV = 10.0f;
+const float FoV = 5.0f;
 const float Inacc = 1.0f;
-const float Speed = 1.0f;
+const float Speed = 0.6f;
 
 bool IsBallisticWeapon(void *weapon)
 {
@@ -122,14 +122,11 @@ void ayyCalcAngle(Vector src, Vector dst, Vector &angles)
 
 bool AimAtPoint(CEntity *pLocal, Vector point, CUserCmd *pCmd, bool &bSendPacket)
 {
-
-	// Get the full angles
 	if (point.Length() == 0)
 		return false;
 	static clock_t start_t = clock();
 	double timeSoFar = (double)(clock() - start_t) / CLOCKS_PER_SEC;
 	static Vector Inaccuracy;
-
 	if (timeSoFar > 0.2)
 	{
 		Inaccuracy.Init(-50 + rand() % 100, -50 + rand() % 100, -50 + rand() % 100);
@@ -142,20 +139,20 @@ bool AimAtPoint(CEntity *pLocal, Vector point, CUserCmd *pCmd, bool &bSendPacket
 	Vector angles;
 	Vector src = pLocal->getorigin() + pLocal->getviewoffset();
 	ayyCalcAngle(src, point, angles);
-	//NormaliseViewAngle(angles);
 	angles.NormalizeAngles();
 	if (angles[0] != angles[0] || angles[1] != angles[1])
 		return false;
-	/* bool brcs = false;
+	
+	bool brcs = true;
 	if (brcs)
 	{
-		Vector AimPunch = pLocal->getaimpunchangle();
+		Vector AimPunch = *pLocal->getaimpunchangle();
 		if (AimPunch.Length2D() > 0 && AimPunch.Length2D() < 150)
 		{
 			angles -= AimPunch * 2;
-			angles->Normalise();
+			angles.NormalizeAngles();
 		}
-	} */
+	}
 
 	// IsLocked = true;
 
@@ -249,7 +246,6 @@ bool __fastcall hkCreateMove(void *, void *, float, CUserCmd *cmd)
 		return 0;
 
 	bhop(cmd, local);
-	rcs(cmd, local);
 	aimbot(cmd, local);
 	return 0;
 }
