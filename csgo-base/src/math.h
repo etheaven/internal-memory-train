@@ -116,7 +116,7 @@ void Normalize(Vector &vIn, Vector &vOut)
 	vOut.Init(vIn.x * flLen, vIn.y * flLen, vIn.z * flLen);
 }
 
-float FovToPlayer(Vector ViewOffSet, Vector View, CEntity* pEntity)
+float FovToPlayer(Vector ViewOffSet, Vector View, CEntity* pEntity, int bone = 8)
 {
 	const float MaxDegrees = 180.0f;
 	Vector Angles = View;
@@ -124,7 +124,7 @@ float FovToPlayer(Vector ViewOffSet, Vector View, CEntity* pEntity)
 	Vector Delta(0, 0, 0);
 	Vector Forward(0, 0, 0);
 	AngleVectors(Angles, &Forward);
-	Vector AimPos = pEntity->GetBonePosition(6);
+	Vector AimPos = pEntity->GetBonePosition(bone);
 	VectorSubtract(AimPos, Origin, Delta);
 	Normalize(Delta, Delta);
 	float DotProduct = Forward.Dot(Delta);
