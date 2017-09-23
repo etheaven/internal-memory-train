@@ -94,6 +94,7 @@ class Vector
     {
         return VectorNormalize(*this);
     }
+   
     float x, y, z;
 };
 
@@ -290,7 +291,16 @@ bool Vector::operator!=(const float &x)
 #define rad(a) a * 0.01745329251
 /* 
 inline vec_t Vector::DotProduct(const Vector &a, const Vector &b)
+{inline vec_t DotProduct(const Vector& a, const Vector& b)
 {
+	return (a.x * b.x + a.y * b.y + a.z * b.z);
+}
+
+inline vec_t Dot(const Vector& vOther) const
+{
+	return DotProduct(*this, vOther);
+}
+
     return (a.x * b.x + a.y * b.y + a.z * b.z);
 }
 

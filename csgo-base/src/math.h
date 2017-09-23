@@ -30,11 +30,6 @@ void MakeVector( Vector angle, Vector& vector )
 	vector[ 1 ] = float( sin( yaw )*tmp );
 	vector[ 2 ] = float( -sin( pitch ) );
 }
-float Dot( const Vector &v1, Vector &v2 )
-{
-	return v1[ 0 ] * v2[ 0 ] + v1[ 1 ] * v2[ 1 ] + v1[ 2 ] * v2[ 2 ];
-}
-
 
 float GetFov(const Vector &viewAngle, const Vector &aimAngle)
 {
@@ -96,21 +91,6 @@ void ClampAngles(Vector &angles)
 	angles.z = 0;
 }
 
-float FovToPlayer(Vector ViewOffSet, Vector View, CEntity* pEntity)
-{
-	const float MaxDegrees = 180.0f;
-	Vector Angles = View;
-	Vector Origin = ViewOffSet;
-	Vector Delta(0, 0, 0);
-	Vector Forward(0, 0, 0);
-	AngleVectors(Angles, &Forward);
-	Vector AimPos = pEntity->GetBonePosition(6);
-	VectorSubtract(AimPos, Origin, Delta);
-	Delta.clamp();
-	float DotProduct = Forward.Dot(Delta);
-	return (acos(DotProduct) * (MaxDegrees / PI));
-}
-
 void Normalize(Vector &vIn, Vector &vOut)
 {
 	float flLen = vIn.Length();
@@ -121,3 +101,19 @@ void Normalize(Vector &vIn, Vector &vOut)
 	flLen = 1 / flLen;
 	vOut.Init(vIn.x * flLen, vIn.y * flLen, vIn.z * flLen);
 }
+
+float FovToPlayer(Vector ViewOffSet, Vector View, CEntity* pEntity)
+{
+	const float MaxDegrees = 180.0f;
+	Vector Angles = View;
+	Vector Origin = ViewOffSet;
+	Vector Delta(0, 0, 0);
+	Vector Forward(0, 0, 0);
+	AngleVectors(Angles, &Forward);
+	Vector AimPos = pEntity->GetBonePosition(6);
+	VectorSubtract(AimPos, Origin, Delta);
+	Normalize(Delta, Delta);
+	float DotProduct = Forward.Dot(Delta);
+	return (acos(DotProduct) * (MaxDegrees / PI));
+}
+
