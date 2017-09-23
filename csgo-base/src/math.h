@@ -19,7 +19,8 @@ void CalcAngle(Vector src, Vector dst, Vector &angles)
 } */
 
 #define M_RADPI 57.295779513082f
-#define M_PI 3.14159265358979323846
+#undef M_PI
+constexpr double M_PI 3.14159265358979323846264338327950288419716939937510;
 #define M_PI_F ((float)(M_PI))
 void MakeVector( Vector angle, Vector& vector )
 {
