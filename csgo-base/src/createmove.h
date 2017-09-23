@@ -187,23 +187,25 @@ void aimbot(CUserCmd *cmd, CEntity *local)
 	CEntity* pTarget = nullptr;
 	CEntity* pLocal = local;
 	bool FindNewTarget = true;
-	int TargetID = -1;
+	static int TargetID = -1;
 
 	//knife
-	CBaseCombatWeapon* pWeapon = (CBaseCombatWeapon*)g_pEntityList->entfromhandle(local->getactiveweapon())
+	CBaseCombatWeapon* pWeapon = (CBaseCombatWeapon*)g_pEntityList->entfromhandle(local->getactiveweapon());
 	if (!pWeapon)
 		return;
 	if (pWeapon->GetAmmoInClip() == 0 || !IsBallisticWeapon(pWeapon))
 		return;
-
+	printf("1. Weapon passed\n");
 	// Make sure we have a ok target
-	if (/* IsLocked && */ TargetID >= 0/*  && HitBox >= 0 */)
+	if (TargetID >= 0)
 	{
 		pTarget = g_pEntityList->getcliententity(TargetID);
+		printf("got first target\n");
 		if (TargetMeetsRequirements(pTarget))
 		{
 			Vector ViewOffset = pLocal->getabsorigin() + pLocal->getviewoffset();
-			Vector View; g_pEngine->GetViewAngles(View);
+			Vector View;
+			g_pEngine->GetViewAngles(View);
 			View += *local->getaimpunchangle() * 2.f;
 			// if somthing fails by calculations, its this
 			float nFoV = FovToPlayer(ViewOffset, View, pTarget);
@@ -217,18 +219,12 @@ void aimbot(CUserCmd *cmd, CEntity *local)
 	{
 		TargetID = 0;
 		pTarget = nullptr;
-		HitBox = -1;
 
-		TargetID = GetTargetCrosshair();
+		TargetID = GetTargetCrosshair(local);
 		if (TargetID >= 0)
-		{
-			pTarget = Interfaces::EntList->GetClientEntity(TargetID);
-		}
+			pTarget =  g_pEntityList->getcliententity(TargetID);
 		else
-		{
 			pTarget = nullptr;
-			HitBox = -1;
-		}
 	}
 
 	// If we finally have a ok target
@@ -238,16 +234,16 @@ void aimbot(CUserCmd *cmd, CEntity *local)
 		{
 			TargetID = -1;
 			pTarget = nullptr;
-			HitBox = -1;
 			return;
 		}
 		Vector AimPoint =  pTarget->GetBonePosition(6);
-		if (AimAtPoint(pLocal, AimPoint, pCmd, bSendPacket))
+		bool bSendPacket = false;
+		if (AimAtPoint(pLocal, AimPoint, cmd, bSendPacket))
 		{
 			//IsLocked = true;
-			if (/* Menu::Window.LegitBotTab.AimbotAutoFire.GetState()  */false && !(pCmd->buttons & IN_ATTACK))
+			if (/* Menu::Window.LegitBotTab.AimbotAutoFire.GetState()  */false && !(cmd->buttons & IN_ATTACK))
 			{
-				pCmd->buttons |= IN_ATTACK;
+				cmd->buttons |= IN_ATTACK;
 			}
 		}
 	}
@@ -263,7 +259,7 @@ bool __fastcall hkCreateMove(void *, void *, float, CUserCmd *cmd)
 		return 0;
 
 	bhop(cmd, local);
-	rcs(cmd, local);
-	//aimbot(cmd, local);
+	//rcs(cmd, local);
+	aimbot(cmd, local);
 	return 0;
 }

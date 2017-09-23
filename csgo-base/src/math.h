@@ -110,3 +110,14 @@ float FovToPlayer(Vector ViewOffSet, Vector View, CEntity* pEntity)
 	float DotProduct = Forward.Dot(Delta);
 	return (acos(DotProduct) * (MaxDegrees / PI));
 }
+
+void Normalize(Vector &vIn, Vector &vOut)
+{
+	float flLen = vIn.Length();
+	if (flLen == 0){
+		vOut.Init(0, 0, 1);
+		return;
+	}
+	flLen = 1 / flLen;
+	vOut.Init(vIn.x * flLen, vIn.y * flLen, vIn.z * flLen);
+}
