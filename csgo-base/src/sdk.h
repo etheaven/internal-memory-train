@@ -6,6 +6,7 @@
 #include "sdk/CGlobalVars.h"
 #include "sdk/CUserCmd.h"
 #include "sdk/IVEngineClient.h"
+#include "sdk/IEngineTrace.h"
 #include "sdk/CEntity.h"
 #include "sdk/IClientEntityList.h"
 #include "sdk/CGameMovement.h"
