@@ -76,9 +76,9 @@ int GetTargetCrosshair(CEntity *pLocal)
 	const float FoV = 20.f;
 	float minFoV = FoV;
 
-	Vector ViewOffset = pLocal->GetOrigin() + pLocal->GetViewOffset();
-	Vector View; Interfaces::Engine->GetViewAngles(View);
-	View += pLocal->localPlayerExclusive()->GetAimPunchAngle() * 2.f;
+	Vector ViewOffset = pLocal->getabsorigin() + pLocal->getvecviewoffset();
+	Vector View; g_pEngine->GetViewAngles(View);
+	View += *pLocal->getaimpunchangle() * 2.f;
 
 	for (int i = 0; i < g_pEngine->GetMaxClients(); i++)
 	{

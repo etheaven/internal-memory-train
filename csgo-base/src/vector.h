@@ -62,7 +62,31 @@ class Vector
     inline vec_t Length(void)
     {
         return VectorLength(*this);
-    }   
+    }
+    inline vec_t VectorNormalize(Vector& v)
+    {
+        vec_t l = v.Length();
+    
+        if (l != 0.0f)
+        {
+            v /= l;
+        }
+        else
+        {
+            v.x = v.y = 0.0f; v.z = 1.0f;
+        }
+    
+        return l;
+    }
+    
+    inline float VectorNormalizer(float * v)
+    {
+        return VectorNormalize(*(reinterpret_cast<Vector *>(v)));
+    }
+    inline vec_t NormalizeInPlace()
+    {
+        return VectorNormalize(*this);
+    }
     
     float x, y, z;
 };
