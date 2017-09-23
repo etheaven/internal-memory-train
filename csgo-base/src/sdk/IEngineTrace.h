@@ -128,9 +128,9 @@ class IEngineTrace
 		return util::getvfunc<fnGetPointContents>(this, 0)(this, vecAbsPosition, contentsMask, ppEntity);
 	}
 
-	void TraceRay(const Ray_t &ray, unsigned int fMask, CTraceFilter *pTraceFilter, trace_t *pTrace)
+	void TraceRay(const Ray_t &ray, unsigned int fMask, ITraceFilter *pTraceFilter, trace_t *pTrace)
 	{
-		typedef void(__thiscall * oTraceRay)(PVOID, const Ray_t &, unsigned int, CTraceFilter *, trace_t *);
+		typedef void(__thiscall * oTraceRay)(PVOID, const Ray_t &, unsigned int, ITraceFilter *, trace_t *);
 		return util::getvfunc<oTraceRay>(this, 5)(this, ray, fMask, pTraceFilter, pTrace);
 	}
 	/* 
