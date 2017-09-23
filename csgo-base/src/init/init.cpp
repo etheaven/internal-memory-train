@@ -10,7 +10,10 @@
 CClientBase *g_pClient = nullptr;
 IClientModeShared *g_pClientMode = nullptr;
 CGlobalVars *g_pGlobals = nullptr;
+
 IVEngineClient *g_pEngine = nullptr;
+IEngineTrace *g_pEngineTrace = nullptr;
+
 IClientEntityList *g_pEntityList = nullptr;
 CGameMovement *g_pGamemovement = nullptr;
 
@@ -48,8 +51,9 @@ bool init::setup()
     g_pClient = (CClientBase *)util::EasyInterface("client.dll", "VClient0");
     printf("client: 0x%p\n", (void *)g_pClient);
     g_pEngine = (IVEngineClient *)util::EasyInterface("engine.dll", "VEngineClient0");
-
     printf("engine: 0x%p\n", (void *)g_pEngine);
+    g_pEngineTrace = (IEngineTrace *)util::EasyInterface("engine.dll", "EngineTraceClient0");
+    printf("engineTrace: 0x%p\n", (void *)g_pEngineTrace);
     g_pEntityList = (IClientEntityList *)util::EasyInterface("client.dll", "VClientEntityList0");
     printf("entityList: 0x%p\n", (void *)g_pEntityList);
     DWORD *clienttable = (DWORD *)*(DWORD *)g_pClient;
