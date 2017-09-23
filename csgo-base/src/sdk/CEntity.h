@@ -254,7 +254,7 @@ class CEntity
     {
         return util::getvfunc<Vector &(__thiscall *)(void *)>(this, 10)(this);
     } */
-    inline Vector getorigin(){
+    inline Vector getorigin(){ // feed origin
         reutrn util::readptr<Vector<(this, 0x134);
     }
     inline Vector getabsorigin()
