@@ -1,5 +1,6 @@
 #pragma once
 #undef Vector
+
 #include "sdk/CClientBase.h"
 #include "sdk/IClientModeShared.h"
 #include "sdk/CGlobalVars.h"
@@ -12,8 +13,12 @@
 #include "sdk/ISurface.h"
 #include "sdk/Additional/Color.h"
 #include "sdk/IVDebugOverlay.h"
+#include "sdk/CBaseCombatWeapon.h"
+
 
 #include "vector.h"
+
+#include "src_headers.h"
 
 #define __TOUCH_TIER_0__ false
 

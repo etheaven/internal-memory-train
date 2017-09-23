@@ -59,57 +59,106 @@ bool IsBallisticWeapon(void *weapon)
 	return !(id >= WEAPON_KNIFE_CT && id <= WEAPON_KNIFE_T || id == 0 || id >= WEAPON_KNIFE_BAYONET);
 }
 
+bool TargetMeetsRequirements(CEntity *p){
+	bool ok = true;
+	if (!p) return !ok;
+	if (p->isdormant()) return !ok;
+	if (p->gethealth() < 1) return !ok;
+	CEntity *local = g_pEntityList->getcliententity(g_pEngine->GetLocalPlayer())
+	if (p->getteam() == local->getteam()) return !ok;
+	if (p == local) return !ok;
+	return ok;
+}
+
+int CLegitBot::GetTargetCrosshair(CEntity *pLocal)
+{
+	int target = -1;
+	const float FoV = 20.f;
+	float minFoV = FoV;
+
+	Vector ViewOffset = pLocal->GetOrigin() + pLocal->GetViewOffset();
+	Vector View; Interfaces::Engine->GetViewAngles(View);
+	View += pLocal->localPlayerExclusive()->GetAimPunchAngle() * 2.f;
+
+	for (int i = 0; i < Interfaces::EntList->GetHighestEntityIndex(); i++)
+	{
+		CEntity *pEntity = g_pEntityList->getcliententity(i);
+		if (TargetMeetsRequirements(pEntity))
+		{
+			float fov = FovToPlayer(ViewOffset, View, pEntity);
+			if (fov < minFoV)
+			{
+				minFoV = fov;
+				target = i;
+			}
+		}
+	}
+	printf("targetid fov: %2.f\n", minFoV);
+
+	return target;
+}
 
 void aimbot(CUserCmd *cmd, CEntity *local)
 {
-	float bestFov = 30.f;
-	float minFov = bestFov;
-	int target = -1;
-	Vector vecLocalPos = local->geteyepos();
-	Vector vecEntityPos = local->GetBonePosition(6);
-	Vector ViewOffset = local->getabsorigin() + local->getviewoffset();
-	Vector View; g_pEngine->GetViewAngles(View);
-	for (int i = 0; i < g_pEngine->GetMaxClients(); ++i)
+	CEntity* pTarget = nullptr;
+	CEntity* pLocal = local;
+	bool FindNewTarget = true;
+	int TargetID = -1;
+
+	//knife
+	CBaseCombatWeapon* pWeapon = (CBaseCombatWeapon*)g_pEntityList->entfromhandle(local->getactiveweapon())
+	if (!pWeapon)
+		return;
+	if (pWeapon->GetAmmoInClip() == 0 || !IsBallisticWeapon(pWeapon))
+		return;
+
+	// Make sure we have a ok target
+	if (/* IsLocked && */ TargetID >= 0/*  && HitBox >= 0 */)
 	{
-		CEntity *pEntity = g_pEntityList->getcliententity(i);
-		if (!pEntity)
-			continue;
-		if (pEntity == local || pEntity->isdormant() || pEntity->gethealth() < 1)
-			continue;
-		if (pEntity->getteam() == local->getteam())
-			continue;
-
-		vecEntityPos = pEntity->GetBonePosition(6);
-		vecLocalPos = local->geteyepos();
-
-		//Vector engineAngles;
-		//g_pEngine->GetViewAngles(engineAngles); //engineAngles += pLocal->localPlayerExclusive()->GetAimPunchAngle() * 2.f;
-		void *pWeapon = g_pEntityList->entfromhandle(local->getactiveweapon());
-		if (!pWeapon)
-			return;
-		if (!IsBallisticWeapon(pWeapon))
-			return;
-
-		//float fov = GetFov(vecLocalPos, CalcAngle(vecLocalPos, vecEntityPos));//GetFov(engineAngles, vecLocalPos, vecEntityPos);
-		float fov = FovToPlayer(ViewOffset, View, pEntity);//FovToPlayer(ViewOffset, View, pEntity);
-		if (fov < minFov)
+		pTarget = g_pEntityList->getcliententity(TargetID);
+		if (TargetMeetsRequirements(pTarget))
 		{
-			minFov = fov;
-			target = i;
+			Vector ViewOffset = pLocal->GetOrigin() + pLocal->GetViewOffset();
+			Vector View; g_pEngine->GetViewAngles(View);
+			View += *local->getaimpunchangle() * 2.f;
+			// if somthing fails by calculations, its this
+			float nFoV = FovToPlayer(ViewOffset, View, pTarget);
+			printf("target fov: %.2f\n", nFoV);
+			if (nFoV < FoV)
+				FindNewTarget = false;
 		}
 	}
-	if (target <= 0)
-		return;
-	CEntity *pTarget = g_pEntityList->getcliententity(target);
-	if (!pTarget)
-		return;
-	//printf("Current fov: %.2f\n", minFov);
-	/* Vector vecEntityPos = local->geteyepos();
-	Vector vecLocalPos = pTarget->GetBonePosition(6); */
-	//Vector result;
-/* 	cCalcAngle(vecLocalPos, vecEntityPos, result);
-	if (result != 0)
-		g_pEngine->SetViewAngles(result); */
+	// Find a new target, apparently we need to
+	if (FindNewTarget)
+	{
+		TargetID = 0;
+		pTarget = nullptr;
+		HitBox = -1;
+
+		TargetID = GetTargetCrosshair();
+		if (TargetID >= 0)
+		{
+			pTarget = Interfaces::EntList->GetClientEntity(TargetID);
+		}
+		else
+		{
+			pTarget = nullptr;
+			HitBox = -1;
+		}
+	}
+
+	// If we finally have a ok target
+	if (TargetID >= 0 && pTarget)
+	{
+		if (/* Key >= 0 && !GUI.GetKeyState(Key) */ false)
+		{
+			TargetID = -1;
+			pTarget = nullptr;
+			HitBox = -1;
+			return;
+		}
+		
+	}
 }
 
 bool __fastcall hkCreateMove(void *, void *, float, CUserCmd *cmd)
