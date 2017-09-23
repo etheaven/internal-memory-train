@@ -63,6 +63,10 @@ class Vector
     {
         return VectorLength(*this);
     }
+    inline vec_t Length2D(void)
+    {
+        return (vec_t)::sqrtf(x * x + y * y);
+    }
     inline vec_t VectorNormalize(Vector& v)
     {
         vec_t l = v.Length();
@@ -87,7 +91,6 @@ class Vector
     {
         return VectorNormalize(*this);
     }
-    
     float x, y, z;
 };
 

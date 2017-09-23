@@ -3,6 +3,7 @@
 #include "constants/definitions.h"
 #include "math.h"
 
+#include <ctime>
 #include <cstdio>
 
 void rcs(CUserCmd *cmd, CEntity *local)
@@ -50,6 +51,10 @@ void bhop(CUserCmd *cmd, CEntity *local)
 	}
 }
 
+const float FoV = 10.0f;
+const float Inacc = 1.0f;
+const float Speed = 1.0f;
+
 bool IsBallisticWeapon(void *weapon)
 {
 	if (weapon == nullptr)
@@ -70,10 +75,12 @@ bool TargetMeetsRequirements(CEntity *p){
 	return ok;
 }
 
+
+
 int GetTargetCrosshair(CEntity *pLocal)
 {
 	int target = -1;
-	const float FoV = 20.f;
+	
 	float minFoV = FoV;
 
 	Vector ViewOffset = pLocal->getabsorigin() + pLocal->getvecviewoffset();
@@ -98,9 +105,21 @@ int GetTargetCrosshair(CEntity *pLocal)
 	return target;
 }
 
+void ayyCalcAngle(Vector src, Vector dst, Vector &angles)
+{
+	Vector delta = src - dst;
+	double hyp = delta.Length2D(); //delta.Length
+	angles.y = (atan(delta.y / delta.x) * 57.295779513082f);
+	angles.x = (atan(delta.z / hyp) * 57.295779513082f);
+	angles[2] = 0.00;
+
+	if (delta.x >= 0.0)
+		angles.y += 180.0f;
+}
 
 bool AimAtPoint(CEntity* pLocal, Vector point, CUserCmd *pCmd, bool &bSendPacket)
 {
+	
 	// Get the full angles
 	if (point.Length() == 0) return false;
 
@@ -122,7 +141,7 @@ bool AimAtPoint(CEntity* pLocal, Vector point, CUserCmd *pCmd, bool &bSendPacket
 
 	ayyCalcAngle(src, point, angles);
 	//NormaliseViewAngle(angles);
-	angles->Normalise();
+	angles.NormalizeAngles();
 
 	if (angles[0] != angles[0] || angles[1] != angles[1])
 	{
@@ -183,7 +202,7 @@ void aimbot(CUserCmd *cmd, CEntity *local)
 		pTarget = g_pEntityList->getcliententity(TargetID);
 		if (TargetMeetsRequirements(pTarget))
 		{
-			Vector ViewOffset = pLocal->GetOrigin() + pLocal->GetViewOffset();
+			Vector ViewOffset = pLocal->getabsorigin() + pLocal->getviewoffset();
 			Vector View; g_pEngine->GetViewAngles(View);
 			View += *local->getaimpunchangle() * 2.f;
 			// if somthing fails by calculations, its this
