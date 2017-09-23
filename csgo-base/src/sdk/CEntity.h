@@ -254,6 +254,9 @@ class CEntity
     {
         return util::getvfunc<Vector &(__thiscall *)(void *)>(this, 10)(this);
     } */
+    inline Vector getorigin(){
+        reutrn util::readptr<Vector<(this, 0x134);
+    }
     inline Vector getabsorigin()
     {
         typedef Vector(__thiscall * GetAbsOriginFn)(void *);
