@@ -2,7 +2,7 @@
 #include "../src_headers.h"
 class CGameMovement
 {
-public:
+  public:
 	inline void decaypunchangle()
 	{
 		return util::getvfunc<void(__thiscall *)(void *)>(this, 17)(this);

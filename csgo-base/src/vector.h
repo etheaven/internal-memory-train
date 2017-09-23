@@ -94,7 +94,7 @@ class Vector
     {
         return VectorNormalize(*this);
     }
-   
+
     float x, y, z;
 };
 

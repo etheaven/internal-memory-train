@@ -16,7 +16,6 @@
 #include "sdk/IVDebugOverlay.h"
 #include "sdk/CBaseCombatWeapon.h"
 
-
 #include "vector.h"
 
 #include "src_headers.h"
@@ -25,7 +24,7 @@
 
 typedef void(__cdecl *MsgFn)(const char *, ...);
 typedef void(__cdecl *WarningFn)(const char *, ...);
-typedef void(__thiscall *PaintTraverseFn)(void*, unsigned int, bool, bool);
+typedef void(__thiscall *PaintTraverseFn)(void *, unsigned int, bool, bool);
 
 extern PaintTraverseFn oPaintTraverse;
 #ifndef __TOUCH_TIER_0__
