@@ -67,7 +67,8 @@ bool IsBallisticWeapon(void *weapon)
 void UTIL_TraceLine(const Vector& vecAbsStart, const Vector& vecAbsEnd, unsigned int mask, const CEntity *ignore, int collisionGroup, trace_t *ptr)
 {
 	typedef int(__fastcall* UTIL_TraceLine_t)(const Vector&, const Vector&, unsigned int, const CEntity*, int, trace_t*);
-	static UTIL_TraceLine_t TraceLine = (UTIL_TraceLine_t)Utilities::Memory::FindPattern("client.dll", (PBYTE)"\x55\x8B\xEC\x83\xE4\xF0\x83\xEC\x7C\x56\x52", "xxxxxxxxxxx");
+	static unsigned long client = (unsigned long)GetModuleHandleA("client.dll");
+	static UTIL_TraceLine_t TraceLine = (UTIL_TraceLine_t)(util::findpattern(client, 0x100, "\x8B\x0D????\x8B"));
 	TraceLine(vecAbsStart, vecAbsEnd, mask, ignore, collisionGroup, ptr);
 }
 
