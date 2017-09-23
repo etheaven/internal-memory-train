@@ -64,28 +64,33 @@ bool IsBallisticWeapon(void *weapon)
 	return !(id >= WEAPON_KNIFE_CT && id <= WEAPON_KNIFE_T || id == 0 || id >= WEAPON_KNIFE_BAYONET);
 }
 
-void UTIL_TraceLine(const Vector& vecAbsStart, const Vector& vecAbsEnd, unsigned int mask, const CEntity *ignore, int collisionGroup, trace_t *ptr)
+inline bool IsVisibleBone(CEntity *player,int bone)
 {
-	typedef int(__fastcall* UTIL_TraceLine_t)(const Vector&, const Vector&, unsigned int, const CEntity*, int, trace_t*);
-	static unsigned long client = (unsigned long)GetModuleHandleA("client.dll");
-	static UTIL_TraceLine_t TraceLine = (UTIL_TraceLine_t)(util::findpattern(client, 0x100, "\x8B\x0D????\x8B"));
-	TraceLine(vecAbsStart, vecAbsEnd, mask, ignore, collisionGroup, ptr);
+	Ray_t ray;
+	trace_t tr;
+	CEntity *local = g_pEntityList->getcliententity(g_pEngine->GetLocalPlayer());
+	Vector eyes = local->geteyepos();
+	auto bonepos = player->GetBonePosition(bone);
+	ray.Init(eyes, bonepos);
+ 
+	CTraceFilter filter;
+	filter.pSkip = (void*)local;
+ 
+	g_pEngineTrace->TraceRay(ray, MASK_SHOT, &filter, &tr);
+ 
+	printf("tr.fraction %.2f\n", tr.fraction);
+	if(tr.m_pEnt == player)
+		return true;
+	if (tr.allsolid || tr.startsolid)
+		return false;
+		//trace.hitgroup > 0
+	return tr.fraction > 0.97f;
 }
-
-
-bool IsVisible(CEntity *pLocal, CEntity *pEntity, int BoneID)
-{
-	if (BoneID < 0) return false;
-	static trace_t Trace;
-	auto entCopy = pEntity;
-	Vector start = pLocal->getorigin() + pLocal->getviewoffset();
-	Vector end = pEntity->GetBonePosition(BoneID);
-	UTIL_TraceLine(start, end, MASK_SOLID, pLocal, 0, &Trace);
-
-	if (Trace.m_pEnt == entCopy)
-		return true;
-	if (Trace.fraction == 1.0f)
-		return true;
+inline bool IsVisible(CEntity *player, int bone = 8){
+	for(int i = 0; i < 8; i+=2){
+		if(IsVisibleBone(player, i))
+			return true;
+	}
 	return false;
 }
 
@@ -106,7 +111,7 @@ bool TargetMeetsRequirements(CEntity *p, int bone = 8, bool vischeck = false)
 	if (p == local)
 		return !ok;
 	if (vischeck)
-		if (!IsVisible(p, local, bone))
+		if (!IsVisible(p))// if (!IsVisible(p,bone))/* 		if (!IsVisible(p, local, bone)) */
 			return !ok;
 	return ok;
 }
