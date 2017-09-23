@@ -256,7 +256,7 @@ class CEntity
     } */
     inline Vector getorigin()
     { // feet origin
-        reutrn util::readptr < Vector < (this, 0x134);
+        return util::readptr<Vector>(this, 0x134);
     }
     inline Vector getabsorigin()
     {
