@@ -70,7 +70,7 @@ bool TargetMeetsRequirements(CEntity *p){
 	return ok;
 }
 
-int CLegitBot::GetTargetCrosshair(CEntity *pLocal)
+int GetTargetCrosshair(CEntity *pLocal)
 {
 	int target = -1;
 	const float FoV = 20.f;
@@ -97,6 +97,71 @@ int CLegitBot::GetTargetCrosshair(CEntity *pLocal)
 
 	return target;
 }
+
+
+bool AimAtPoint(CEntity* pLocal, Vector point, CUserCmd *pCmd, bool &bSendPacket)
+{
+	// Get the full angles
+	if (point.Length() == 0) return false;
+
+	static clock_t start_t = clock();
+	double timeSoFar = (double)(clock() - start_t) / CLOCKS_PER_SEC;
+	static Vector Inaccuracy;
+
+	if (timeSoFar > 0.2)
+	{
+		Inaccuracy.Init(-50 + rand() % 100, -50 + rand() % 100, -50 + rand() % 100);
+		Inaccuracy.NormalizeInPlace();
+		Inaccuracy *= Inacc;
+		start_t = clock();
+	}
+
+	point += Inaccuracy;
+	Vector angles;
+	Vector src = pLocal->getabsorigin() + pLocal->getviewoffset();
+
+	ayyCalcAngle(src, point, angles);
+	//NormaliseViewAngle(angles);
+	angles->Normalise();
+
+	if (angles[0] != angles[0] || angles[1] != angles[1])
+	{
+		return false;
+	}
+
+	/* bool brcs = false;
+	if (brcs)
+	{
+		Vector AimPunch = pLocal->getaimpunchangle();
+		if (AimPunch.Length2D() > 0 && AimPunch.Length2D() < 150)
+		{
+			angles -= AimPunch * 2;
+			angles->Normalise();
+		}
+	} */
+
+	// IsLocked = true;
+
+	Vector ang = angles - pCmd->viewangles;
+	bool v = false;
+
+	if (ang.Length() > Speed)
+	{
+		Normalize(ang, ang);
+		ang *= Speed;
+	}
+	else
+	{
+		v = true;
+	}
+
+
+	pCmd->viewangles += ang;
+	g_pEngine->SetViewAngles(pCmd->viewangles);
+	
+	return v;
+}
+
 
 void aimbot(CUserCmd *cmd, CEntity *local)
 {
@@ -157,7 +222,15 @@ void aimbot(CUserCmd *cmd, CEntity *local)
 			HitBox = -1;
 			return;
 		}
-		
+		Vector AimPoint =  pTarget->GetBonePosition(6);
+		if (AimAtPoint(pLocal, AimPoint, pCmd, bSendPacket))
+		{
+			//IsLocked = true;
+			if (/* Menu::Window.LegitBotTab.AimbotAutoFire.GetState()  */false && !(pCmd->buttons & IN_ATTACK))
+			{
+				pCmd->buttons |= IN_ATTACK;
+			}
+		}
 	}
 }
 
