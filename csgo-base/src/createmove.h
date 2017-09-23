@@ -70,11 +70,10 @@ inline bool IsVisibleBone(CEntity *player, int bone)
 	trace_t tr;
 	CEntity *local = g_pEntityList->getcliententity(g_pEngine->GetLocalPlayer());
 	Vector eyes = local->geteyepos();
-	auto bonepos = player->GetBonePosition(bone);
+	Vector bonepos = player->GetBonePosition(bone);
 	ray.Init(eyes, bonepos);
-
 	CTraceFilter filter;
-	filter.pSkip = (void *)local;
+	filter.pSkip = local;
 
 	g_pEngineTrace->TraceRay(ray, MASK_SHOT, &filter, &tr);
 
@@ -112,9 +111,9 @@ bool TargetMeetsRequirements(CEntity *p, int bone = 8, bool vischeck = false)
 		return !ok;
 	if (p == local)
 		return !ok;
-	/* 	if (vischeck)
+	if (vischeck)
 		if (!IsVisible(p))
-			return !ok; */
+			return !ok; 
 	return ok;
 }
 
@@ -132,6 +131,7 @@ int GetTargetCrosshair(CEntity *pLocal)
 		CEntity *pEntity = g_pEntityList->getcliententity(i);
 		if (TargetMeetsRequirements(pEntity, 8, true))
 		{
+			printf("meets!\n");
 			float fov = FovToPlayer(ViewOffset, View, pEntity);
 			if (fov < minFoV)
 			{
