@@ -150,7 +150,7 @@ class IClientEntity : public IClientUnknown, public IClientRenderable, public IC
 class C_BaseEntity : public IClientEntity
 {
   public:
-/*     IClientNetworkable *GetNetworkable()
+    /*     IClientNetworkable *GetNetworkable()
     {
         return (IClientNetworkable *)((uintptr_t)this + 0x10);
     }
@@ -181,7 +181,7 @@ class C_BaseEntity : public IClientEntity
         return util::readptr<int>(this, 0xF0); //m_iTeamNum
     }
 
-/* 
+    /* 
     Vector GetVecOrigin()
     {
         return *(Vector *)((uintptr_t)this + offsets.DT_BaseEntity.m_vecOrigin);
@@ -202,7 +202,6 @@ class C_BaseEntity : public IClientEntity
         return (bool *)((uintptr_t)this + offsets.DT_BaseEntity.m_bSpotted);
     } */
 };
-
 
 class CEntity
 {
@@ -227,8 +226,9 @@ class CEntity
     {
         return util::makeptr<Vector>(this, 0x301C); //m_Local + m_aimPunchAngle
     }
-    inline Vector getviewoffset(){
-        return util::readptr<Vector>(this, 0x104); // m_vecViewOffset 
+    inline Vector getviewoffset()
+    {
+        return util::readptr<Vector>(this, 0x104); // m_vecViewOffset
     }
     inline Vector *getviewpunchangle()
     {
@@ -254,8 +254,9 @@ class CEntity
     {
         return util::getvfunc<Vector &(__thiscall *)(void *)>(this, 10)(this);
     } */
-    inline Vector getorigin(){ // feed origin
-        reutrn util::readptr<Vector<(this, 0x134);
+    inline Vector getorigin()
+    { // feet origin
+        reutrn util::readptr < Vector < (this, 0x134);
     }
     inline Vector getabsorigin()
     {

@@ -64,28 +64,33 @@ bool IsBallisticWeapon(void *weapon)
 	return !(id >= WEAPON_KNIFE_CT && id <= WEAPON_KNIFE_T || id == 0 || id >= WEAPON_KNIFE_BAYONET);
 }
 
-bool TargetMeetsRequirements(CEntity *p){
+bool TargetMeetsRequirements(CEntity *p)
+{
 	bool ok = true;
-	if (!p) return !ok;
-	if (p->isdormant()) return !ok;
-	if (p->gethealth() < 1) return !ok;
+	if (!p)
+		return !ok;
+	if (p->isdormant())
+		return !ok;
+	if (p->gethealth() < 1)
+		return !ok;
 	CEntity *local = g_pEntityList->getcliententity(g_pEngine->GetLocalPlayer());
-	if (p->getteam() == local->getteam()) return !ok;
-	if (p == local) return !ok;
+	if (p->getteam() == local->getteam())
+		return !ok;
+	if (p == local)
+		return !ok;
 	return ok;
 }
-
-
 
 int GetTargetCrosshair(CEntity *pLocal)
 {
 	int target = -1;
-	
+
 	float minFoV = FoV;
 	printf("Target view begin: ");
 	Vector ViewOffset = pLocal->getorigin() + pLocal->getviewoffset();
 	printf("viewoffset, ");
-	Vector View; g_pEngine->GetViewAngles(View);
+	Vector View;
+	g_pEngine->GetViewAngles(View);
 	printf("view, ");
 	View += (*pLocal->getaimpunchangle()) * 2.f;
 	printf("view ++\n");
@@ -122,23 +127,24 @@ void ayyCalcAngle(Vector src, Vector dst, Vector &angles)
 		angles.y += 180.0f;
 }
 
-bool AimAtPoint(CEntity* pLocal, Vector point, CUserCmd *pCmd, bool &bSendPacket)
+bool AimAtPoint(CEntity *pLocal, Vector point, CUserCmd *pCmd, bool &bSendPacket)
 {
-	
+
 	// Get the full angles
-	if (point.Length() == 0) return false;
+	if (point.Length() == 0)
+		return false;
 	printf("#### aimatpoint: ");
 	static clock_t start_t = clock();
 	double timeSoFar = (double)(clock() - start_t) / CLOCKS_PER_SEC;
 	static Vector Inaccuracy;
 
-	
 	if (timeSoFar > 0.2)
 	{
 		printf("*timesofar= ");
 		Inaccuracy.Init(-50 + rand() % 100, -50 + rand() % 100, -50 + rand() % 100);
 		printf("init ok, ");
-		Inaccuracy.NormalizeInPlace();;
+		Inaccuracy.NormalizeInPlace();
+		;
 		printf("normalize ok,");
 		Inaccuracy *= Inacc;
 		start_t = clock();
@@ -184,7 +190,9 @@ bool AimAtPoint(CEntity* pLocal, Vector point, CUserCmd *pCmd, bool &bSendPacket
 		ang *= Speed;
 	}
 	else
+	{
 		v = true;
+	}
 
 	pCmd->viewangles += ang;
 	printf("final angle set\n");
@@ -193,16 +201,15 @@ bool AimAtPoint(CEntity* pLocal, Vector point, CUserCmd *pCmd, bool &bSendPacket
 	return v;
 }
 
-
 void aimbot(CUserCmd *cmd, CEntity *local)
 {
-	CEntity* pTarget = nullptr;
-	CEntity* pLocal = local;
+	CEntity *pTarget = nullptr;
+	CEntity *pLocal = local;
 	bool FindNewTarget = true;
 	static int TargetID = -1;
 
 	//knife
-	CBaseCombatWeapon* pWeapon = (CBaseCombatWeapon*)g_pEntityList->entfromhandle(local->getactiveweapon());
+	CBaseCombatWeapon *pWeapon = (CBaseCombatWeapon *)g_pEntityList->entfromhandle(local->getactiveweapon());
 	if (!pWeapon)
 		return;
 	if (pWeapon->GetAmmoInClip() == 0 || !IsBallisticWeapon(pWeapon))
@@ -240,7 +247,7 @@ void aimbot(CUserCmd *cmd, CEntity *local)
 		TargetID = GetTargetCrosshair(local);
 		printf("target=%d\n", TargetID);
 		if (TargetID >= 0)
-			pTarget =  g_pEntityList->getcliententity(TargetID);
+			pTarget = g_pEntityList->getcliententity(TargetID);
 		else
 			pTarget = nullptr;
 	}
@@ -255,14 +262,14 @@ void aimbot(CUserCmd *cmd, CEntity *local)
 			pTarget = nullptr;
 			return;
 		}
-		Vector AimPoint =  pTarget->GetBonePosition(6);
+		Vector AimPoint = pTarget->GetBonePosition(6);
 		bool bSendPacket = false;
 		printf("- we before aimatpoint:");
 		if (AimAtPoint(pLocal, AimPoint, cmd, bSendPacket))
 		{
 			printf("aim at point success\n");
 			//IsLocked = true;
-			if (/* Menu::Window.LegitBotTab.AimbotAutoFire.GetState()  */false && !(cmd->buttons & IN_ATTACK))
+			if (/* Menu::Window.LegitBotTab.AimbotAutoFire.GetState()  */ false && !(cmd->buttons & IN_ATTACK))
 			{
 				cmd->buttons |= IN_ATTACK;
 			}

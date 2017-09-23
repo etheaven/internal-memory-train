@@ -41,24 +41,26 @@ class Vector
     float VectorLength(const Vector &v); */
     //void VectorSubtract(Vector const &a, Vector const &b, Vector &c);
     float isqrt(float x);
-    vec_t DotProduct(const Vector& a, const Vector& b)
+    vec_t DotProduct(const Vector &a, const Vector &b)
     {
         return (a.x * b.x + a.y * b.y + a.z * b.z);
     }
-    
-    inline vec_t Dot(const Vector& vOther)
+
+    inline vec_t Dot(const Vector &vOther)
     {
         return DotProduct(*this, vOther);
     }
     inline void Init(vec_t ix, vec_t iy, vec_t iz)
     {
-        x = ix; y = iy; z = iz;
+        x = ix;
+        y = iy;
+        z = iz;
     }
-    inline vec_t VectorLength(const Vector& v)
+    inline vec_t VectorLength(const Vector &v)
     {
         return (vec_t)sqrt(v.x * v.x + v.y * v.y + v.z * v.z);
     }
-    
+
     inline vec_t Length(void)
     {
         return VectorLength(*this);
@@ -67,23 +69,24 @@ class Vector
     {
         return (vec_t)::sqrtf(x * x + y * y);
     }
-    inline vec_t VectorNormalize(Vector& v)
+    inline vec_t VectorNormalize(Vector &v)
     {
         vec_t l = v.Length();
-    
+
         if (l != 0.0f)
         {
             v /= l;
         }
         else
         {
-            v.x = v.y = 0.0f; v.z = 1.0f;
+            v.x = v.y = 0.0f;
+            v.z = 1.0f;
         }
-    
+
         return l;
     }
-    
-    inline float VectorNormalizer(float * v)
+
+    inline float VectorNormalizer(float *v)
     {
         return VectorNormalize(*(reinterpret_cast<Vector *>(v)));
     }
