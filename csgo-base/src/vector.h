@@ -50,6 +50,20 @@ class Vector
     {
         return DotProduct(*this, vOther);
     }
+    inline void Init(vec_t ix, vec_t iy, vec_t iz)
+    {
+        x = ix; y = iy; z = iz;
+    }
+    inline vec_t VectorLength(const Vector& v)
+    {
+        return (vec_t)sqrt(v.x * v.x + v.y * v.y + v.z * v.z);
+    }
+    
+    inline vec_t Vector::Length(void)
+    {
+        return VectorLength(*this);
+    }   
+    
     float x, y, z;
 };
 
