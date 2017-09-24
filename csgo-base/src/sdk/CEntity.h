@@ -273,7 +273,7 @@ class CEntity
     }
     inline Vector geteyepos()
     {
-        return getabsorigin() + getvecviewoffset();
+        return getorigin() + getvecviewoffset();
     }
 
     inline bool setupbones(matrix3x4_t *bonematrix, int maxbones, int mask, float curtime = 0)
