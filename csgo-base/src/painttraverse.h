@@ -44,7 +44,7 @@ void __fastcall hkPaintTraverse(void *pPanel, void *unk, unsigned int vguiPanel,
                 if (pEntity->getteam() == pLocalPlayer->getteam())
                     continue;
 
-                const Vector bottom = pEntity->getorigin();
+                const Vector bottom = pLocalPlayer->getorigin();
                 const Vector top = pEntity->GetBonePosition(8);
                 Vector screenBot, screenTop;
                 if (W2S(bottom, screenBot) && W2S(top, screenTop))
