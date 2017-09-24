@@ -22,6 +22,11 @@ public:
 		this->FillRGBA(x - 1, y - 1, mx + 2, 4 + 2, r, g, b, 255);
 		this->FillRGBA(x, y, wx, 4, r, g, b, 255);
 	}
+	void DrawLine(int x0,int y0, int x1, int y1, Color c)
+	{
+		g_pSurface->DrawSetColor(c);
+		g_pSurface->DrawLine(x0,y0,x1,y1);
+	}
 	static void TextW(bool cent, int font, int x, int y, Color color, wchar_t *pszString) noexcept
 	{
 		if (cent)
