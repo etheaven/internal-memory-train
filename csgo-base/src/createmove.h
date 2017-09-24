@@ -64,60 +64,6 @@ bool IsBallisticWeapon(void *weapon)
 	return !(id >= WEAPON_KNIFE_CT && id <= WEAPON_KNIFE_T || id == 0 || id >= WEAPON_KNIFE_BAYONET);
 }
 
-inline bool IsVisibleBone(CEntity *player, int bone)
-{
-	Ray_t ray;
-	trace_t tr;
-	CEntity *local = g_pEntityList->getcliententity(g_pEngine->GetLocalPlayer());
-	Vector eyes = local->geteyepos();
-	Vector bonepos = player->GetBonePosition(bone);
-	ray.Init(eyes, bonepos);
-	CTraceFilter filter;
-	filter.pSkip = local;
-
-	g_pEngineTrace->TraceRay(ray, MASK_SHOT, &filter, &tr);
-
-	//TODO: finish
-	printf("tr.fraction %.2f\n", tr.fraction);
-	if (tr.m_pEnt == player)
-		return true;
-	if (tr.allsolid || tr.startsolid)
-		return false;
-	//trace.hitgroup > 0
-	return tr.fraction > 0.97f;
-}
-inline bool IsVisible(CEntity *player, int bone = 8)
-{
-	for (int i = 0; i < 8; i += 2)
-	{
-		if (IsVisibleBone(player, i))
-			return true;
-	}
-	return false;
-}
-
-bool TargetMeetsRequirements(CEntity *p, int bone = 8, bool vischeck = false)
-{
-	bool ok = true;
-	if (!p)
-		return !ok;
-	if (p->isdormant())
-		return !ok;
-	if (p->HasGunGameImmunity())
-		return !ok;
-	if (p->gethealth() < 1)
-		return !ok;
-	CEntity *local = g_pEntityList->getcliententity(g_pEngine->GetLocalPlayer());
-	if (p->getteam() == local->getteam())
-		return !ok;
-	if (p == local)
-		return !ok;
-	if (vischeck)
-		if (!IsVisible(p))
-			return !ok; 
-	return ok;
-}
-
 int GetTargetCrosshair(CEntity *pLocal)
 {
 	int target = -1;
