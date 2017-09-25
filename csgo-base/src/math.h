@@ -147,6 +147,7 @@ inline bool IsVisibleBone(CEntity *player, int bone)
 	if (tr.m_pEnt == player || tr.fraction > 0.97f)
 		return true;
 }
+//TODO: implement usage of bone index
 inline bool IsVisible(CEntity *player, int bone = 8)
 {
 	for (int i = 0; i < 8; i += 2)
