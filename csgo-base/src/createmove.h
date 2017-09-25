@@ -209,6 +209,34 @@ void aimbot(CUserCmd *cmd, CEntity *local)
 	}
 }
 
+void trigger(CUserCmd *cmd, CEntity *local)
+{
+	Vector forward;
+	trace_t tr;
+	Ray_t ray;
+	CTraceFilter filter;
+	filter.pSkip = local;
+
+	Vector viewangle = cmd->viewangles;
+	viewangle += *local->getaimpunchangle() * 2.f;
+	AngleVectors(viewangle, &forward);
+	// Math::AngleVectors(viewangle, forward);
+	static const float max_distance = 8012.f;
+	Vector localEyes = local->geteyepos();
+	Vector forwarded_eyes = local->geteyepos() + (forward * max_distance);
+	ray.Init(localEyes, forwarded_eyes);
+
+	// constexpr const unsigned int MASK_SHOT = 0x46004003;
+
+	g_pEngineTrace->TraceRay(ray, MASK_SHOT, &filter, &tr);
+
+	if (!tr.m_pEnt)
+		return;
+
+	if (tr.m_pEnt->getteam() != 0 && tr.m_pEnt->getteam() != local->getteam())
+		cmd->buttons &= IN_ATTACK;
+}
+
 bool __fastcall hkCreateMove(void *, void *, float, CUserCmd *cmd)
 {
 	if (cmd->command_number == 0) //if command_number is 0 then ExtraMouseSample is being called
@@ -220,6 +248,7 @@ bool __fastcall hkCreateMove(void *, void *, float, CUserCmd *cmd)
 
 	bhop(cmd, local);
 	//rcs(cmd, local);
-	aimbot(cmd, local);
+	//aimbot(cmd, local);
+	trigger(cmd, local);
 	return 0;
 }
