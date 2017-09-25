@@ -223,7 +223,7 @@ void trigger(CUserCmd *cmd, CEntity *local)
 	// Math::AngleVectors(viewangle, forward);
 	static const float max_distance = 8012.f;
 	Vector localEyes = local->geteyepos();
-	Vector forwarded_eyes = local->geteyepos() + (forward * max_distance);
+	Vector forwarded_eyes = localEyes + (forward * max_distance);
 	ray.Init(localEyes, forwarded_eyes);
 
 	// constexpr const unsigned int MASK_SHOT = 0x46004003;
