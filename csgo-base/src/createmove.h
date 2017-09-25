@@ -53,8 +53,8 @@ void bhop(CUserCmd *cmd, CEntity *local)
 }
 
 const float FoV = 3.0f;
-const float Inacc = 1.5f;
-const float Speed = 0.15f;
+const float Inacc = 1.1f;
+const float Speed = 0.65f;
 
 bool IsBallisticWeapon(void *weapon)
 {
