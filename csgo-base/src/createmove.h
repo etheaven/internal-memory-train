@@ -6,6 +6,7 @@
 #include <ctime>
 #include <cstdio>
 
+
 void rcs(CUserCmd *cmd, CEntity *local)
 {
 	if (local->getshotsfired() <= 1)
@@ -149,6 +150,9 @@ void aimbot(CUserCmd *cmd, CEntity *local)
 	CEntity *pLocal = local;
 	bool FindNewTarget = true;
 	static int TargetID = -1;
+
+	if (!GetAsyncKeyState(VK_LBUTTON))
+		return;
 
 	//knife
 	CBaseCombatWeapon *pWeapon = (CBaseCombatWeapon *)g_pEntityList->entfromhandle(local->getactiveweapon());
