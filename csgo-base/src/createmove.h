@@ -51,9 +51,9 @@ void bhop(CUserCmd *cmd, CEntity *local)
 	}
 }
 
-const float FoV = 5.0f;
-const float Inacc = 1.0f;
-const float Speed = 0.6f;
+const float FoV = 3.0f;
+const float Inacc = 1.5f;
+const float Speed = 0.15f;
 
 bool IsBallisticWeapon(void *weapon)
 {
@@ -78,7 +78,7 @@ int GetTargetCrosshair(CEntity *pLocal)
 		CEntity *pEntity = g_pEntityList->getcliententity(i);
 		if (TargetMeetsRequirements(pEntity, 8, true))
 		{
-			printf("meets!\n");
+			// printf("meets!\n");
 			float fov = FovToPlayer(ViewOffset, View, pEntity);
 			if (fov < minFoV)
 			{
@@ -215,6 +215,7 @@ bool __fastcall hkCreateMove(void *, void *, float, CUserCmd *cmd)
 		return 0;
 
 	bhop(cmd, local);
+	//rcs(cmd, local);
 	aimbot(cmd, local);
 	return 0;
 }
