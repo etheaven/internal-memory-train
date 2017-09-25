@@ -221,18 +221,15 @@ void trigger(CUserCmd *cmd, CEntity *local)
 	viewangle += *local->getaimpunchangle() * 2.f;
 	AngleVectors(viewangle, &forward);
 	// Math::AngleVectors(viewangle, forward);
-	static const float max_distance = 8012.f;
+	constexpr float max_distance = 8012.f;
 	Vector localEyes = local->geteyepos();
 	Vector forwarded_eyes = localEyes + (forward * max_distance);
 	ray.Init(localEyes, forwarded_eyes);
 
-	// constexpr const unsigned int MASK_SHOT = 0x46004003;
-
 	g_pEngineTrace->TraceRay(ray, MASK_SHOT, &filter, &tr);
 
-	if (!tr.m_pEnt)
+	if (!tr.m_pEnt) // fraction awlays 1.0
 		return;
-
 	if (tr.m_pEnt->getteam() != 0 && tr.m_pEnt->getteam() != local->getteam())
 		cmd->buttons &= IN_ATTACK;
 }
