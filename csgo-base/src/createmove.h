@@ -146,12 +146,13 @@ bool AimAtPoint(CEntity *pLocal, Vector point, CUserCmd *pCmd, bool &bSendPacket
 	g_pEngine->SetViewAngles(pCmd->viewangles);
 	return v;
 }
-void aimbot(CUserCmd *cmd, CEntity *local)
+bool aimbot(CUserCmd *cmd, CEntity *local)
 {
 	CEntity *pTarget = nullptr;
 	CEntity *pLocal = local;
 	bool FindNewTarget = true;
 	static int TargetID = -1;
+	bool shot = false;
 
 	if (!GetAsyncKeyState(VK_LBUTTON)) // maybe it was too early for inputsystem xd
 		return;
@@ -202,12 +203,14 @@ void aimbot(CUserCmd *cmd, CEntity *local)
 		if (AimAtPoint(pLocal, AimPoint, cmd, bSendPacket))
 		{
 			//IsLocked = true;
-			if (/* Menu::Window.LegitBotTab.AimbotAutoFire.GetState()  */ false && !(cmd->buttons & IN_ATTACK))
+			if (/* Menu::Window.LegitBotTab.AimbotAutoFire.GetState()  */ GetAsyncKeyState(VK_LBUTTON) && !(cmd->buttons & IN_ATTACK))
 			{
 				cmd->buttons |= IN_ATTACK;
+				shot = true;
 			}
 		}
 	}
+	return shot;
 }
 
 void trigger(CUserCmd *cmd, CEntity *local)
@@ -245,8 +248,8 @@ bool __fastcall hkCreateMove(void *, void *, float, CUserCmd *cmd)
 		return 0;
 
 	bhop(cmd, local);
-	rcs(cmd, local);
-	//aimbot(cmd, local);
+	if (!aimbot(cmd, local))
+		rcs(cmd, local);
 	//trigger(cmd, local);
 	return 0;
 }
