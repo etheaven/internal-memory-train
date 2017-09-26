@@ -27,7 +27,7 @@ class IAppSystem
 {
   public:
     // Here's where the app systems get to learn about each other
-    virtual bool Connect(CreateInterfaceFn factory) = 0;
+    virtual bool Connect(/* CreateInterfaceFn */void* factory) = 0;
 
     virtual void Disconnect() = 0;
 
