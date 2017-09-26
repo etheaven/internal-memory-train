@@ -155,13 +155,13 @@ bool aimbot(CUserCmd *cmd, CEntity *local)
 	bool shot = false;
 
 	if (!GetAsyncKeyState(VK_LBUTTON)) // maybe it was too early for inputsystem xd
-		return;
+		return false;
 	//knife
 	CBaseCombatWeapon *pWeapon = (CBaseCombatWeapon *)g_pEntityList->entfromhandle(local->getactiveweapon());
 	if (!pWeapon)
-		return;
+		return false;
 	if (pWeapon->GetAmmoInClip() == 0 || !IsBallisticWeapon(pWeapon))
-		return;
+		return false;
 	// Make sure we have a ok target
 	if (TargetID >= 0)
 	{
@@ -196,7 +196,7 @@ bool aimbot(CUserCmd *cmd, CEntity *local)
 		{
 			TargetID = -1;
 			pTarget = nullptr;
-			return;
+			return false;
 		}
 		Vector AimPoint = pTarget->GetBonePosition(8);
 		bool bSendPacket = false;
