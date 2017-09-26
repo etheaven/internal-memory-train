@@ -14,10 +14,12 @@ void rcs(CUserCmd *cmd, CEntity *local)
 	if (local->getactiveweapon() == 0xFFFFFFFF)
 		return;
 	vec3f punchAngles = (*local->getaimpunchangle()) * 2.0f;
+	Vector angles; local->GetViewAngles(angles);
 	if (punchAngles != 0.f)
 	{
-		cmd->viewangles -= punchAngles;
-		cmd->viewangles.clamp();
+		angles -= punchAngles;
+		angles.clamp();
+		SetViewAngles(angles);
 	}
 }
 void bhop(CUserCmd *cmd, CEntity *local)
@@ -244,8 +246,8 @@ bool __fastcall hkCreateMove(void *, void *, float, CUserCmd *cmd)
 		return 0;
 
 	bhop(cmd, local);
-	//rcs(cmd, local);
+	rcs(cmd, local);
 	//aimbot(cmd, local);
-	trigger(cmd, local);
+	//trigger(cmd, local);
 	return 0;
 }
