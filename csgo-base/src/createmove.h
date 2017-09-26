@@ -153,7 +153,7 @@ void aimbot(CUserCmd *cmd, CEntity *local)
 	bool FindNewTarget = true;
 	static int TargetID = -1;
 
-	if (!g_pInputSystem->IsButtonDown(MOUSE_LEFT))
+	if (!GetAsyncKeyState(VK_LBUTTON)) // maybe it was too early for inputsystem xd
 		return;
 	//knife
 	CBaseCombatWeapon *pWeapon = (CBaseCombatWeapon *)g_pEntityList->entfromhandle(local->getactiveweapon());
@@ -245,8 +245,8 @@ bool __fastcall hkCreateMove(void *, void *, float, CUserCmd *cmd)
 		return 0;
 
 	bhop(cmd, local);
-	//rcs(cmd, local);
-	aimbot(cmd, local);
+	rcs(cmd, local);
+	//aimbot(cmd, local);
 	//trigger(cmd, local);
 	return 0;
 }
