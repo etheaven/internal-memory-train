@@ -23,11 +23,12 @@ enum AppSystemTier_t
     APP_SYSTEM_TIER_OTHER,
 };
 
+typedef void* (*CreateInterfaceFn) (const char*, int*);
 class IAppSystem
 {
   public:
     // Here's where the app systems get to learn about each other
-    virtual bool Connect(/* CreateInterfaceFn */void* factory) = 0;
+    virtual bool Connect(CreateInterfaceFn factory) = 0;
 
     virtual void Disconnect() = 0;
 
@@ -47,7 +48,7 @@ class IAppSystem
     virtual AppSystemTier_t GetTier() = 0;
 
     // Reconnect to a particular interface
-    virtual void Reconnect(/* CreateInterfaceFn */ void *factory, const char *pInterfaceName) = 0;
+    virtual void Reconnect(CreateInterfaceFn factory, const char *pInterfaceName) = 0;
 
     // Returns whether or not the app system is a singleton
     virtual bool IsSingleton() = 0;
