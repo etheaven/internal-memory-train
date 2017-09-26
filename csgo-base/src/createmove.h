@@ -14,12 +14,10 @@ void rcs(CUserCmd *cmd, CEntity *local)
 	if (local->getactiveweapon() == 0xFFFFFFFF)
 		return;
 	vec3f punchAngles = (*local->getaimpunchangle()) * 2.0f;
-	Vector angles; g_pEngine->GetViewAngles(angles);
 	if (punchAngles != 0.f)
 	{
-		angles -= punchAngles;
-		angles.clamp();
-		g_pEngine->SetViewAngles(angles);
+		cmd->viewangles -= punchAngles;
+		cmd->viewangles.clamp();
 	}
 }
 void bhop(CUserCmd *cmd, CEntity *local)
@@ -56,7 +54,7 @@ void bhop(CUserCmd *cmd, CEntity *local)
 
 const float FoV = 5.0f;
 const float Inacc = 1.1f;
-const float Speed = 0.65f;
+const float Speed = 0.015f;
 
 bool IsBallisticWeapon(void *weapon)
 {
@@ -64,7 +62,7 @@ bool IsBallisticWeapon(void *weapon)
 		return false;
 	char *pWeapon = (char *)weapon;
 	int id = *(pWeapon + 0x2F88);
-	return !(id >= WEAPON_KNIFE_CT && id <= WEAPON_KNIFE_T || id == 0 || id >= WEAPON_KNIFE_BAYONET);
+	return !(id >= WEAPON_KNIFE_CT && (id <= WEAPON_KNIFE_T || id == 0 || id >= WEAPON_KNIFE_BAYONET));
 }
 
 int GetTargetCrosshair(CEntity *pLocal)
@@ -152,8 +150,6 @@ bool aimbot(CUserCmd *cmd, CEntity *local)
 	CEntity *pLocal = local;
 	bool FindNewTarget = true;
 	static int TargetID = -1;
-	bool shot = false;
-
 	if (!GetAsyncKeyState(VK_LBUTTON)) // maybe it was too early for inputsystem xd
 		return false;
 	//knife
@@ -203,14 +199,14 @@ bool aimbot(CUserCmd *cmd, CEntity *local)
 		if (AimAtPoint(pLocal, AimPoint, cmd, bSendPacket))
 		{
 			//IsLocked = true;
-			if (/* Menu::Window.LegitBotTab.AimbotAutoFire.GetState()  */ GetAsyncKeyState(VK_LBUTTON) && !(cmd->buttons & IN_ATTACK))
+			if (/* Menu::Window.LegitBotTab.AimbotAutoFire.GetState()  */ false && !(cmd->buttons & IN_ATTACK))
 			{
 				cmd->buttons |= IN_ATTACK;
-				shot = true;
 			}
+			return true;
 		}
 	}
-	return shot;
+	return false;
 }
 
 void trigger(CUserCmd *cmd, CEntity *local)
@@ -248,8 +244,7 @@ bool __fastcall hkCreateMove(void *, void *, float, CUserCmd *cmd)
 		return 0;
 
 	bhop(cmd, local);
-	if (!aimbot(cmd, local))
-		rcs(cmd, local);
+	aimbot(cmd, local);
 	//trigger(cmd, local);
 	return 0;
 }
