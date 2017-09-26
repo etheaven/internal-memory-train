@@ -15,6 +15,8 @@
 #include "sdk/Additional/Color.h"
 #include "sdk/IVDebugOverlay.h"
 #include "sdk/CBaseCombatWeapon.h"
+#include "sdk/IAppSystem.h"
+#include "sdk/IInputSystem.h"
 
 #include "vector.h"
 
