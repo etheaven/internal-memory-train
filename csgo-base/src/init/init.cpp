@@ -92,10 +92,11 @@ bool init::setup()
 
 bool init::detach()
 {
-    VMTClientMode.RestoreOriginal();
     if (VMTClientMode.getInit())
         return false;
     if (VMTPaintTraverse.getInit())
         return false;
+    VMTClientMode.RestoreOriginal();
+    VMTPaintTraverse.RestoreOriginal();
     return true;
 }
