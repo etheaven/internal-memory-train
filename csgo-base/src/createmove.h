@@ -14,12 +14,12 @@ void rcs(CUserCmd *cmd, CEntity *local)
 	if (local->getactiveweapon() == 0xFFFFFFFF)
 		return;
 	vec3f punchAngles = (*local->getaimpunchangle()) * 2.0f;
-	Vector angles; local->GetViewAngles(angles);
+	Vector angles; g_pEngine->GetViewAngles(angles);
 	if (punchAngles != 0.f)
 	{
 		angles -= punchAngles;
 		angles.clamp();
-		SetViewAngles(angles);
+		g_pEngine->SetViewAngles(angles);
 	}
 }
 void bhop(CUserCmd *cmd, CEntity *local)
@@ -54,7 +54,7 @@ void bhop(CUserCmd *cmd, CEntity *local)
 	}
 }
 
-const float FoV = 3.0f;
+const float FoV = 5.0f;
 const float Inacc = 1.1f;
 const float Speed = 0.65f;
 
@@ -152,7 +152,7 @@ void aimbot(CUserCmd *cmd, CEntity *local)
 	CEntity *pLocal = local;
 	bool FindNewTarget = true;
 	static int TargetID = -1;
-	
+
 	if (!g_pInputSystem->IsButtonDown(MOUSE_LEFT))
 		return;
 	//knife
