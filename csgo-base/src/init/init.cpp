@@ -22,6 +22,8 @@ IPanel *g_pPanel = nullptr;
 ISurface *g_pSurface = nullptr;
 IVDebugOverlay *g_pDebugOverlay = nullptr;
 
+IInputSystem *g_pInputSystem = nullptr;
+
 #ifndef __TOUCH_TIER_0__
 MsgFn g_Msg = nullptr;
 WarningFn g_Warning = nullptr;
@@ -72,6 +74,9 @@ bool init::setup()
     
     g_pDebugOverlay = (IVDebugOverlay *)util::EasyInterface("engine.dll", "VDebugOverlay00");
     printf("debugoverlay: 0x%p\n", (void *)g_pDebugOverlay);
+    
+    g_pInputSystem = (IInputSystem *)util::EasyInterface("inputsystem.dll", "InputSystemVersion00");
+    printf("inputSystem: 0x%p\n", (void *)g_pInputSystem);
 
     VMTClientMode.Initialise((DWORD *)g_pClientMode);
     VMTClientMode.HookMethod((DWORD)hkCreateMove, 24);
