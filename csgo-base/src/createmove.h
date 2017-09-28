@@ -213,12 +213,14 @@ void trigger(CUserCmd *cmd, CEntity *local)
 	Vector viewangle = cmd->viewangles, pos;
 	viewangle += *local->getaimpunchangle() * 2.f;
 	AngleVectors(viewangle, &pos);
+	pos.NormalizeAngles();
     Ray_t ray;
     trace_t trace;
     CTraceFilter filter;
     filter.pSkip = local;
 	Vector eLoc = local->geteyepos();
 	Vector eForw = eLoc + pos *  8012.0f;
+	eForw.NormalizeAngles();
     ray.Init(eLoc, eForw);
 	g_pEngineTrace->TraceRay(ray, MASK_SHOT, &filter, &trace);
 	if (trace.m_pEnt == nullptr || trace.m_pEnt->gethealth() < 1)
