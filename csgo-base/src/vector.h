@@ -375,3 +375,18 @@ void AngleVectors(const Vector &angles, Vector *forward)
 } */
 
 using vec3f = Vector;
+
+class VectorAligned : public vec3f
+{
+public:
+	VectorAligned( ) {}
+
+	VectorAligned( const Vector &vec )
+	{
+		this->x = vec.x;
+		this->y = vec.y;
+		this->z = vec.z;
+	}
+
+	float w;
+};
