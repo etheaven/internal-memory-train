@@ -6,7 +6,6 @@
 #include <ctime>
 #include <cstdio>
 
-
 void rcs(CUserCmd *cmd, CEntity *local)
 {
 	if (local->getshotsfired() <= 1)
@@ -211,27 +210,23 @@ bool aimbot(CUserCmd *cmd, CEntity *local)
 
 void trigger(CUserCmd *cmd, CEntity *local)
 {
-	Vector forward;
-	trace_t tr;
-	Ray_t ray;
-	CTraceFilter filter;
-	filter.pSkip = local;
-
-	Vector viewangle = cmd->viewangles;
+	Vector viewangle = cmd->viewangles, pos;
 	viewangle += *local->getaimpunchangle() * 2.f;
-	AngleVectors(viewangle, &forward);
-	// Math::AngleVectors(viewangle, forward);
-	constexpr float max_distance = 8012.f;
-	Vector localEyes = local->geteyepos();
-	Vector forwarded_eyes = localEyes + (forward * max_distance);
-	ray.Init(localEyes, forwarded_eyes);
-
-	g_pEngineTrace->TraceRay(ray, MASK_SHOT, &filter, &tr);
-
-	if (!tr.m_pEnt) // fraction awlays 1.0
+	AngleVectors(viewangle, &pos);
+    Ray_t ray;
+    trace_t trace;
+    CTraceFilter filter;
+    filter.pSkip = local;
+	Vector eLoc = local->geteyepos();
+	Vector eForw = eLoc + pos *  8012.0f;
+    ray.Init(eLoc, eForw);
+	g_pEngineTrace->TraceRay(ray, MASK_SHOT, &filter, &trace);
+	if (trace.m_pEnt == nullptr || trace.m_pEnt->gethealth() < 1)
 		return;
-	if (tr.m_pEnt->getteam() != 0 && tr.m_pEnt->getteam() != local->getteam())
-		cmd->buttons &= IN_ATTACK;
+	if (TargetMeetsRequirements(trace.m_pEnt))
+	{
+		cmd->buttons |= IN_ATTACK;
+	}
 }
 
 bool __fastcall hkCreateMove(void *, void *, float, CUserCmd *cmd)
@@ -244,7 +239,7 @@ bool __fastcall hkCreateMove(void *, void *, float, CUserCmd *cmd)
 		return 0;
 
 	bhop(cmd, local);
-	aimbot(cmd, local);
-	//trigger(cmd, local);
+	//aimbot(cmd, local);
+	trigger(cmd, local);
 	return 0;
 }
