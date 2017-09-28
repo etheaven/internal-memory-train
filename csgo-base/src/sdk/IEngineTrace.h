@@ -60,7 +60,8 @@ struct Ray_t
 	{
 		m_Delta = vecEnd - vecStart;
 
-		m_IsSwept = (m_Delta.LengthSqr() != 0);
+		//TODO: it is supposed to be LengthSqr -> TODO: create LengthSqr()
+		m_IsSwept = (m_Delta.Length() != 0);
 
 		m_Extents.x = m_Extents.y = m_Extents.z = 0.0f;
 
