@@ -45,10 +45,10 @@ class CEntity;
 
 struct Ray_t
 {
-	Vector m_Start;
-	Vector m_Delta;
-	Vector m_StartOffset;
-	Vector m_Extents;
+	__declspec(align(16)) Vector m_Start;
+	__declspec(align(16)) Vector m_Delta;
+	__declspec(align(16)) Vector m_StartOffset;
+	__declspec(align(16)) Vector m_Extents;
 
 	const matrix3x4_t *m_pWorldAxisTransform;
 
