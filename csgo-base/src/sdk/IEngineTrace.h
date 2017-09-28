@@ -45,11 +45,10 @@ class CEntity;
 
 struct Ray_t
 {
-	__declspec(align(16)) Vector m_Start;
-	__declspec(align(16)) Vector m_Delta;
-	__declspec(align(16)) Vector m_StartOffset;
-	__declspec(align(16)) Vector m_Extents;
-
+	VectorAligned		m_Start;
+	VectorAligned		m_Delta;
+	VectorAligned		m_StartOffset;
+	VectorAligned		m_Extents;
 	const matrix3x4_t *m_pWorldAxisTransform;
 
 	bool m_IsRay; // i veri buy dem nigga
@@ -61,7 +60,7 @@ struct Ray_t
 	{
 		m_Delta = vecEnd - vecStart;
 
-		m_IsSwept = (m_Delta.Length() != 0);
+		m_IsSwept = (m_Delta.LengthSqr() != 0);
 
 		m_Extents.x = m_Extents.y = m_Extents.z = 0.0f;
 
