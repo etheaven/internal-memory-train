@@ -146,6 +146,7 @@ inline bool IsVisibleBone(CEntity *player, int bone)
 	g_pEngineTrace->TraceRay(ray, MASK_NPCWORLDSTATIC | CONTENTS_SOLID | CONTENTS_MOVEABLE | CONTENTS_MONSTER | CONTENTS_WINDOW | CONTENTS_DEBRIS | CONTENTS_HITBOX, &filter, &tr);
 	if (tr.m_pEnt == player || tr.fraction > 0.97f)
 		return true;
+	return false;
 }
 //TODO: implement usage of bone index
 inline bool IsVisible(CEntity *player, int bone = 8)
