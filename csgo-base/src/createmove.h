@@ -211,9 +211,9 @@ bool aimbot(CUserCmd *cmd, CEntity *local)
 void trigger(CUserCmd *cmd, CEntity *local)
 {
 	Vector pos;
-	// Vector viewangle = cmd->viewangles;
-	// viewangle += *local->getaimpunchangle() * 2.f;
-	AngleVectors(cmd->viewangles, &pos);
+	Vector viewangle = cmd->viewangles;
+	viewangle += *local->getaimpunchangle() * 2.f;
+	AngleVectors(viewangle, &pos);
 	pos *= 8012.0f;
     Ray_t ray;
     trace_t trace;
@@ -224,7 +224,7 @@ void trigger(CUserCmd *cmd, CEntity *local)
 	Vector eForw = eLoc + pos;
     ray.Init(eLoc, eForw);
 	g_pEngineTrace->TraceRay(ray, MASK_SHOT, &filter, &trace);
-	if (TargetMeetsRequirements(trace.m_pEnt))
+	if (/* ((GetAsyncKeyState(VK_MBUTTON)) & 0x8000) &&  */TargetMeetsRequirements(trace.m_pEnt))
 	{
 		cmd->buttons |= IN_ATTACK;
 	}
@@ -242,5 +242,6 @@ bool __fastcall hkCreateMove(void *, void *, float, CUserCmd *cmd)
 	bhop(cmd, local);
 	//aimbot(cmd, local);
 	trigger(cmd, local);
+	//rcs(cmd,local);
 	return 0;
 }
