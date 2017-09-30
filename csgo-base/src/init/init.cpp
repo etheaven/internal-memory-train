@@ -6,6 +6,7 @@
 #include "../painttraverse.h"
 
 #include <cstdio>
+#include "../util/string_constex.h"
 
 CClientBase *g_pClient = nullptr;
 IClientModeShared *g_pClientMode = nullptr;
@@ -40,7 +41,6 @@ void SetupConsole()
     freopen("CONIN$", "rb", stdin);
     SetConsoleTitle("Debug");
 }
-#include "../util/string_constex.h"
 bool init::setup()
 {
     SetupConsole();
