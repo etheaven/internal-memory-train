@@ -6,26 +6,29 @@
 #include <cstdlib>
 #include "wchar.h"
 
-class DrawManager{
-public:
-	DrawManager() {};
+class DrawManager
+{
+  public:
+	DrawManager(){};
 	void FillRGBA(int x, int y, int w, int h, int r, int g, int b, int a)
 	{
 		g_pSurface->DrawSetColor(r, g, b, a);
 		g_pSurface->DrawFilledRect(x, y, x + w, y + h);
 	}
-	void DrawHealthBox(int x, int y, int r, int g, int b, int CurHealth, int MaxHealth) {
+	void DrawHealthBox(int x, int y, int r, int g, int b, int CurHealth, int MaxHealth)
+	{
 		float mx = MaxHealth / 4;
 		float wx = CurHealth / 4;
-		if (mx == 0) return;
+		if (mx == 0)
+			return;
 		x -= (mx / 2);
 		this->FillRGBA(x - 1, y - 1, mx + 2, 4 + 2, r, g, b, 255);
 		this->FillRGBA(x, y, wx, 4, r, g, b, 255);
 	}
-	void DrawLine(int x0,int y0, int x1, int y1, Color c)
+	void DrawLine(int x0, int y0, int x1, int y1, Color c)
 	{
 		g_pSurface->DrawSetColor(c);
-		g_pSurface->DrawLine(x0,y0,x1,y1);
+		g_pSurface->DrawLine(x0, y0, x1, y1);
 	}
 	static void TextW(bool cent, int font, int x, int y, Color color, wchar_t *pszString) noexcept
 	{
@@ -59,24 +62,24 @@ public:
 		auto BoxWidth = x1 - x0;
 		auto BoxHeight = y1 - y0;
 
-		if (BoxWidth < 10) BoxWidth = 10;
-		if (BoxHeight < 15) BoxHeight = 15;
-
+		if (BoxWidth < 10)
+			BoxWidth = 10;
+		if (BoxHeight < 15)
+			BoxHeight = 15;
 
 		g_pSurface->DrawSetColor(R, G, B, A);
 
-		g_pSurface->DrawFilledRect(x0, y0, x0 + (BoxWidth / 5), y0 + 1); //left top
+		g_pSurface->DrawFilledRect(x0, y0, x0 + (BoxWidth / 5), y0 + 1);  //left top
 		g_pSurface->DrawFilledRect(x0, y0, x0 + 1, y0 + (BoxHeight / 6)); //left top
 
 		g_pSurface->DrawFilledRect(x1 - (BoxWidth / 5) + 1, y0, x1, y0 + 1); //right top
-		g_pSurface->DrawFilledRect(x1, y0, x1 + 1, y0 + (BoxHeight / 6)); //right top
+		g_pSurface->DrawFilledRect(x1, y0, x1 + 1, y0 + (BoxHeight / 6));	//right top
 
-		g_pSurface->DrawFilledRect(x0, y1, x0 + (BoxWidth / 5), y1 + 1); //left bottom
+		g_pSurface->DrawFilledRect(x0, y1, x0 + (BoxWidth / 5), y1 + 1);		  //left bottom
 		g_pSurface->DrawFilledRect(x0, y1 - (BoxHeight / 6) + 1, x0 + 1, y1 + 1); //left bottom
 
-		g_pSurface->DrawFilledRect(x1 - (BoxWidth / 5) + 1, y1, x1, y1 + 1); //right bottom
+		g_pSurface->DrawFilledRect(x1 - (BoxWidth / 5) + 1, y1, x1, y1 + 1);	  //right bottom
 		g_pSurface->DrawFilledRect(x1, y1 - (BoxHeight / 6) + 1, x1 + 1, y1 + 1); //right bottom
-
 
 		auto HealthWidth = ((x1 - x0) - 2);
 		auto HealthHeight = (y1 - y0) - 2;
@@ -87,7 +90,8 @@ public:
 	{
 		int iStep = (radius * 4);
 
-		for (int i = 0; i < radius; i++) {
+		for (int i = 0; i < radius; i++)
+		{
 
 			//Background
 			FillRGBA((x - iStep + i) - 1, (y - iStep) - 1, 3, 3, 0, 0, 0, 255);
@@ -101,10 +105,10 @@ public:
 
 			FillRGBA((x + iStep - i) - 1, (y + iStep) - 1, 3, 3, 0, 0, 0, 255);
 			FillRGBA((x + iStep) - 1, (y + iStep - i) - 1, 3, 3, 0, 0, 0, 255);
-
 		}
 
-		for (int i = 0; i < radius; i++) {
+		for (int i = 0; i < radius; i++)
+		{
 
 			//Simple
 			FillRGBA(x - iStep + i, y - iStep, 1, 1, R, G, B, 255);
@@ -118,11 +122,10 @@ public:
 
 			FillRGBA(x + iStep - i, y + iStep, 1, 1, R, G, B, 255);
 			FillRGBA(x + iStep, y + iStep - i, 1, 1, R, G, B, 255);
-
 		}
 	}
 
-	VOID drawCrosshair(int x, int y, int r, int g, int b)
+	void drawCrosshair(int x, int y, int r, int g, int b)
 	{
 		//Right
 		FillRGBA(x, y, 15, 2, r, g, b, 255);
@@ -134,11 +137,11 @@ public:
 		FillRGBA(x, y - 15, 2, 15, r, g, b, 255);
 	}
 
-	VOID DrawBox(int x, int y, int w, int h, int lw, int r, int g, int b, int a)
+	void DrawBox(int x, int y, int w, int h, int lw, int r, int g, int b, int a)
 	{
-		FillRGBA(x, y, w, lw, r, g, b, a); // top
-		FillRGBA(x, y + lw, lw, h - lw, r, g, b, a); // left
-		FillRGBA(x + w - lw, y + lw, lw, h - lw, r, g, b, a); // right
+		FillRGBA(x, y, w, lw, r, g, b, a);						  // top
+		FillRGBA(x, y + lw, lw, h - lw, r, g, b, a);			  // left
+		FillRGBA(x + w - lw, y + lw, lw, h - lw, r, g, b, a);	 // right
 		FillRGBA(x + lw, y + h - lw, w - lw * 2, lw, r, g, b, a); // bottom
 	}
 
