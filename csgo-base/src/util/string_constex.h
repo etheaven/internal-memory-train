@@ -148,4 +148,4 @@ std::ostream & operator<< (std::ostream & s, const obfuscated_string<seed, N> & 
 #define LIT(STR) \
     obfuscated_string<RNG_SEED, array_info<decltype(STR)>::size>{STR}
 
-    #define con_str(x) static_cast<std::string>(LIT((x))).c_str()
+#define con_str(x) static_cast<std::string>(LIT((x))).c_str()
