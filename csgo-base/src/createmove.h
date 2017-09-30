@@ -241,7 +241,7 @@ bool __fastcall hkCreateMove(void *, void *, float, CUserCmd *cmd)
 
 	bhop(cmd, local);
 	//aimbot(cmd, local);
+	rcs(cmd,local);
 	trigger(cmd, local);
-	//rcs(cmd,local);
 	return 0;
 }
