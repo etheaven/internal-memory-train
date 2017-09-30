@@ -224,7 +224,7 @@ void trigger(CUserCmd *cmd, CEntity *local)
 	Vector eForw = eLoc + pos;
     ray.Init(eLoc, eForw);
 	g_pEngineTrace->TraceRay(ray, MASK_SHOT, &filter, &trace);
-	if (/* ((GetAsyncKeyState(VK_MBUTTON)) & 0x8000) &&  */TargetMeetsRequirements(trace.m_pEnt))
+	if (((GetAsyncKeyState(VK_MBUTTON)) & 0x8000) && TargetMeetsRequirements(trace.m_pEnt))
 	{
 		cmd->buttons |= IN_ATTACK;
 	}
