@@ -15,7 +15,7 @@ class ISurface
     void DrawSetColor(uc r, uc g, uc b, uc a = 0)
     {
         typedef void(__thiscall * OrigFn)(void *, uc, uc, uc, uc);
-        util::getvfunc<OrigFn>(this, 14)(this, r, g, b, a);
+        util::getvfunc<OrigFn>(this, 15)(this, r, g, b, a);
     }
 
     void DrawFilledRect(int x0, int y0, int x1, int y1)
