@@ -4,6 +4,8 @@
 #include <vector>
 #include <cstdio>
 
+
+
 class IControl{
 public:
   virtual void init() = 0;
@@ -26,7 +28,7 @@ struct Mouse
     pos.x = mp.x;
     pos.y = mp.y;
     for(int i = 1; i <= 2; ++i)
-      isClicked[i-1] = GetAsyncKeyState(i) & 1; //VK_LBUTTON 0x01
+    isClicked[i-1] = GetAsyncKeyState(i) & 1; //VK_LBUTTON 0x01
   }
 };
 
@@ -38,13 +40,14 @@ bool dragged(Coords const& control, int x_size, int y_size, Mouse const& mouse)
 class CheckBox : public IControl
 {
   public:
-    void set(Mouse *ms){
+    void set(Mouse *ms, int size = 12){
       m = ms;
+      this->size = size;
     }
     void init(){}
     void tick()
     {
-      if (dragged(pos, 50, 50, *m)){
+      if (dragged(pos, size, size, *m)){
         if (m->isClicked[0])
             checked = !checked;
       }
@@ -54,33 +57,19 @@ class CheckBox : public IControl
     {
       if (!checked)
       {
-        g_pDrawManager->FillColor(pos.x, pos.y, 50, 50, Color(64,64,64));
+        g_pDrawManager->FillColor(pos.x, pos.y, size, size, Color(64,64,64));
       }
       else
       {
-        g_pDrawManager->FillColor(pos.x, pos.y, 50, 50, Color(0,0,128));
+        g_pDrawManager->FillColor(pos.x, pos.y, size, size, Color(0,0,128));
       }
     }
   private:
+    int size;
     Mouse *m;
     Color color;
     bool checked = false;
     Coords pos;
-};
-
-class CTest : public IControl
-{
-public:
-  void set(Mouse *p){
-    m = p;
-  }
-  void init(){
-
-  }
-  void tick(){
-    g_pDrawManager->DrawRect(m->pos.x, m->pos.y, 20, 20, Color(0,255,0,128));
-  }
-  Mouse *m;
 };
 
 class CMenu : public IControl
@@ -99,9 +88,7 @@ class CMenu : public IControl
     int x_size = 500, y_size = 400; // x2,y2
     Coords pos; // start coords
     Mouse mouse;
-    //CTest a;
     CheckBox a;
-
 };
 
 void CMenu::draw_form()
