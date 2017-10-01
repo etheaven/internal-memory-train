@@ -26,7 +26,7 @@ struct Mouse
     pos.x = mp.x;
     pos.y = mp.y;
     for(int i = 1; i <= 2; ++i)
-      isClicked[i-1] = GetAsyncKeyState(i);
+      isClicked[i-1] = GetAsyncKeyState(i) & 1; //VK_LBUTTON 0x01
   }
 };
 
@@ -34,11 +34,11 @@ bool dragged(Coords const& control, int x_size, int y_size, Mouse const& mouse)
 {
   return mouse.pos.x > control.x && mouse.pos.y > control.y && mouse.pos.x < control.x + x_size && mouse.pos.y < control.y + y_size;
 }
-/* 
+
 class CheckBox : public IControl
 {
   public:
-    void set(Mouse const *ms){
+    void set(Mouse *ms){
       m = ms;
     }
     void init(){}
@@ -62,11 +62,11 @@ class CheckBox : public IControl
       }
     }
   private:
-    const Mouse *m;
+    Mouse *m;
     Color color;
     bool checked = false;
     Coords pos;
-}; */
+};
 
 class CTest : public IControl
 {
@@ -99,7 +99,9 @@ class CMenu : public IControl
     int x_size = 500, y_size = 400; // x2,y2
     Coords pos; // start coords
     Mouse mouse;
-    CTest a;
+    //CTest a;
+    CheckBox a;
+
 };
 
 void CMenu::draw_form()
@@ -119,9 +121,9 @@ void CMenu::init(){
 void CMenu::tick()
 {
   mouse.tick();
-  
+/*   
   if (mouse.isClicked[0])
-    pos = mouse.pos;
+    pos = mouse.pos; */
   draw_form();
   a.tick();
   draw_form_border();
