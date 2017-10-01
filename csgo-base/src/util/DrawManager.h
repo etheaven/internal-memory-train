@@ -16,6 +16,11 @@ class DrawManager
 		g_pSurface->DrawSetColor(r, g, b, a);
 		g_pSurface->DrawFilledRect(x, y, x + w, y + h);
 	}
+	void FillColor(int x, int y, int w, int h, Color c)
+	{
+		g_pSurface->DrawSetColor(c);
+		g_pSurface->DrawFilledRect(x, y, x + w, y + h);
+	}
 	void DrawHealthBox(int x, int y, int r, int g, int b, int CurHealth, int MaxHealth)
 	{
 		float mx = MaxHealth / 4;
