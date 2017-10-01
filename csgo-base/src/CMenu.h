@@ -2,10 +2,11 @@
 
 #include "sdk.h"
 #include <vector>
+#include <cstdio>
 
 struct Coords
 {
-  int x, y;
+  int x = 0, y = 0;
 };
 struct Mouse
 {
@@ -57,9 +58,13 @@ class CheckBox
 class CMenu
 {
   public:
+    CMenu(){
+      pos.x = pos.y = 40;
+    }
     void init();
     void tick();
     void update_mouse();
+    void draw_form();
     void draw_form_border();
   private:
     Color color = Color(0, 128, 0, 64);
@@ -79,14 +84,21 @@ void CMenu::update_mouse()
     mouse.isClicked[i-1] = GetAsyncKeyState(i);
 }
 
+void CMenu::draw_form()
+{
+  g_pSurface->DrawSetColor(color);
+  g_pSurface->DrawFilledRect(pos.x, pos.x + x_size, pos.y, pos.y + y_size);
+}
+
 void CMenu::draw_form_border()
 {
-    g_pDrawManager->DrawRect(pos.x, pos.y, x_size, y_size, color);
+    g_pDrawManager->DrawRect(pos.x, pos.y, x_size, y_size, Color(0,0,0));
 }
 
 void CMenu::tick()
 {
   update_mouse();
-  draw_form_border();
+  draw_form();
   cb1.tick(mouse);
+  draw_form_border();
 }
