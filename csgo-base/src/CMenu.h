@@ -4,6 +4,12 @@
 #include <vector>
 #include <cstdio>
 
+class IControl{
+public:
+  virtual void init() = 0;
+  virtual void tick() = 0;
+};
+
 struct Coords
 {
   int x = 0, y = 0;
@@ -65,7 +71,7 @@ class CheckBox
     Coords pos;
 };
 
-class CMenu
+class CMenu : public IControl
 {
   public:
     CMenu(){
@@ -90,6 +96,10 @@ void CMenu::draw_form()
 void CMenu::draw_form_border()
 {
     g_pDrawManager->DrawRect(pos.x, pos.y, x_size, y_size, Color(0,0,0));
+}
+
+void CMenu::init(){
+
 }
 
 void CMenu::tick()
