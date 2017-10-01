@@ -34,41 +34,53 @@ bool dragged(Coords const& control, int x_size, int y_size, Mouse const& mouse)
 {
   return mouse.pos.x > control.x && mouse.pos.y > control.y && mouse.pos.x < control.x + x_size && mouse.pos.y < control.y + y_size;
 }
-
-class CheckBox 
+/* 
+class CheckBox : public IControl
 {
   public:
-    CheckBox(int x = 0, int y = 0)
-    {
-      pos.x = x;
-      pos.y = y;
+    void set(Mouse const *ms){
+      m = ms;
     }
-    void tick(Mouse const& m)
+    void init(){}
+    void tick()
     {
-      if (dragged(pos, 12, 12, m)){
-        if (m.isClicked[0])
-          checked = true;
-        else checked = false;
+      if (dragged(pos, 50, 50, *m)){
+        if (m->isClicked[0])
+            checked = !checked;
       }
-      else
-        checked = false;
       draw();
     }
     void draw()
     {
       if (!checked)
       {
-        g_pDrawManager->FillColor(pos.x, pos.y, 12, 12, color);
+        g_pDrawManager->FillColor(pos.x, pos.y, 50, 50, Color(64,64,64));
       }
       else
       {
-        g_pDrawManager->FillColor(pos.x, pos.y, 12, 12, Color(0,0,255));
+        g_pDrawManager->FillColor(pos.x, pos.y, 50, 50, Color(0,0,128));
       }
     }
   private:
+    const Mouse *m;
     Color color;
     bool checked = false;
     Coords pos;
+}; */
+
+class CTest : public IControl
+{
+public:
+  void set(Mouse *p){
+    m = p;
+  }
+  void init(){
+
+  }
+  void tick(){
+    g_pDrawManager->DrawRect(m->pos.x, m->pos.y, 20, 20, Color(0,255,0,128));
+  }
+  Mouse *m;
 };
 
 class CMenu : public IControl
@@ -76,6 +88,7 @@ class CMenu : public IControl
   public:
     CMenu(){
       pos.x = pos.y = 40;
+      init();
     }
     void init();
     void tick();
@@ -86,6 +99,7 @@ class CMenu : public IControl
     int x_size = 500, y_size = 400; // x2,y2
     Coords pos; // start coords
     Mouse mouse;
+    CTest a;
 };
 
 void CMenu::draw_form()
@@ -99,7 +113,7 @@ void CMenu::draw_form_border()
 }
 
 void CMenu::init(){
-
+  a.set(&mouse);
 }
 
 void CMenu::tick()
@@ -109,6 +123,6 @@ void CMenu::tick()
   if (mouse.isClicked[0])
     pos = mouse.pos;
   draw_form();
-
+  a.tick();
   draw_form_border();
 }
