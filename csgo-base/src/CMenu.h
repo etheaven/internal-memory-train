@@ -14,7 +14,8 @@ struct Mouse
   bool isClicked[2];
   void tick()
   {
-    POINT mp; GetCursorPos(&mp);
+    static POINT mp;
+    GetCursorPos(&mp);
     ScreenToClient(GetForegroundWindow(), &mp);
     pos.x = mp.x;
     pos.y = mp.y;
