@@ -2,9 +2,10 @@
 #include "src_headers.h"
 #include "constants/definitions.h"
 #include "math.h"
+#include "CMenu.h"
 
 #include <cstdio>
-
+CMenu menu;
 DrawManager *g_pDrawManager;
 void __fastcall hkPaintTraverse(void *pPanel, void *unk, unsigned int vguiPanel, bool forceRepaint, bool allowForce)
 {
@@ -27,6 +28,7 @@ void __fastcall hkPaintTraverse(void *pPanel, void *unk, unsigned int vguiPanel,
         //g_pDrawManager->TextW(true, UI_Font, 100, 50, Color(255, 0, 0, 255), L"test abcaa1564891");
         int width, height;
         g_pEngine->GetScreenSize(width, height);
+        // g_pDrawManager->DrawString(20,20, UI_Font, Color(0,0,0), "crashtest", false);
         if (g_pEngine->IsConnected() && g_pEngine->IsInGame())
         {
             CEntity *pLocalPlayer = g_pEntityList->getcliententity(g_pEngine->GetLocalBase());
@@ -53,5 +55,6 @@ void __fastcall hkPaintTraverse(void *pPanel, void *unk, unsigned int vguiPanel,
                 }
             }
         }
+        menu.tick();
     }
 }
