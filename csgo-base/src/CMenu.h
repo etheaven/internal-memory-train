@@ -43,7 +43,7 @@ bool Mouse::isdragging(Coords const &control, int x_size, int y_size)
 class CheckBox : public IControl
 {
 public:
-  void set(Mouse *m, Coords const&pos, int size = 12)
+  void set(Mouse *m, Coords *pos, int size = 12)
   {
     this->m = m;
     this->size = size;
@@ -52,23 +52,18 @@ public:
   void init() {}
   void tick()
   {
-    if (m->isdragging(pos, size, size))
-    {
+    if (m->isdragging(*pos, size, size))
       if (m->isClicked[0])
         checked = !checked;
-    }
     draw();
   }
   void draw()
   {
     if (!checked)
-    {
-      g_pDrawManager->FillColor(pos.x, pos.y, size, size, Color(64, 64, 64));
-    }
+      g_pDrawManager->FillColor(pos->x, pos->y, size, size, Color(64, 64, 64));
     else
-    {
-      g_pDrawManager->FillColor(pos.x, pos.y, size, size, Color(0, 0, 128));
-    }
+      g_pDrawManager->FillColor(pos->x, pos->y, size, size, Color(0, 0, 128));
+    g_pDrawManager->DrawRect(pos->x, pos->y, size, size, Color(0, 0, 0));
   }
 
 private:
@@ -76,7 +71,7 @@ private:
   Mouse *m;
   Color color;
   bool checked = false;
-  Coords pos;
+  Coords *pos;
 };
 
 class CMenu : public IControl
@@ -116,7 +111,7 @@ void CMenu::init()
   last_pos = pos;
   last_pos.x += 20;
   last_pos.y += 20;
-  a.set(&mouse, last_pos);
+  a.set(&mouse, &last_pos);
 }
 
 void CMenu::tick()
