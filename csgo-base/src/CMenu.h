@@ -36,10 +36,11 @@ class Button : public IControl
 {
 public:
   Button(){ }
-  void set(Mouse *m, Coords pos, int size = 20)
+  void set(Mouse *m, Coords pos, int size = 30)
   {
     this->m = m;
-    this->size = size;
+    this->width = width = height;
+    height = 200;
     this->pos = pos;
   }
   void init(){}
@@ -52,14 +53,15 @@ public:
     x = pos.x;
     y = pos.y;
     draw();
-    if (m->isdragging(pos, size, size))
+    if (m->isdragging(pos, width, height))
       if (m->isClicked[1])
         onClick();
   }
   void draw(){
-    g_pDrawManager->FillColor(pos.x, pos.y, size, size, Color(128,0,0,128));
+    g_pDrawManager->FillColor(pos.x, pos.y, width, height, Color(128,0,0,128));
+    g_pDrawManager->DrawString(x, y, g_pDrawManager->font, Color(0,255,0,128), "Wat wat", false);
   }
-  int size;
+  int width, height;
   Mouse *m;
   Coords pos;
   int x,y;
