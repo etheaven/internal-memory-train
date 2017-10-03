@@ -60,7 +60,10 @@ public:
   void draw()
   {
     g_pDrawManager->FillColor(pos.x, pos.y, width, height, Color(128,0,0,128));
+    //g_pDrawManager->DrawString(20,20, 291, Color(0,0,0), "crashtest", false);
+    g_pDrawManager->DrawString(pos.x + (x / 2), pos.y + (height / 2) - (font_height / 2), 291, Color(0,0,128,128), "Test", false);
   }
+  int font_height = 14;
   int width, height;
   Mouse *m;
   Coords pos;
