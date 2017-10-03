@@ -21,7 +21,7 @@ void __fastcall hkPaintTraverse(void *pPanel, void *unk, unsigned int vguiPanel,
             panelId = vguiPanel;
             UI_Font = g_pSurface->CreateFont();
             g_pSurface->SetFontGlyphSet(UI_Font, "Verdana", 14, 150, 0, 0, FontDrawType_t::FONTFLAG_OUTLINE);
-            font = UI_Font;
+            g_pDrawManager->font = UI_Font;
         }
     }
     else if (panelId == vguiPanel)
