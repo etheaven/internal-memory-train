@@ -153,6 +153,10 @@ class DrawManager
 
 	void DrawString(int x, int y, int font, Color const& c, const char *text, bool centre)
 	{
+		static int m_font;
+		if (m_font == -1 && font == -1) // means we wait for font from other side
+			return;
+		m_font = font;
 		int i = 0;
 		for (;text[i] != '\0'; ++i);
 		auto ws = std::wstring(&text[0], &text[i]);
