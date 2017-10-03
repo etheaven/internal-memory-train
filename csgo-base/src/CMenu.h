@@ -60,8 +60,7 @@ public:
   void draw()
   {
     g_pDrawManager->FillColor(pos.x, pos.y, width, height, Color(128,0,0,128));
-    //g_pDrawManager->DrawString(20,20, 291, Color(0,0,0), "crashtest", false);
-    g_pDrawManager->DrawString(pos.x + (x / 2), pos.y + (height / 2) - (font_height / 2), 291, Color(0,0,128,128), "Test", false);
+    g_pDrawManager->DrawString(pos.x + (width / 2), pos.y + (height / 2), 291, Color(0,0,128,128), "Test", true);
   }
   int font_height = 14;
   int width, height;
@@ -134,6 +133,7 @@ public:
   }
   void init();
   void tick();
+  void draw_heading();
   void draw_form();
   void draw_form_border();
 
@@ -146,10 +146,13 @@ private:
   CheckBox a;
   Button b;
   bool draw = false;
+  char* head_title;
+  unsigned long head_font;
 };
 
 void CMenu::draw_form()
 {
+  draw_heading();
   g_pDrawManager->FillColor(pos.x, pos.y, x_size, y_size, color);
 }
 
@@ -158,10 +161,17 @@ void CMenu::draw_form_border()
   g_pDrawManager->DrawRect(pos.x, pos.y, x_size, y_size, Color(0, 0, 0));
 }
 
+void CMenu::draw_heading()
+{
+  g_pDrawManager->FillColor(pos.x, pos.y, x_size, 28, Color(16,173,237, 164));
+  g_pDrawManager->DrawString(pos.x + (x_size / 2), pos.y + 28/2 + 7, 291, Color(196,0,0,220), head_title, true);
+}
+
 void CMenu::init()
 {
+  head_title = "nice mem";  
   last_pos = pos;
-  last_pos += 20;
+  last_pos += 40;
   a.set(&mouse, last_pos);
   last_pos.y += 21;
   b.set(&mouse, last_pos);
