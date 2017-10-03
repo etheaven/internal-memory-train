@@ -175,6 +175,7 @@ class DrawManager
 		g_pSurface->DrawSetTextColor(c_curr);
 		g_pSurface->DrawPrintText(p, i);
 	}
+	unsigned long font;
 };
 
 extern DrawManager *g_pDrawManager;
