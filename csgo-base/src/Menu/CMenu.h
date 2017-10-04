@@ -10,6 +10,21 @@
 #include "Button.h"
 #include "CheckBox.h"
 
+struct ButtonString
+{
+public:
+  ButtonString(){};
+  void set(Mouse *m, Coords pos){
+    this->pos = pos;
+    this->m = m;
+    int strLength = 0; //TODO:
+    btn.set(m,pos+strLength);
+  }
+  Mouse *m;
+  Button btn;
+  Coords pos;
+};
+
 class CMenu : public IControl
 {
 public:
@@ -30,10 +45,10 @@ private:
   Coords pos;                     // start coords
   Coords last_pos;
   Mouse mouse;
-  CheckBox a;
-  Button b;
+/*   CheckBox a;
+  Button b; */
   bool draw = false;
-  char* head_title;
+  char *head_title;
   unsigned long head_font;
 };
 
@@ -50,18 +65,18 @@ void CMenu::draw_form_border()
 
 void CMenu::draw_heading()
 {
-  g_pDrawManager->FillColor(pos.x, pos.y, x_size, 28, Color(16,173,237, 96));
-  g_pDrawManager->DrawString(pos.x + (x_size / 2), pos.y + 28/2 + 7, 291, Color(196,0,0,220), head_title, true);
+  g_pDrawManager->FillColor(pos.x, pos.y, x_size, 28, Color(16, 173, 237, 96));
+  g_pDrawManager->DrawString(pos.x + (x_size / 2), pos.y + 28 / 2 + 7, 291, Color(196, 0, 0, 220), head_title, true);
 }
 
 void CMenu::init()
 {
-  head_title = "nice mem";  
+  head_title = "nice mem";
   last_pos = pos;
   last_pos += 40;
-  a.set(&mouse, last_pos);
+/*   a.set(&mouse, last_pos);
   last_pos.y += 21;
-  b.set(&mouse, last_pos);
+  b.set(&mouse, last_pos); */
 }
 
 void CMenu::tick()
@@ -75,7 +90,7 @@ void CMenu::tick()
   if (mouse.isClicked[0])
     pos = mouse.pos; */
   draw_form();
-  a.tick();
-  b.tick();
+/*   a.tick();
+  b.tick(); */
   draw_form_border();
 }
