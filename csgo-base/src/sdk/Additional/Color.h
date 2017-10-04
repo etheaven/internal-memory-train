@@ -9,7 +9,7 @@ class Color
 
         *((int *)this) = 0;
     }
-    Color(int r, int b, int g)
+    Color(int r, int g, int b)
     {
         SetColor((uint8_t)r, (uint8_t)g, (uint8_t)b, 255);
     }
@@ -17,7 +17,7 @@ class Color
     {
         SetColor(r, g, b, 255);
     }
-    Color(int r, int b, int g, int a)
+    Color(int r, int g, int b, int a)
     {
         SetColor((uint8_t)r, (uint8_t)g, (uint8_t)b, (uint8_t)a);
     }
