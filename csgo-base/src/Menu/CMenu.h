@@ -10,7 +10,7 @@
 #include "Button.h"
 #include "CheckBox.h"
 
-struct ButtonString
+class ButtonString
 {
 public:
   ButtonString(){};
@@ -18,7 +18,12 @@ public:
     this->pos = pos;
     this->m = m;
     int strLength = 0; //TODO:
-    btn.set(m,pos+strLength);
+    const wchar_t *wTxt = DrawUtils::charToWchar_t("Feature:", &strLength);
+    int wide,tall;
+    g_pSurface->GetTextSize(291, wTxt, wide, tall);
+    g_pDrawManager->DrawStringWide(pos.x, pos.y, 291, Color(128,0,128,222), wTxt, strLength, false);
+    btn.set(m, Coords(pos.x + wide, pos.y + tall));
+    btn.tick();
   }
   Mouse *m;
   Button btn;
