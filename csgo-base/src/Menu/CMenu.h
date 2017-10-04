@@ -50,7 +50,7 @@ void CMenu::draw_form_border()
 
 void CMenu::draw_heading()
 {
-  g_pDrawManager->FillColor(pos.x, pos.y, x_size, 28, Color(16,173,237, 164));
+  g_pDrawManager->FillColor(pos.x, pos.y, x_size, 28, Color(16,173,237, 96));
   g_pDrawManager->DrawString(pos.x + (x_size / 2), pos.y + 28/2 + 7, 291, Color(196,0,0,220), head_title, true);
 }
 
