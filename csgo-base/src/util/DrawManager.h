@@ -166,6 +166,27 @@ class DrawManager
 		FillRGBA(x + lw, y + h - lw, w - lw * 2, lw, r, g, b, a); // bottom
 	}
 
+	void DrawStringWide(int x, int y, int font, Color const& c, const wchar_t *text, int text_len, bool centre)
+	{
+		if (centre){
+			static int wide, tall;
+			g_pSurface->GetTextSize(font, text, wide, tall);
+			x -= wide / 2;
+			y -= tall / 2;
+		}
+		static Color c_curr;
+		static int font_curr;
+		if (!c_curr || c_curr != c)
+			c_curr = c;
+		if (!font_curr || font_curr != font)
+			font_curr = font;
+
+		g_pSurface->DrawSetTextPos(x, y);
+		g_pSurface->DrawSetTextFont(font_curr);
+		g_pSurface->DrawSetTextColor(c_curr);
+		g_pSurface->DrawPrintText(text, text_len);
+	}
+
 	void DrawString(int x, int y, int font, Color const& c, const char *text, bool centre)
 	{
 		static int m_font;
@@ -180,23 +201,7 @@ class DrawManager
 		for (;text[i] != '\0'; ++i);
 		auto ws = std::wstring(&text[0], &text[i]);
 		const wchar_t *p = (ws.c_str());
-		if (centre){
-			static int wide, tall;
-			g_pSurface->GetTextSize(font, p, wide, tall);
-			x -= wide / 2;
-			y -= tall / 2;
-		}
-		static Color c_curr;
-		static int font_curr;
-		if (!c_curr || c_curr != c)
-			c_curr = c;
-		if (!font_curr || font_curr != font)
-			font_curr = font;
-
-		g_pSurface->DrawSetTextPos(x, y);
-		g_pSurface->DrawSetTextFont(font_curr);
-		g_pSurface->DrawSetTextColor(c_curr);
-		g_pSurface->DrawPrintText(p, i);
+		this->DrawStringWide(x, y, font, c, p, i, centre);
 	}
 };
 
