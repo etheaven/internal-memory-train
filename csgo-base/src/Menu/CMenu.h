@@ -14,20 +14,23 @@ class ButtonString
 {
 public:
   ButtonString(){};
-  void set(Mouse *m, Coords pos){
+  void set(Mouse *m, Coords pos, const char *name){
     this->pos = pos;
     this->m = m;
-    int strLength = 0; //TODO:
-    const wchar_t *wTxt = DrawUtils::charToWchar_t("Feature:", &strLength);
-    int wide,tall;
+    wTxt = DrawUtils::charToWchar_t(name, &strLength);
     g_pSurface->GetTextSize(291, wTxt, wide, tall);
-    g_pDrawManager->DrawStringWide(pos.x, pos.y, 291, Color(128,0,128,222), wTxt, strLength, false);
     btn.set(m, Coords(pos.x + wide, pos.y + tall));
+  }
+  void tick(){
+    g_pDrawManager->DrawStringWide(pos.x, pos.y, 291, Color(128,0,128,222), wTxt, strLength, false);
     btn.tick();
   }
   Mouse *m;
   Button btn;
   Coords pos;
+  int strLength;
+  const wchar_t *wTxt;
+  int wide,tall;
 };
 
 class CMenu : public IControl
@@ -45,13 +48,14 @@ public:
   void draw_form_border();
 
 private:
-  Color color = Color(0, 128, 0, 64);
+  Color color = Color(0, 0, 128, 64);
   int x_size = 500, y_size = 400; // x2,y2
   Coords pos;                     // start coords
   Coords last_pos;
   Mouse mouse;
 /*   CheckBox a;
   Button b; */
+  ButtonString bs;
   bool draw = false;
   char *head_title;
   unsigned long head_font;
@@ -97,5 +101,6 @@ void CMenu::tick()
   draw_form();
 /*   a.tick();
   b.tick(); */
+  //bs.tick();
   draw_form_border();
 }
