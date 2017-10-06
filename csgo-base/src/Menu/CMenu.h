@@ -10,29 +10,6 @@
 #include "Button.h"
 #include "CheckBox.h"
 
-class ButtonString
-{
-public:
-  ButtonString(){};
-  void set(Mouse *m, Coords pos, const char *name){
-    this->pos = pos;
-    this->m = m;
-    wTxt = DrawUtils::charToWchar_t(name, &strLength);
-    g_pSurface->GetTextSize(291, wTxt, wide, tall);
-    btn.set(m, Coords(pos.x + wide, pos.y + tall));
-  }
-  void tick(){
-    g_pDrawManager->DrawStringWide(pos.x, pos.y, 291, Color(128,0,128,222), wTxt, strLength, false);
-    btn.tick();
-  }
-  Mouse *m;
-  Button btn;
-  Coords pos;
-  int strLength;
-  const wchar_t *wTxt;
-  int wide,tall;
-};
-
 class CMenu : public IControl
 {
 public:
