@@ -30,9 +30,8 @@ private:
   Coords pos;                     // start coords
   Coords last_pos;
   Mouse mouse;
-/*   CheckBox a;
+  /*   CheckBox a;
   Button b; */
-  ButtonString bs;
   bool draw = false;
   char *head_title;
   unsigned long head_font;
@@ -60,7 +59,7 @@ void CMenu::init()
   head_title = "nice mem";
   last_pos = pos;
   last_pos += 40;
-/*   a.set(&mouse, last_pos);
+  /*   a.set(&mouse, last_pos);
   last_pos.y += 21;
   b.set(&mouse, last_pos); */
 }
@@ -76,7 +75,7 @@ void CMenu::tick()
   if (mouse.isClicked[0])
     pos = mouse.pos; */
   draw_form();
-/*   a.tick();
+  /*   a.tick();
   b.tick(); */
   //bs.tick();
   draw_form_border();
