@@ -10,9 +10,9 @@
 #include "Button.h"
 #include "CheckBox.h"
 
-class CheatFeature{
+class MenuItem{
 public:
-  CheatFeature(const char *n = "", const Coords pos = Coords(0,0)){
+  MenuItem(const char *n = "", const Coords pos = Coords(0,0)){
     set(n,pos);
   }
   void set(const char *n = "", const Coords pos = Coords(0,0)){
@@ -32,10 +32,10 @@ public:
 class FeatureHandler{
 public:
   void tick(){
-    for(const auto& f : features)
+    for(const auto& f : items)
       f->tick();
   }
-  std::vector<CheatFeature*> features;
+  std::vector<MenuItem*> items;
 };
 
 class CMenu : public IControl
@@ -61,7 +61,7 @@ private:
   bool draw = false;
   char *head_title;
   unsigned long head_font;
-  CheatFeature cf_rcs, cf_aim;
+  MenuItem cf_rcs, cf_aim;
   FeatureHandler handler;
 };
 
@@ -89,8 +89,8 @@ void CMenu::init()
   last_pos += 40;
   cf_rcs.set("RCS", Coords(last_pos.x + 40, last_pos.y + 40));
   cf_aim.set("AIM", Coords(last_pos.x + 40, last_pos.y + 60));
-  handler.features.push_back(&cf_rcs);
-  handler.features.push_back(&cf_aim);
+  handler.items.push_back(&cf_rcs);
+  handler.items.push_back(&cf_aim);
 }
 
 void CMenu::tick()
