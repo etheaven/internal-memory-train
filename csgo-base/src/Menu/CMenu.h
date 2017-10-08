@@ -22,12 +22,22 @@ public:
     this->name = n;
     this->pos = pos;
     enabled = false;
+    common = Color(255, 255, 255, 255);
+    hl = Color(128,0,0,192);
+    is_hl = false;
+  }
+  void highlight(){
+    is_hl = true;
   }
   void tick()
   {
-    g_pDrawManager->DrawString(pos.x, pos.y, 291, Color(255, 255, 255, 255), name, false);
+    Color c = (is_hl ? hl : common);
+    g_pDrawManager->DrawString(pos.x, pos.y, 291, c, name, false);
     g_pDrawManager->DrawString(pos.x + 40, pos.y, 291, Color(255, 0, 0), "OFF", false);
   }
+  Color hl;
+  bool is_hl;
+  Color common;
   const char *name;
   Coords pos;
   bool enabled;
@@ -36,11 +46,19 @@ public:
 class FeatureHandler
 {
 public:
+  FeatureHandler()
+  {
+    i_currFeature = 0;
+  }
   void tick()
   {
     for (const auto &f : items)
       f->tick();
   }
+  void change(unsigned index){
+
+  }
+  int i_currFeature;
   std::vector<MenuItem *> items;
 };
 
