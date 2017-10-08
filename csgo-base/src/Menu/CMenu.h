@@ -10,32 +10,38 @@
 #include "Button.h"
 #include "CheckBox.h"
 
-class MenuItem{
+class MenuItem
+{
 public:
-  MenuItem(const char *n = "", const Coords pos = Coords(0,0)){
-    set(n,pos);
+  MenuItem(const char *n = "", const Coords pos = Coords(0, 0))
+  {
+    set(n, pos);
   }
-  void set(const char *n = "", const Coords pos = Coords(0,0)){
+  void set(const char *n = "", const Coords pos = Coords(0, 0))
+  {
     this->name = n;
     this->pos = pos;
     enabled = false;
   }
-  void tick(){
-    g_pDrawManager->DrawString(pos.x, pos.y, 291, Color(255,255,255,255), name, false);
-    g_pDrawManager->DrawString(pos.x + 40, pos.y, 291, Color(255,0,0), "OFF", false);
-  } 
+  void tick()
+  {
+    g_pDrawManager->DrawString(pos.x, pos.y, 291, Color(255, 255, 255, 255), name, false);
+    g_pDrawManager->DrawString(pos.x + 40, pos.y, 291, Color(255, 0, 0), "OFF", false);
+  }
   const char *name;
   Coords pos;
   bool enabled;
 };
 
-class FeatureHandler{
+class FeatureHandler
+{
 public:
-  void tick(){
-    for(const auto& f : items)
+  void tick()
+  {
+    for (const auto &f : items)
       f->tick();
   }
-  std::vector<MenuItem*> items;
+  std::vector<MenuItem *> items;
 };
 
 class CMenu : public IControl
@@ -101,9 +107,8 @@ void CMenu::tick()
   if (!draw)
     return;
   static Coords t_pos = last_pos;
-  
-  last_pos = t_pos;
-    g_pDrawManager->DrawString(last_pos.x, last_pos.y, 291, Color(128,0,128,220), "Milky way", false);
-    handler.tick();
 
+  last_pos = t_pos;
+  g_pDrawManager->DrawString(last_pos.x, last_pos.y, 291, Color(128, 0, 128, 220), "Milky way", false);
+  handler.tick();
 }
