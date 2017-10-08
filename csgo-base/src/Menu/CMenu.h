@@ -61,7 +61,7 @@ public:
   void change(unsigned index)
   {
     items.at(i_currFeature)->highlight();
-    items.at(index)->highlight();
+    // items.at(index)->highlight();
     i_currFeature = index;
   }
   int i_currFeature;
@@ -121,6 +121,7 @@ void CMenu::init()
   cf_aim.set("AIM", Coords(last_pos.x + 40, last_pos.y + 60));
   handler.items.push_back(&cf_rcs);
   handler.items.push_back(&cf_aim);
+  handler.change(0);
 }
 
 void CMenu::tick()
