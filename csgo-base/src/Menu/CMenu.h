@@ -10,8 +10,6 @@
 #include "Button.h"
 #include "CheckBox.h"
 
-
-
 class CheatFeature{
 public:
   CheatFeature(const char *n = "", const Coords pos = Coords(0,0)){
@@ -60,8 +58,6 @@ private:
   Coords pos;                     // start coords
   Coords last_pos;
   Mouse mouse;
-  /*   CheckBox a;
-  Button b; */
   bool draw = false;
   char *head_title;
   unsigned long head_font;
@@ -108,12 +104,6 @@ void CMenu::tick()
   
   last_pos = t_pos;
     g_pDrawManager->DrawString(last_pos.x, last_pos.y, 291, Color(128,0,128,220), "Milky way", false);
-    /* cf_rcs.tick();
-    cf_aim.tick(); */
     handler.tick();
-  /*   
-  if (mouse.isClicked[0])
-    pos = mouse.pos; */
-  //draw_form();
-  //draw_form_border();
+
 }
