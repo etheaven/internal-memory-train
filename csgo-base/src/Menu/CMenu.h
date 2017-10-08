@@ -61,7 +61,8 @@ public:
   void change(unsigned index)
   {
     items.at(i_currFeature)->highlight();
-    // items.at(index)->highlight();
+    if (i_currFeature != index) // no on-off aka always off
+      items.at(index)->highlight();
     i_currFeature = index;
   }
   int i_currFeature;
