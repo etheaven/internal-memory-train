@@ -27,7 +27,10 @@ public:
     is_hl = false;
   }
   void highlight(){
-    is_hl = true;
+    if (is_hl)
+      is_hl = false;
+    else
+      is_hl = true;
   }
   void tick()
   {
@@ -55,8 +58,11 @@ public:
     for (const auto &f : items)
       f->tick();
   }
-  void change(unsigned index){
-
+  void change(unsigned index)
+  {
+    items.at(i_currFeature)->highlight();
+    items.at(index)->highlight();
+    i_currFeature = index;
   }
   int i_currFeature;
   std::vector<MenuItem *> items;
