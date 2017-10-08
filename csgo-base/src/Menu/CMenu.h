@@ -23,7 +23,7 @@ public:
     this->pos = pos;
     enabled = false;
     common = Color(255, 255, 255, 255);
-    hl = Color(128,0,0,192);
+    hl = Color(128,0,0,255);
     is_hl = false;
   }
   void highlight(){
@@ -60,6 +60,8 @@ public:
   }
   void change(unsigned index)
   {
+    if (index > this->items.size() - 1) //reset
+      index = 0;
     items.at(i_currFeature)->highlight();
     if (i_currFeature != index) // no on-off aka always off
       items.at(index)->highlight();
@@ -122,7 +124,7 @@ void CMenu::init()
   cf_aim.set("AIM", Coords(last_pos.x + 40, last_pos.y + 60));
   handler.items.push_back(&cf_rcs);
   handler.items.push_back(&cf_aim);
-  handler.change(0);
+  handler.change(handler.i_currFeature);
 }
 
 void CMenu::tick()
@@ -132,9 +134,9 @@ void CMenu::tick()
     draw = !draw;
   if (!draw)
     return;
-  static Coords t_pos = last_pos;
-
-  last_pos = t_pos;
-  g_pDrawManager->DrawString(last_pos.x, last_pos.y, 291, Color(128, 0, 128, 220), "Milky way", false);
+  if (mouse.isClicked[0x28])
+    handler.change(handler.i_currFeature+1);
+  
+  g_pDrawManager->DrawString(last_pos.x, last_pos.y, 291, Color(192, 0, 64, 220), "Milky way", false);
   handler.tick();
 }
