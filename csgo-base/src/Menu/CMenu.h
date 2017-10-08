@@ -31,6 +31,15 @@ public:
   bool enabled;
 };
 
+class FeatureHandler{
+public:
+  void tick(){
+    for(const auto& f : features)
+      f->tick();
+  }
+  std::vector<CheatFeature*> features;
+};
+
 class CMenu : public IControl
 {
 public:
@@ -57,6 +66,7 @@ private:
   char *head_title;
   unsigned long head_font;
   CheatFeature cf_rcs, cf_aim;
+  FeatureHandler handler;
 };
 
 void CMenu::draw_form()
@@ -83,6 +93,8 @@ void CMenu::init()
   last_pos += 40;
   cf_rcs.set("RCS", Coords(last_pos.x + 40, last_pos.y + 40));
   cf_aim.set("AIM", Coords(last_pos.x + 40, last_pos.y + 60));
+  handler.features.push_back(&cf_rcs);
+  handler.features.push_back(&cf_aim);
 }
 
 void CMenu::tick()
@@ -96,8 +108,9 @@ void CMenu::tick()
   
   last_pos = t_pos;
     g_pDrawManager->DrawString(last_pos.x, last_pos.y, 291, Color(128,0,128,220), "Milky way", false);
-    cf_rcs.tick();
-    cf_aim.tick();
+    /* cf_rcs.tick();
+    cf_aim.tick(); */
+    handler.tick();
   /*   
   if (mouse.isClicked[0])
     pos = mouse.pos; */
