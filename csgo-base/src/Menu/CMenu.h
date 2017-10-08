@@ -10,6 +10,27 @@
 #include "Button.h"
 #include "CheckBox.h"
 
+
+
+class CheatFeature{
+public:
+  CheatFeature(const char *n = "", const Coords pos = Coords(0,0)){
+    set(n,pos);
+  }
+  void set(const char *n = "", const Coords pos = Coords(0,0)){
+    this->name = n;
+    this->pos = pos;
+    enabled = false;
+  }
+  void tick(){
+    g_pDrawManager->DrawString(pos.x, pos.y, 291, Color(255,255,255,255), name, false);
+    g_pDrawManager->DrawString(pos.x + 40, pos.y, 291, Color(255,0,0), "OFF", false);
+  } 
+  const char *name;
+  Coords pos;
+  bool enabled;
+};
+
 class CMenu : public IControl
 {
 public:
@@ -35,6 +56,7 @@ private:
   bool draw = false;
   char *head_title;
   unsigned long head_font;
+  CheatFeature cf_rcs, cf_aim;
 };
 
 void CMenu::draw_form()
@@ -59,9 +81,8 @@ void CMenu::init()
   head_title = "nice mem";
   last_pos = pos;
   last_pos += 40;
-  /*   a.set(&mouse, last_pos);
-  last_pos.y += 21;
-  b.set(&mouse, last_pos); */
+  cf_rcs.set("RCS", Coords(last_pos.x + 40, last_pos.y + 40));
+  cf_aim.set("AIM", Coords(last_pos.x + 40, last_pos.y + 60));
 }
 
 void CMenu::tick()
@@ -71,14 +92,12 @@ void CMenu::tick()
     draw = !draw;
   if (!draw)
     return;
+  static Coords t_pos = last_pos;
   
+  last_pos = t_pos;
     g_pDrawManager->DrawString(last_pos.x, last_pos.y, 291, Color(128,0,128,220), "Milky way", false);
-    last_pos += 40;
-    g_pDrawManager->DrawString(last_pos.x, last_pos.y, 291, Color(255,255,255,255), "RCS", false);
-    g_pDrawManager->DrawString(last_pos.x + 40, last_pos.y, 291, Color(255,0,0), "OFF", false);
-    last_pos.y += 20;
-    g_pDrawManager->DrawString(last_pos.x, last_pos.y, 291, Color(255,255,255,255), "Aim", false);
-    g_pDrawManager->DrawString(last_pos.x + 40, last_pos.y, 291, Color(0,0,255), "ON", false);
+    cf_rcs.tick();
+    cf_aim.tick();
   /*   
   if (mouse.isClicked[0])
     pos = mouse.pos; */
