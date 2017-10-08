@@ -71,12 +71,17 @@ void CMenu::tick()
     draw = !draw;
   if (!draw)
     return;
+  
+    g_pDrawManager->DrawString(last_pos.x, last_pos.y, 291, Color(128,0,128,220), "Milky way", false);
+    last_pos += 40;
+    g_pDrawManager->DrawString(last_pos.x, last_pos.y, 291, Color(255,255,255,255), "RCS", false);
+    g_pDrawManager->DrawString(last_pos.x + 40, last_pos.y, 291, Color(255,0,0), "OFF", false);
+    last_pos.y += 20;
+    g_pDrawManager->DrawString(last_pos.x, last_pos.y, 291, Color(255,255,255,255), "Aim", false);
+    g_pDrawManager->DrawString(last_pos.x + 40, last_pos.y, 291, Color(0,0,255), "ON", false);
   /*   
   if (mouse.isClicked[0])
     pos = mouse.pos; */
-  draw_form();
-  /*   a.tick();
-  b.tick(); */
-  //bs.tick();
-  draw_form_border();
+  //draw_form();
+  //draw_form_border();
 }
