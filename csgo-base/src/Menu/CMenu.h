@@ -40,10 +40,17 @@ public:
     Color c = (is_hl ? hl : common);
     g_pDrawManager->DrawString(pos.x, pos.y, 291, c, name, false);
     static const char *msg = "OFF";
+    static Color clr = Color(255, 255, 255);
     if (enabled)
+    {
+      clr = Color(255, 0, 0)
       msg = "ON";
-    else msg = "OFF";
-      g_pDrawManager->DrawString(pos.x + 40, pos.y, 291, Color(255, 0, 0), msg, false);
+    }
+    else{
+      clr = Color(255, 255, 255);
+      msg = "OFF";
+    }
+      g_pDrawManager->DrawString(pos.x + 40, pos.y, 291, clr, msg, false);
   }
   Color hl;
   bool is_hl;
