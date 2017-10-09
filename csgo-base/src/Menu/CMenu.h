@@ -86,7 +86,7 @@ public:
   {
     if (id > this->items.size() - 1)
       return 11;
-    return items.at(id)->toggle();
+    return items.at(id)->toggle(); // else 1 or 0
   }
 
   int get_id(const char *name){
@@ -125,7 +125,7 @@ private:
   bool draw = false;
   char *head_title;
   unsigned long head_font;
-  MenuItem cf_rcs, cf_aim;
+  MenuItem cf_rcs, cf_aim, cf_dotesp, cf_bhop, cf_trigger;
   FeatureHandler handler;
 };
 
@@ -151,10 +151,18 @@ void CMenu::init()
   head_title = "nice mem";
   last_pos = pos;
   last_pos += 40;
-  cf_rcs.set("RCS", Coords(last_pos.x + 40, last_pos.y + 40));
-  cf_aim.set("AIM", Coords(last_pos.x + 40, last_pos.y + 60));
+  //TODO: global constant name to search in memory
+  cf_rcs.set(" RCS", Coords(last_pos.x + 40, last_pos.y + 40));
   handler.items.push_back(&cf_rcs);
+  cf_aim.set(" AIM", Coords(last_pos.x + 40, last_pos.y + 60));
   handler.items.push_back(&cf_aim);
+  cf_dotesp.set("DESP", Coords(last_pos.x + 40, last_pos.y + 80));
+  handler.items.push_back(&cf_dotesp);
+  cf_bhop.set("BHOP", Coords(last_pos.x + 40, last_pos.y + 100));
+  handler.items.push_back(&cf_bhop);
+  cf_trigger.set("TRIG", Coords(last_pos.x + 40, last_pos.y + 120));
+  handler.items.push_back(&cf_trigger);
+
   handler.change(handler.i_currFeature);
 }
 
