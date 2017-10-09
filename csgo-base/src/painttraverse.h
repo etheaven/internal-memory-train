@@ -25,10 +25,8 @@ void __fastcall hkPaintTraverse(void *pPanel, void *unk, unsigned int vguiPanel,
     }
     else if (panelId == vguiPanel)
     {
-        //g_pDrawManager->TextW(true, UI_Font, 100, 50, Color(255, 0, 0, 255), L"test abcaa1564891");
         int width, height;
         g_pEngine->GetScreenSize(width, height);
-        g_pDrawManager->DrawString(20,20, UI_Font, Color(0,0,0), "crashtest", false);
         if (g_pEngine->IsConnected() && g_pEngine->IsInGame())
         {
             CEntity *pLocalPlayer = g_pEntityList->getcliententity(g_pEngine->GetLocalBase());
