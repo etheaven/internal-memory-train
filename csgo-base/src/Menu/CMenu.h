@@ -43,7 +43,7 @@ public:
     static Color clr = Color(255, 255, 255);
     if (enabled)
     {
-      clr = Color(255, 0, 0)
+      clr = Color(255, 0, 0);
       msg = "ON";
     }
     else{
@@ -88,6 +88,16 @@ public:
       return 11;
     return items.at(id)->toggle();
   }
+
+  int get_id(const char *name){
+    int i = 0;
+    for(const auto el : items){
+      if (strcmp(el->name, name))
+        return i;
+      i++;
+    }
+  }
+
   int i_currFeature;
   std::vector<MenuItem *> items;
 };
