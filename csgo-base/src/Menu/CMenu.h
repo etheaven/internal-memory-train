@@ -36,7 +36,11 @@ public:
   {
     Color c = (is_hl ? hl : common);
     g_pDrawManager->DrawString(pos.x, pos.y, 291, c, name, false);
-    g_pDrawManager->DrawString(pos.x + 40, pos.y, 291, Color(255, 0, 0), "OFF", false);
+    static const char *msg = "OFF";
+    if (enabled)
+      msg = "ON";
+    else msg = "OFF";
+      g_pDrawManager->DrawString(pos.x + 40, pos.y, 291, Color(255, 0, 0), msg, false);
   }
   Color hl;
   bool is_hl;
@@ -134,7 +138,7 @@ void CMenu::tick()
     draw = !draw;
   if (!draw)
     return;
-  if (mouse.isClicked[0x28])
+  if (mouse.isClicked[VK_DOWN])
     handler.change(handler.i_currFeature+1);
   
   g_pDrawManager->DrawString(last_pos.x, last_pos.y, 291, Color(192, 0, 64, 220), "Milky way", false);
