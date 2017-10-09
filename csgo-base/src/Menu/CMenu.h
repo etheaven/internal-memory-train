@@ -32,6 +32,9 @@ public:
     else
       is_hl = true;
   }
+  bool toggle(){
+    enabled = enabled ? false : true;
+  }
   void tick()
   {
     Color c = (is_hl ? hl : common);
@@ -70,6 +73,13 @@ public:
     if (i_currFeature != index) // no on-off aka always off
       items.at(index)->highlight();
     i_currFeature = index;
+  }
+  // 11 wrong access
+  int toggle(unsigned id)
+  {
+    if (id > this->items.size() - 1)
+      return 11;
+    return items.at(id)->toggle();
   }
   int i_currFeature;
   std::vector<MenuItem *> items;
@@ -140,6 +150,8 @@ void CMenu::tick()
     return;
   if (mouse.isClicked[VK_DOWN])
     handler.change(handler.i_currFeature+1);
+  if (mouse.isClicked[VK_RIGHT])
+    handler.toggle(handler.i_currFeature);
   
   g_pDrawManager->DrawString(last_pos.x, last_pos.y, 291, Color(192, 0, 64, 220), "Milky way", false);
   handler.tick();
