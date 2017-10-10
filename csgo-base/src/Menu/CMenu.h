@@ -10,6 +10,35 @@
 #include "Button.h"
 #include "CheckBox.h"
 
+class Feature{
+  static enum Name
+  {
+    RCS = 0,
+    AIM, 
+    DESP,
+    BHOP,
+    TRIG,
+  };
+  static const char *getc_str(Feature::Name name)
+  {
+    switch(name)
+    {
+      case RCS:
+        return " RCS";
+      case AIM:
+        return " AIM";
+      case DESP:
+        return "DESP";
+      case BHOP:
+        return "BHOP";
+      case TRIG:
+        return "TRIG";
+      default:
+        return "Unknown";
+    }
+  }
+};
+
 class MenuItem
 {
 public:
