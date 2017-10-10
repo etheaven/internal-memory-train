@@ -182,15 +182,15 @@ void CMenu::init()
   last_pos = pos;
   last_pos += 40;
   //TODO: global constant name to search in memory
-  cf_rcs.set(" RCS", Coords(last_pos.x + 40, last_pos.y + 40));
+  cf_rcs.set(Feature::getc_str(Feature::Name::RCS), Coords(last_pos.x + 40, last_pos.y + 40));
   handler.items.push_back(&cf_rcs);
-  cf_aim.set(" AIM", Coords(last_pos.x + 40, last_pos.y + 60));
+  cf_aim.set(Feature::getc_str(Feature::Name::AIM), Coords(last_pos.x + 40, last_pos.y + 60));
   handler.items.push_back(&cf_aim);
-  cf_dotesp.set("DESP", Coords(last_pos.x + 40, last_pos.y + 80));
+  cf_dotesp.set(Feature::getc_str(Feature::Name::DESP), Coords(last_pos.x + 40, last_pos.y + 80));
   handler.items.push_back(&cf_dotesp);
-  cf_bhop.set("BHOP", Coords(last_pos.x + 40, last_pos.y + 100));
+  cf_bhop.set(Feature::getc_str(Feature::Name::BHOP), Coords(last_pos.x + 40, last_pos.y + 100));
   handler.items.push_back(&cf_bhop);
-  cf_trigger.set("TRIG", Coords(last_pos.x + 40, last_pos.y + 120));
+  cf_trigger.set(Feature::getc_str(Feature::Name::TRIG), Coords(last_pos.x + 40, last_pos.y + 120));
   handler.items.push_back(&cf_trigger);
 
   handler.change(handler.i_currFeature);
