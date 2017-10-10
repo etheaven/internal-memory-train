@@ -11,7 +11,8 @@
 #include "CheckBox.h"
 
 class Feature{
-  static enum Name
+public:
+  enum Name
   {
     RCS = 0,
     AIM, 
