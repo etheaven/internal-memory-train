@@ -102,10 +102,12 @@ public:
     for (const auto &f : items)
       f->tick();
   }
-  void change(unsigned index)
+  void change(int index)
   {
+    if (index < 0)
+      return;
     if (index > this->items.size() - 1) //reset
-      index = 0;
+      return;
     items.at(i_currFeature)->highlight();
     if (i_currFeature != index) // no on-off aka always off
       items.at(index)->highlight();
@@ -146,7 +148,6 @@ public:
   void draw_form();
   void draw_form_border();
 
-private:
   Color color = Color(0, 0, 128, 64);
   int x_size = 500, y_size = 400; // x2,y2
   Coords pos;                     // start coords
@@ -157,7 +158,7 @@ private:
   unsigned long head_font;
   MenuItem cf_rcs, cf_aim, cf_dotesp, cf_bhop, cf_trigger;
   FeatureHandler handler;
-};
+} *g_pMenu;
 
 void CMenu::draw_form()
 {
@@ -203,9 +204,11 @@ void CMenu::tick()
     draw = !draw;
   if (!draw)
     return;
+  if (mouse.isClicked[VK_UP])
+    handler.change(handler.i_currFeature-1);
   if (mouse.isClicked[VK_DOWN])
     handler.change(handler.i_currFeature+1);
-  if (mouse.isClicked[VK_RIGHT])
+  if (mouse.isClicked[VK_RIGHT] || mouse.isClicked[VK_LEFT])
     handler.toggle(handler.i_currFeature);
   
   g_pDrawManager->DrawString(last_pos.x, last_pos.y, 291, Color(192, 0, 64, 220), "Milky way", false);
