@@ -79,6 +79,8 @@ bool init::setup()
     g_pInputSystem = (IInputSystem *)util::EasyInterface(static_cast<std::string>(LIT(("inputsystem.dll"))).c_str(), static_cast<std::string>(LIT(("InputSystemVersion00"))).c_str());
     printf("inputSystem: 0x%p\n", (void *)g_pInputSystem);
 
+    g_pMenu = new CMenu();
+
     VMTClientMode.Initialise((DWORD *)g_pClientMode);
     VMTClientMode.HookMethod((DWORD)hkCreateMove, 24);
     if (!VMTClientMode.getInit())
@@ -95,6 +97,9 @@ bool init::detach()
 {
     if (VMTClientMode.getInit())
         return false;
+        
+    delete g_pMenu;
+
     if (VMTPaintTraverse.getInit())
         return false;
     VMTClientMode.RestoreOriginal();
