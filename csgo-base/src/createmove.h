@@ -2,6 +2,7 @@
 #include "src_headers.h"
 #include "constants/definitions.h"
 #include "math.h"
+#include "Menu/CMenu.h"
 
 #include <ctime>
 #include <cstdio>
@@ -239,9 +240,12 @@ bool __fastcall hkCreateMove(void *, void *, float, CUserCmd *cmd)
 	if (!local)
 		return 0;
 
-	bhop(cmd, local);
+	if (g_pMenu->cf_bhop.enabled)
+		bhop(cmd, local);
 	//aimbot(cmd, local);
-	rcs(cmd,local);
-	trigger(cmd, local);
+	if (g_pMenu->cf_rcs.enabled)
+		rcs(cmd,local);
+	if (g_pMenu->cf_trigger.enabled)
+		trigger(cmd, local);
 	return 0;
 }
