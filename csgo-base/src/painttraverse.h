@@ -5,7 +5,6 @@
 #include "Menu/CMenu.h"
 
 #include <cstdio>
-CMenu menu;
 DrawManager *g_pDrawManager;
 void __fastcall hkPaintTraverse(void *pPanel, void *unk, unsigned int vguiPanel, bool forceRepaint, bool allowForce)
 {
@@ -49,10 +48,11 @@ void __fastcall hkPaintTraverse(void *pPanel, void *unk, unsigned int vguiPanel,
                 Vector screenBot, screenTop;
                 if (W2S(bottom, screenBot) && W2S(top, screenTop))
                 {
-                    g_pDrawManager->DrawRect(screenTop.x, screenTop.y, 2, 2, Color(255, 0, 0, 200));
+                    if (g_pMenu->cf_dotesp.enabled)
+                        g_pDrawManager->DrawRect(screenTop.x, screenTop.y, 2, 2, Color(255, 0, 0, 200));
                 }
             }
         }
-        menu.tick();
+        g_pMenu->tick();
     }
 }
