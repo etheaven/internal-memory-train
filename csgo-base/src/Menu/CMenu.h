@@ -134,7 +134,7 @@ public:
   std::vector<MenuItem *> items;
 };
 
-class CMenu : public IControl
+class CMenu
 {
 public:
   CMenu()

@@ -102,8 +102,8 @@ class DrawManager
 		g_pSurface->DrawFilledRect(x1 - (BoxWidth / 5) + 1, y1, x1, y1 + 1);	  //right bottom
 		g_pSurface->DrawFilledRect(x1, y1 - (BoxHeight / 6) + 1, x1 + 1, y1 + 1); //right bottom
 
-		auto HealthWidth = ((x1 - x0) - 2);
-		auto HealthHeight = (y1 - y0) - 2;
+		// auto HealthWidth = ((x1 - x0) - 2);
+		// auto HealthHeight = (y1 - y0) - 2;
 		//DrawGUIBoxHorizontal( x0, y0 - (HealthHeight + 5), HealthWidth, HealthHeight, R, G, B, Health );
 	}
 

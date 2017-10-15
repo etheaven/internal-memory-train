@@ -92,7 +92,7 @@ int GetTargetCrosshair(CEntity *pLocal)
 	return target;
 }
 
-bool AimAtPoint(CEntity *pLocal, Vector point, CUserCmd *pCmd, bool &bSendPacket)
+bool AimAtPoint(CEntity *pLocal, Vector point, CUserCmd *pCmd, bool &) //bSendPacket
 {
 
 	// Get the full angles

@@ -85,7 +85,7 @@ class ITraceFilter
 class CTraceFilter : public ITraceFilter
 {
   public:
-	bool ShouldHitEntity(CEntity *pEntityHandle, int contentsMask)
+	bool ShouldHitEntity(CEntity *pEntityHandle, int)
 	{
 		return !(pEntityHandle == pSkip);
 	}
