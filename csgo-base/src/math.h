@@ -151,7 +151,7 @@ inline bool IsVisibleBone(CEntity *player, int bone)
 //TODO: implement usage of bone index
 inline bool IsVisible(CEntity *player, int bone = 8)
 {
-	for (int i = 0; i < 8; i += 2)
+	for (int i = 0; i < bone; i += 2)
 	{
 		if (IsVisibleBone(player, i))
 			return true;
