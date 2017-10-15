@@ -6,9 +6,6 @@
 
 #include "Coords.h"
 #include "Mouse.h"
-#include "IControl.h"
-#include "Button.h"
-#include "CheckBox.h"
 
 class Feature{
 public:
