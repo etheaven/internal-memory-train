@@ -6,11 +6,11 @@
 
 #include <cstdio>
 DrawManager *g_pDrawManager;
-void __fastcall hkPaintTraverse(void *pPanel, void *unk, unsigned int vguiPanel, bool forceRepaint, bool allowForce)
+void __fastcall hkPaintTraverse(void *pPanel, void *, unsigned int vguiPanel, bool forceRepaint, bool allowForce)
 {
     oPaintTraverse(pPanel, vguiPanel, forceRepaint, allowForce);
     
-    static auto panelId = 0;
+    static unsigned int panelId = 0;
     static DWORD UI_Font;
     if (!panelId)
     {
