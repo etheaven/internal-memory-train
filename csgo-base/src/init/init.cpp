@@ -79,7 +79,12 @@ bool init::setup()
     g_pInputSystem = (IInputSystem *)util::EasyInterface(static_cast<std::string>(LIT(("inputsystem.dll"))).c_str(), static_cast<std::string>(LIT(("InputSystemVersion00"))).c_str());
     printf("inputSystem: 0x%p\n", (void *)g_pInputSystem);
 
-    g_pMenu = new CMenu();
+    try {
+        g_pMenu = new CMenu(); //TODO: unique ptr
+    } catch(...){
+        printf("Error in menu creation\n");
+        return false;
+    }
 
     VMTClientMode.Initialise((DWORD *)g_pClientMode);
     VMTClientMode.HookMethod((DWORD)hkCreateMove, 24);
