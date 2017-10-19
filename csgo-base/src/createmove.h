@@ -243,7 +243,8 @@ bool __fastcall hkCreateMove(void *, void *, float, CUserCmd *cmd)
 	if (g_pMenu->cf_bhop.enabled)
 		bhop(cmd, local);
 	if (g_pMenu->cf_aim.enabled)
-		aimbot(cmd, local);
+		continue;
+		//aimbot(cmd, local);
 	if (g_pMenu->cf_rcs.enabled)
 		rcs(cmd,local);
 	if (g_pMenu->cf_trigger.enabled)
