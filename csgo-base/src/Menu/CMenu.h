@@ -12,8 +12,9 @@ public:
   enum Name
   {
     RCS = 0,
-    AIM, 
+    AIM,
     DESP,
+    ESP,
     BHOP,
     TRIG,
   };
@@ -27,10 +28,13 @@ public:
         return " AIM";
       case DESP:
         return "DESP";
+      case ESP:
+        return " ESP";
       case BHOP:
         return "BHOP";
       case TRIG:
         return "TRIG";
+
       default:
         return "Unknown";
     }
