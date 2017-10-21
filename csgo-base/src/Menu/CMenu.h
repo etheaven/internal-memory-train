@@ -7,7 +7,8 @@
 #include "Coords.h"
 #include "Mouse.h"
 
-class Feature{
+class Feature
+{
 public:
   enum Name
   {
@@ -20,23 +21,23 @@ public:
   };
   static const char *getc_str(Feature::Name name)
   {
-    switch(name)
+    switch (name)
     {
-      case RCS:
-        return " RCS";
-      case AIM:
-        return " AIM";
-      case DESP:
-        return "DESP";
-      case ESP:
-        return " ESP";
-      case BHOP:
-        return "BHOP";
-      case TRIG:
-        return "TRIG";
+    case RCS:
+      return " RCS";
+    case AIM:
+      return " AIM";
+    case DESP:
+      return "DESP";
+    case ESP:
+      return " ESP";
+    case BHOP:
+      return "BHOP";
+    case TRIG:
+      return "TRIG";
 
-      default:
-        return "Unknown";
+    default:
+      return "Unknown";
     }
   }
 };
@@ -54,16 +55,18 @@ public:
     this->pos = pos;
     enabled = false;
     common = Color(255, 255, 255, 255);
-    hl = Color(128,0,0,255);
+    hl = Color(128, 0, 0, 255);
     is_hl = false;
   }
-  void highlight(){
+  void highlight()
+  {
     if (is_hl)
       is_hl = false;
     else
       is_hl = true;
   }
-  bool toggle(){
+  bool toggle()
+  {
     enabled = enabled ? false : true;
   }
   void tick()
@@ -77,11 +80,12 @@ public:
       clr = Color(255, 0, 0);
       msg = "ON";
     }
-    else{
+    else
+    {
       clr = Color(255, 255, 255);
       msg = "OFF";
     }
-      g_pDrawManager->DrawString(pos.x + 40, pos.y, 291, clr, msg, false);
+    g_pDrawManager->DrawString(pos.x + 40, pos.y, 291, clr, msg, false);
   }
   Color hl;
   bool is_hl;
@@ -122,9 +126,11 @@ public:
     return items.at(id)->toggle(); // else 1 or 0
   }
 
-  int get_id(const char *name){
+  int get_id(const char *name)
+  {
     int i = 0;
-    for(const auto el : items){
+    for (const auto el : items)
+    {
       if (strcmp(el->name, name))
         return i;
       i++;
@@ -145,9 +151,6 @@ public:
   }
   void init();
   void tick();
-  void draw_heading();
-  void draw_form();
-  void draw_form_border();
 
   Color color = Color(0, 0, 128, 64);
   int x_size = 500, y_size = 400; // x2,y2
@@ -159,24 +162,7 @@ public:
   unsigned long head_font;
   MenuItem cf_rcs, cf_aim, cf_dotesp, cf_bhop, cf_trigger;
   FeatureHandler handler;
-} *g_pMenu;
-
-void CMenu::draw_form()
-{
-  draw_heading();
-  g_pDrawManager->FillColor(pos.x, pos.y, x_size, y_size, color);
-}
-
-void CMenu::draw_form_border()
-{
-  g_pDrawManager->DrawRect(pos.x, pos.y, x_size, y_size, Color(0, 0, 0));
-}
-
-void CMenu::draw_heading()
-{
-  g_pDrawManager->FillColor(pos.x, pos.y, x_size, 28, Color(16, 173, 237, 96));
-  g_pDrawManager->DrawString(pos.x + (x_size / 2), pos.y + 28 / 2 + 7, 291, Color(196, 0, 0, 220), head_title, true);
-}
+} * g_pMenu;
 
 void CMenu::init()
 {
@@ -206,12 +192,12 @@ void CMenu::tick()
   if (!draw)
     return;
   if (mouse.isClicked[VK_UP])
-    handler.change(handler.i_currFeature-1);
+    handler.change(handler.i_currFeature - 1);
   if (mouse.isClicked[VK_DOWN])
-    handler.change(handler.i_currFeature+1);
+    handler.change(handler.i_currFeature + 1);
   if (mouse.isClicked[VK_RIGHT] || mouse.isClicked[VK_LEFT])
     handler.toggle(handler.i_currFeature);
-  
+
   g_pDrawManager->DrawString(last_pos.x, last_pos.y, 291, Color(192, 0, 64, 220), "Milky way", false);
   handler.tick();
 }

@@ -20,7 +20,6 @@ Coords &Coords::operator+=(const int &i)
     return *this;
 }
 
-
 Coords Coords::operator+(const int &i)
 {
     return Coords(this->x + i, this->y + i);
