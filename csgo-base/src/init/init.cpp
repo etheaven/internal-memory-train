@@ -86,13 +86,23 @@ bool init::setup()
         return false;
     }
 
-    VMTClientMode.Initialise((DWORD *)g_pClientMode);
-    VMTClientMode.HookMethod((DWORD)hkCreateMove, 24);
+    try{
+        VMTClientMode.Initialise((DWORD *)g_pClientMode);
+        VMTClientMode.HookMethod((DWORD)hkCreateMove, 24);
+    }catch(...){
+        printf("VMTClientMode failure\n");
+    }
     if (!VMTClientMode.getInit())
         return false;
 
-    VMTPaintTraverse.Initialise((DWORD *)g_pPanel);
-    oPaintTraverse = (PaintTraverseFn)VMTPaintTraverse.HookMethod((DWORD)&hkPaintTraverse, 41);
+
+        try{
+            VMTPaintTraverse.Initialise((DWORD *)g_pPanel);
+            oPaintTraverse = (PaintTraverseFn)VMTPaintTraverse.HookMethod((DWORD)&hkPaintTraverse, 41);
+        }catch(...){
+            printf("VMTPaintTraverse failure\n");
+        }
+
     if (!VMTPaintTraverse.getInit())
         return false;
     return true;
