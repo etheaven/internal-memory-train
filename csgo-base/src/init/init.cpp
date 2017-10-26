@@ -113,7 +113,8 @@ bool init::detach()
     if (VMTClientMode.getInit())
         return false;
         
-    delete g_pMenu;
+    if (g_pMenu)
+        delete g_pMenu;
 
     if (VMTPaintTraverse.getInit())
         return false;
