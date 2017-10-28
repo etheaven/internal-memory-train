@@ -12,14 +12,16 @@ namespace DrawUtils
 const wchar_t *charToWchar_t(const char *text, int *out)
 {
 	int i = 0;
-	for (; text[i] != '\0'; ++i){continue;}
+	for (; text[i] != '\0'; ++i)
+	{
+		continue;
+	}
 	auto ws = std::wstring(&text[0], &text[i]);
 	const wchar_t *p = (ws.c_str());
 	*out = i;
 	return p;
 }
 }
-
 
 class DrawManager
 {
@@ -50,21 +52,6 @@ class DrawManager
 		g_pSurface->DrawSetColor(c);
 		g_pSurface->DrawLine(x0, y0, x1, y1);
 	}
-	static void TextW(bool cent, int font, int x, int y, Color color, wchar_t *pszString) noexcept
-	{
-		if (cent)
-		{
-			int wide, tall;
-			g_pSurface->GetTextSize(font, pszString, wide, tall);
-			x -= wide / 2;
-			y -= tall / 2;
-		}
-		g_pSurface->DrawSetTextColor(color);
-		g_pSurface->DrawSetTextFont(font);
-		g_pSurface->DrawSetTextPos(x, y);
-		g_pSurface->DrawPrintText(pszString, static_cast<int>(wcslen(pszString)), FONTFLAG_NONE); // default flag
-	}
-
 	void DrawRect(int X, int Y, int W, int H, Color Color)
 	{
 		g_pSurface->DrawSetColor(Color);
@@ -165,9 +152,10 @@ class DrawManager
 		FillRGBA(x + lw, y + h - lw, w - lw * 2, lw, r, g, b, a); // bottom
 	}
 
-	void DrawStringWide(int x, int y, int font, Color const& c, const wchar_t *text, int text_len, bool centre)
+	void DrawStringWide(int x, int y, int font, Color const &c, const wchar_t *text, int text_len, bool centre)
 	{
-		if (centre){
+		if (centre)
+		{
 			static int wide, tall;
 			g_pSurface->GetTextSize(font, text, wide, tall);
 			x -= wide / 2;
@@ -186,7 +174,7 @@ class DrawManager
 		g_pSurface->DrawPrintText(text, text_len);
 	}
 
-	void DrawString(int x, int y, int font, Color const& c, const char *text, bool centre)
+	void DrawString(int x, int y, int font, Color const &c, const char *text, bool centre)
 	{
 		static int m_font;
 		if (m_font < 1)
@@ -197,7 +185,8 @@ class DrawManager
 				m_font = font;
 		}
 		int i = 0;
-		for (;text[i] != '\0'; ++i);
+		for (; text[i] != '\0'; ++i)
+			;
 		auto ws = std::wstring(&text[0], &text[i]);
 		const wchar_t *p = (ws.c_str());
 		this->DrawStringWide(x, y, font, c, p, i, centre);
