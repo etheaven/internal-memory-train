@@ -68,11 +68,11 @@ class DrawManager
 	{
 		auto BoxWidth = x1 - x0;
 		auto BoxHeight = y1 - y0;
-
+/* 
 		if (BoxWidth < 10)
 			BoxWidth = 10;
 		if (BoxHeight < 15)
-			BoxHeight = 15;
+			BoxHeight = 15; */
 
 		g_pSurface->DrawSetColor(R, G, B, A);
 
