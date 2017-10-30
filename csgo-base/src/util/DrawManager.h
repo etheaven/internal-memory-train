@@ -68,11 +68,6 @@ class DrawManager
 	{
 		auto BoxWidth = x1 - x0;
 		auto BoxHeight = y1 - y0;
-/* 
-		if (BoxWidth < 10)
-			BoxWidth = 10;
-		if (BoxHeight < 15)
-			BoxHeight = 15; */
 
 		g_pSurface->DrawSetColor(R, G, B, A);
 
@@ -87,10 +82,6 @@ class DrawManager
 
 		g_pSurface->DrawFilledRect(x1 - (BoxWidth / 5) + 1, y1, x1, y1 + 1);	  //right bottom
 		g_pSurface->DrawFilledRect(x1, y1 - (BoxHeight / 6) + 1, x1 + 1, y1 + 1); //right bottom
-
-		// auto HealthWidth = ((x1 - x0) - 2);
-		// auto HealthHeight = (y1 - y0) - 2;
-		//DrawGUIBoxHorizontal( x0, y0 - (HealthHeight + 5), HealthWidth, HealthHeight, R, G, B, Health );
 	}
 
 	void boxESP(int x, int y, int radius, int R, int G, int B)
