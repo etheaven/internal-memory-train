@@ -158,7 +158,6 @@ public:
   Coords last_pos;
   Mouse mouse;
   bool draw = false;
-  char *head_title;
   unsigned long head_font;
   MenuItem cf_rcs, cf_aim, cf_dotesp, cf_bhop, cf_trigger;
   FeatureHandler handler;
@@ -166,7 +165,6 @@ public:
 
 void CMenu::init()
 {
-  head_title = "nice mem";
   last_pos = pos;
   last_pos += 40;
   //TODO: global constant name to search in memory
