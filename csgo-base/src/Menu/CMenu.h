@@ -196,6 +196,6 @@ void CMenu::tick()
   if (mouse.isClicked[VK_RIGHT] || mouse.isClicked[VK_LEFT])
     handler.toggle(handler.i_currFeature);
 
-  g_pDrawManager->DrawString(last_pos.x, last_pos.y, 291, Color(192, 0, 64, 220), "Milky way", false);
+  //g_pDrawManager->DrawString(last_pos.x, last_pos.y, 291, Color(192, 0, 64, 220), "Milky way", false);
   handler.tick();
 }
