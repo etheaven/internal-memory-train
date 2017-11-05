@@ -79,7 +79,6 @@ int GetTargetCrosshair(CEntity *pLocal)
 		CEntity *pEntity = g_pEntityList->getcliententity(i);
 		if (TargetMeetsRequirements(pEntity, 8, true))
 		{
-			// printf("meets!\n");
 			float fov = FovToPlayer(ViewOffset, View, pEntity);
 			if (fov < minFoV)
 			{
@@ -94,8 +93,6 @@ int GetTargetCrosshair(CEntity *pLocal)
 
 bool AimAtPoint(CEntity *pLocal, Vector point, CUserCmd *pCmd, bool &) //bSendPacket
 {
-
-	// Get the full angles
 	if (point.Length() == 0)
 		return false;
 	static clock_t start_t = clock();
@@ -129,8 +126,6 @@ bool AimAtPoint(CEntity *pLocal, Vector point, CUserCmd *pCmd, bool &) //bSendPa
 		}
 	}
 
-	// IsLocked = true;
-
 	Vector ang = angles - pCmd->viewangles;
 	bool v = false;
 	if (ang.Length() > Speed)
@@ -152,13 +147,14 @@ bool aimbot(CUserCmd *cmd, CEntity *local)
 	static int TargetID = -1;
 	if (!GetAsyncKeyState(VK_LBUTTON)) // maybe it was too early for inputsystem xd
 		return false;
-	//knife
+
 	CBaseCombatWeapon *pWeapon = (CBaseCombatWeapon *)g_pEntityList->entfromhandle(local->getactiveweapon());
 	if (!pWeapon)
 		return false;
 	if (pWeapon->GetAmmoInClip() == 0 || !IsBallisticWeapon(pWeapon))
 		return false;
-	// Make sure we have a ok target
+
+	// Make sure we have an ok target
 	if (TargetID >= 0)
 	{
 		pTarget = g_pEntityList->getcliententity(TargetID);
@@ -185,7 +181,7 @@ bool aimbot(CUserCmd *cmd, CEntity *local)
 			pTarget = nullptr;
 	}
 
-	// If we finally have a ok target
+	// If we finally have an ok target
 	if (TargetID >= 0 && pTarget)
 	{
 		if (/* Key >= 0 && !GUI.GetKeyState(Key) */ false)
