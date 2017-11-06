@@ -12,10 +12,7 @@ namespace DrawUtils
 const wchar_t *charToWchar_t(const char *text, int *out)
 {
 	int i = 0;
-	for (; text[i] != '\0'; ++i)
-	{
-		continue;
-	}
+	for (; text[i] != '\0'; ++i);
 	auto ws = std::wstring(&text[0], &text[i]);
 	const wchar_t *p = (ws.c_str());
 	*out = i;
