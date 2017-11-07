@@ -12,17 +12,23 @@ extern "C" BOOL APIENTRY DllMain(
         DisableThreadLibraryCalls(boi);
         try{
             if (!init::setup()){
+                printf("failed to attach\n");
                 return FALSE;
             }
         }catch(...){
+            printf("failed in fail of attach\n");
             return FALSE;
         }
         break;
     case DLL_PROCESS_DETACH:
-        if (!init::detach()){
-            // log xd
-            
-            return FALSE;
+        try{
+            if (!init::detach()){
+                // log xd
+                printf("failed to detach\n");
+                return FALSE;
+            }
+        }catch(...){
+            printf("failed in fail of dettach\n");
         }
         break;
     }
