@@ -1,4 +1,5 @@
 #include <Windows.h>
+#include <cstdio>
 #include "init/init.h"
 
 extern "C" BOOL APIENTRY DllMain(
