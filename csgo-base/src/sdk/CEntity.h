@@ -256,7 +256,7 @@ class CEntity
     } */
     inline bool HasGunGameImmunity()
     {
-        return util::readptr<bool>(this, 0x3890);
+        return util::readptr<bool>(this, 0x3894);
     }
     inline Vector getorigin()
     { // feet origin
@@ -304,6 +304,6 @@ class CEntity
     }
     inline int getshotsfired()
     {
-        return util::readptr<int>(this, 0xA2A0);
+        return util::readptr<int>(this, 0xA2B0);
     }
 };
