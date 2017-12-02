@@ -3,7 +3,7 @@ project(csgoBase)
 if (MSVC)
     add_compile_options(/W4)
 else()
-    add_compile_options(-Wall -Wextra -Wpedantic -g -std=c++14 -m32 -static-libstdc++)
+    add_compile_options(-Wall -Wextra -Wpedantic -g -std=c++14 -m32 -static -static-libgcc -static-libstdc++ -libstdc++ -lc++abi)
 endif()
 
 set(CMAKE_ARCHIVE_OUTPUT_DIRECTORY "lib/")
