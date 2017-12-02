@@ -67,7 +67,7 @@ public:
   }
   bool toggle()
   {
-    enabled = enabled ? false : true;
+    return enabled = enabled ? false : true;
   }
   void tick()
   {
